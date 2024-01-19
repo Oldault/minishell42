@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/19 17:09:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:55:37 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int ac, char **av, char ** env)
 {
 	char	*input;
 	char	*prompt;
+    char	**tokens;
 
 	(void)ac;
 	(void)av;
@@ -50,6 +51,13 @@ int	main(int ac, char **av, char ** env)
 		if (*input)
 			add_history(input);
 		handle_input(input, env);
+		tokens = custom_tokenize(input);
+
+        for (int i = 0; tokens[i] != NULL; i++) {
+            printf("Token %d: %s\n", i, tokens[i]);
+            free(tokens[i]);
+        }
+        free(tokens);
 		free(input);
 	}
 	free(prompt);

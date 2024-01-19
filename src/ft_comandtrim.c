@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_comandtrim.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albeninc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:59:00 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/19 17:34:02 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:04:11 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "minishell.h"
 
 #define MAX_COMMAND_LENGTH 1024
 #define DELIMITERS " \t\r\n\a"
@@ -30,10 +27,10 @@ char	**custom_tokenize(char *input)
 
 	bufsize = 64;
 	position = 0;
-	tokens = calloc(bufsize, sizeof(char *));
+	tokens = ft_calloc(bufsize, sizeof(char *));
 	start = 0;
 	end = 0;
-	new_tokens = calloc(bufsize, sizeof(char *));
+	new_tokens = ft_calloc(bufsize, sizeof(char *));
 	if (!tokens)
 	{
 		perror("custom_tokenize: allocation error");
@@ -87,22 +84,3 @@ char	**custom_tokenize(char *input)
 	return (tokens);
 }
 
-int main() {
-    char *input;
-    char **tokens;
-
-    input = readline("Minishell> ");
-    if (input) {
-        tokens = custom_tokenize(input);
-
-        for (int i = 0; tokens[i] != NULL; i++) {
-            printf("Token %d: %s\n", i, tokens[i]);
-            free(tokens[i]);
-        }
-
-        free(tokens);
-        free(input);
-    }
-
-    return 0;
-}

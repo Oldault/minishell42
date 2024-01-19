@@ -6,21 +6,21 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:56:27 by svolodin          #+#    #+#             */
-/*   Updated: 2023/12/17 14:47:14 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:01:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdarg.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
-# include <stdarg.h>
-# include <stddef.h>
 # include <sys/types.h>
 # include <sys/uio.h>
+# include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -57,6 +57,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 int					ft_atoi(const char *str);
 void				*ft_calloc(size_t nitems, size_t size);
 char				*ft_strdup(const char *s);
+char				*ft_strncpy(char *dest, char *src, unsigned int n);
 // Part 2
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
