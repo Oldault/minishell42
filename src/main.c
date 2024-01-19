@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/19 15:50:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:14:08 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@ char	*get_prompt(void)
 		username = getenv("LOGNAME");
 	hostname = "minishell";
 	getcwd(cwd, sizeof(cwd));
+	ft_strlcat(prompt, COLOR_GREEN, 1024);
 	if (username)
 		ft_strlcat(prompt, username, 1024);
 	ft_strlcat(prompt, "@", 1024);
 	ft_strlcat(prompt, hostname, 1024);
+	ft_strlcat(prompt, COLOR_BLUE, 1024);
 	ft_strlcat(prompt, ":", 1024);
 	ft_strlcat(prompt, cwd, 1024);
 	ft_strlcat(prompt, "$ ", 1024);
+	ft_strlcat(prompt, COLOR_RESET, 1024);
 	return (prompt);
 }
 
