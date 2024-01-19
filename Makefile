@@ -3,7 +3,7 @@ LIBFT				= $(LIBFT_DIR)libft.a
 
 RM					= rm -f
 CC					= cc
-CFLAGS				= -Wall -Wextra -Werror -g3
+CFLAGS				= -Wall -Wextra -Werror -lreadline -g3
 CFLAGS				+= -I$(LIBFT_DIR) -I./include
 
 LIBFT_DIR			= ./include/libft/
