@@ -6,43 +6,41 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/19 15:50:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:09:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_prompt(void)
+void execute_env(char **env)
 {
-	char	*username;
-	char	*hostname;
-	char	cwd[1024];
-	char	*prompt;
+	int	i;
 
-	prompt = malloc(1024 * sizeof(char));
-	if (prompt == NULL)
-		return (NULL);
-	prompt[0] = '\0';
-	username = getenv("USER");
-	if (username == NULL)
-		username = getenv("LOGNAME");
-	hostname = "minishell";
-	getcwd(cwd, sizeof(cwd));
-	if (username)
-		ft_strlcat(prompt, username, 1024);
-	ft_strlcat(prompt, "@", 1024);
-	ft_strlcat(prompt, hostname, 1024);
-	ft_strlcat(prompt, ":", 1024);
-	ft_strlcat(prompt, cwd, 1024);
-	ft_strlcat(prompt, "$ ", 1024);
-	return (prompt);
+	i = -1;
+    while (env[++i] != NULL)
+        printf("%s\n", env[i]);
 }
 
-int	main(void)
+void	handle_input(char *input, char **env)
+{
+	if (ft_strncmp(input, "history", 8) == 0)
+			show_hist();
+	else if (ft_strncmp(input, "exit", 5) == 0)
+	{
+		free(input);
+		exit(0);
+	}
+	else if (ft_strncmp(input, "env", 4) == 0)
+		execute_env(env);
+}
+
+int	main(int ac, char **av, char ** env)
 {
 	char	*input;
 	char	*prompt;
 
+	(void)ac;
+	(void)av;
 	prompt = get_prompt();
 	while (42)
 	{
@@ -51,8 +49,7 @@ int	main(void)
 			break ;
 		if (*input)
 			add_history(input);
-		if (strcmp(input, "history") == 0)
-			show_hist();
+		handle_input(input, env);
 		free(input);
 	}
 	free(prompt);
