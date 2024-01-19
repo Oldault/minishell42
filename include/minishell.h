@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/19 14:16:50 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:12:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,9 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+
+void	show_hist(void);
 
 #endif
