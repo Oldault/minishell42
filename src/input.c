@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 11:24:01 by svolodin         ###   ########.fr       */
+/*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
+/*   Updated: 2024/01/20 11:20:34 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char ** env)
+static void execute_env(char **env)
 {
-	char	*input;
-	char	*prompt;
-    char	**tokens;
+	int	i;
 
-	(void)ac;
-	(void)av;
-	prompt = get_prompt();
-	while (42)
+	i = -1;
+    while (env[++i] != NULL)
+        printf("%s\n", env[i]);
+}
+
+void	handle_input(char *input, char **env)
+{
+	if (ft_strncmp(input, "history", 8) == 0)
+			show_hist();
+	else if (ft_strncmp(input, "exit", 5) == 0)
 	{
-		input = readline(prompt);
-		if (input == NULL)
-			break ;
-		if (*input)
-			add_history(input);
-		handle_input(input, env);
-		tokens = custom_tokenize(input);
-		print_tokens(tokens);
 		free(input);
+		exit(0);
 	}
-	free(prompt);
-	return (0);
+	else if (ft_strncmp(input, "env", 4) == 0)
+		execute_env(env);
 }
