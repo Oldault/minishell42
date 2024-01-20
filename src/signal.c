@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 11:49:51 by svolodin         ###   ########.fr       */
+/*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
+/*   Updated: 2024/01/20 12:25:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
-int	main(int ac, char **av, char **env)
+void	handle_sigint(int sig)
 {
-	char				*input;
-	char				*prompt;
-	char				**tokens;
+	(void)sig;
+	printf("%s", get_prompt());
+	write(STDOUT_FILENO, "\n", 1);
+}
 
-	(void)ac;
-	(void)av;
-	setup_signal_handlers();
-	prompt = get_prompt();
-	while (42)
-	{
-		input = readline(prompt);
-		if (input == NULL)
-			break ;
-		if (*input)
-			add_history(input);
-		handle_input(input, env);
-		tokens = custom_tokenize(input);
-		print_tokens(tokens);
-		free(input);
-	}
-	free(prompt);
-	rl_clear_history();
-	return (0);
+void	setup_signal_handlers(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &sa, NULL);
 }
