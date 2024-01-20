@@ -6,7 +6,7 @@
 /*   By: albeninc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:25:19 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 13:34:43 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:02:16 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,58 +17,65 @@
 // Vérifie si la position actuelle correspond à un token spécial
 int	is_special_token(const char *str)
 {
-	const char *special_tokens[] = {">>", "<<", "||", "&&", "*", ">", "<", "|", NULL};
-	
-	for (int i = 0; special_tokens[i] != NULL; i++)
+	const char	*special_tokens[] = {">>", "<<", "||", "&&", "*", ">", "<", "|", NULL};
+	int			i;
+
+	i = 0;
+	while (special_tokens[i])
 	{
-		if (strncmp(str, special_tokens[i], strlen(special_tokens[i])) == 0) {
-            		return strlen(special_tokens[i]);
+		if (ft_strncmp(str, special_tokens[i], ft_strlen(special_tokens[i])) == 0)
+			return ft_strlen(special_tokens[i]);
+		i++;
 	}
-    }
 	return (0);
 }
 
 // Tokenizer principal
 char	**tokenizer(const char *str)
 {
-	int	bufsize = 64;
-	int	start;
-	int	position = 0;
-	char	**tokens = malloc(bufsize * sizeof(char*));
+	int		bufsize;
+	int		start;
+	int		position;
+	char	**tokens;
 	char	*token;
-	int	length;
-	int	i = 0;
+	int		length;
+	int		i;
 
+	i = 0;
+	tokens = malloc(bufsize * sizeof(char *));
+	bufsize = 64;
+	position = 0;
 	if (!tokens) 
 	{
-        	fprintf(stderr, "Allocation error\n");
-        	exit(EXIT_FAILURE);
+		fprintf("Allocation error\n");
+		exit(EXIT_FAILURE);
 	}
-
 	while (str[i] != '\0')
 	{
-		while (str[i] == ' ' || str[i] == '\t') i++;  // Ignorer les espaces
-        	length = is_special_token(&str[i]);
-		if (length > 0) 
+		while (str[i] == ' ' || str[i] == '\t')
+			i++; // Ignorer les espaces
+		length = is_special_token(&str[i]);
+		if (length > 0)
 		{  // Token spécial trouvé
-			token = strndup(&str[i], length);
+			token = ft_strndup(&str[i], length);
 			i += length;  // Passer le token spécial
 		}
 		else
-		{  // Autres caractères
+		{ // Autres caractères
             		start = i;
-            		while (str[i] != ' ' && str[i] != '\0' && !is_special_token(&str[i])) i++;
-            			token = strndup(&str[start], i - start);
+			while (str[i] != ' ' && str[i] != '\0' && !is_special_token(&str[i]))
+				i++;
+			token = ft_strndup(&str[start], i - start);
 		}
-        	tokens[position++] = token;
+		tokens[position++] = token;
 		if (position >= bufsize)
 		{
-            		bufsize += 64;
-            		tokens = realloc(tokens, bufsize * sizeof(char*));
-            		if (!tokens)
+			bufsize += 64;
+			tokens = realloc(tokens, bufsize * sizeof(char*));
+			if (!tokens)
 			{
-                		fprintf(stderr, "Allocation error\n");
-                		exit(EXIT_FAILURE);
+				printf("Allocation error\n");
+				exit(EXIT_FAILURE);
             		}
         	}
     	}
