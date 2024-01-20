@@ -6,7 +6,7 @@
 /*   By: albeninc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:10:58 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 16:14:07 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:25:28 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,5 @@ char *ft_strtrim_all(char const *s) {
     }
     trimmed[j] = '\0';
     return trimmed;
-}
-
-int main() {
-    char *test_str[] = {
-        "\"bash\"",
-        "'bash'",
-        "\"'bash\"",
-        "''bash'",
-        "This is a 'test' with an \"odd number\" of 'quotes'",
-        NULL
-    };
-
-    for (int i = 0; test_str[i]; i++) {
-        char *trimmed_str = ft_strtrim_all(test_str[i]);
-        if (trimmed_str) {
-            printf("Original: %s\n", test_str[i]);
-            printf("Trimmed: %s\n", trimmed_str);
-            free(trimmed_str);
-        } else {
-            printf("Error: Allocation error\n");
-        }
-    }
-
-    return 0;
 }
 
