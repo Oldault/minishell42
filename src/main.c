@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 11:24:01 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 11:31:14 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int	main(int ac, char **av, char ** env)
 		free(input);
 	}
 	free(prompt);
+	rl_clear_history();
 	return (0);
 }
