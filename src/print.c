@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 11:24:04 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:27:57 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	print_tokens(char **tokens)
 	int	i;
 
 	i = -1;
+	printf("%s------------\n", RED);
 	while (tokens[++i])
 	{
 		printf("Token %d: %s\n", i, tokens[i]);
 		free(tokens[i]);
 	}
+	printf("------------%s\n", COLOR_RESET);
 	free(tokens);
 }

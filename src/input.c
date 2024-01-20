@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 12:57:27 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:05:51 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,25 @@ char	*expand_tilde(const char *input)
 	return (expanded_path);
 }
 
+int	cd_command(const char *path)
+{
+	if (path == NULL || strcmp(path, "~") == 0)
+	{
+		path = getenv("HOME");
+		if (path == NULL)
+		{
+			ft_putendl_fd("cd: HOME not set", 2);
+			return (-1);
+		}
+	}
+	if (chdir(path) != 0)
+	{
+		perror("cd");
+		return (-1);
+	}
+	return (0);
+}
+
 void	handle_input(char *input, char **env)
 {
 	char	*pwd;
@@ -84,5 +103,16 @@ void	handle_input(char *input, char **env)
 		else
 			printf("bash: %s: No such file or directory\n", tilde);
 		free(tilde);
+	}
+	else if (ft_strncmp(input, "cd", 2) == 0)
+	{
+		char *command = strtok(input, " ");
+		(void)command;
+		char *path = strtok(NULL, " ");
+		//printf("path: %s\n", path);
+		if (path == NULL)
+            ft_putendl_fd("cd: missing argument", 2);
+		else
+            cd_command(path);
 	}
 }

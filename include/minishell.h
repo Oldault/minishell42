@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 12:53:00 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:26:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 //		COLORS
 # define COLOR_BLUE "\x1B[94m"
 # define COLOR_GREEN "\x1B[32m"
+# define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
 
 void	show_hist(void);
 char	*get_prompt(void);
 char	**custom_tokenize(char *input);
+char	**tokenizer(const char *str);
 void	handle_input(char *input, char **env);
 void	setup_signal_handlers(void);
 

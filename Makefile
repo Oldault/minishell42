@@ -48,7 +48,7 @@ clean:
 fclean:				clean
 					@$(RM) $(NAME)
 					@$(RM) -r $(OBJS_PATH)
-					@echo "┗▷$(YELLOW)『executables from $(ITALIC)./minshell/$(RESET)$(YELLOW) cleaned』$(RESET)"
+					@echo "┗▷$(YELLOW)『executables from $(ITALIC)./Minshell/$(RESET)$(YELLOW) cleaned』$(RESET)"
 
 re:					fclean all
 

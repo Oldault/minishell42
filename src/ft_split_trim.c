@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_trim.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albeninc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 13:25:19 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 15:02:16 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:25:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "minishell.h"
 
 // Vérifie si la position actuelle correspond à un token spécial
-int	is_special_token(const char *str)
+static int	is_special_token(const char *str)
 {
 	const char	*special_tokens[] = {">>", "<<", "||", "&&", "*", ">", "<", "|", NULL};
 	int			i;
@@ -42,12 +43,12 @@ char	**tokenizer(const char *str)
 	int		i;
 
 	i = 0;
-	tokens = malloc(bufsize * sizeof(char *));
 	bufsize = 64;
+	tokens = malloc(bufsize * sizeof(char *));
 	position = 0;
 	if (!tokens) 
 	{
-		fprintf("Allocation error\n");
+		ft_putendl_fd("Allocation error", 2);
 		exit(EXIT_FAILURE);
 	}
 	while (str[i] != '\0')
@@ -57,15 +58,15 @@ char	**tokenizer(const char *str)
 		length = is_special_token(&str[i]);
 		if (length > 0)
 		{  // Token spécial trouvé
-			token = ft_strndup(&str[i], length);
+			token = strndup(&str[i], length);
 			i += length;  // Passer le token spécial
 		}
 		else
 		{ // Autres caractères
-            		start = i;
+            start = i;
 			while (str[i] != ' ' && str[i] != '\0' && !is_special_token(&str[i]))
 				i++;
-			token = ft_strndup(&str[start], i - start);
+			token = strndup(&str[start], i - start);
 		}
 		tokens[position++] = token;
 		if (position >= bufsize)
@@ -76,21 +77,23 @@ char	**tokenizer(const char *str)
 			{
 				printf("Allocation error\n");
 				exit(EXIT_FAILURE);
-            		}
         	}
     	}
+	}
 	tokens[position] = NULL;
 	return (tokens);
 }
 
-int main() {
-    char *input = "cat file1.txt || echo | echo > echo * >> output.txt";
-    char **tokens = tokenizer(input);
+// int main(void)
+// {
+//     char *input = "cat file1.txt ||echo|echo>>>>>echo* >> |||**output.txt";
+//     char **tokens = tokenizer(input);
 
-    for (int i = 0; tokens[i] != NULL; i++) {
-        printf("Token %d: %s\n", i, tokens[i]);
-        free(tokens[i]);
-    }
-    free(tokens);
-    return 0;
-}
+//     for (int i = 0; tokens[i] != NULL; i++)
+// 	{
+//         printf("Token %d: %s\n", i, tokens[i]);
+//         free(tokens[i]);
+//     }
+//     free(tokens);
+//     return 0;
+// }

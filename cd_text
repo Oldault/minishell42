@@ -1,0 +1,10 @@
+cd
+cd ~
+cd /
+cd /usr/local
+cd ..
+cd ./include
+cd include
+cd cactus
+cd $HOME/subdir
+cd -

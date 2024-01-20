@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 13:02:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:25:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	setup_signal_handlers();
-	prompt = get_prompt();
 	while (42)
 	{
+		prompt = get_prompt();
 		input = readline(prompt);
 		if (input == NULL)
 			break ;
 		if (*input)
 			add_history(input);
 		handle_input(input, env);
-		tokens = custom_tokenize(input);
-		//print_tokens(tokens);
+		tokens = tokenizer(input);
+		print_tokens(tokens);
 		free(input);
 	}
 	free(prompt);
