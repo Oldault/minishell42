@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 11:50:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 12:53:00 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/stat.h>
 
 //		COLORS
 # define COLOR_BLUE "\x1B[94m"
