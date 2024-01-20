@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 11:24:01 by svolodin         ###   ########.fr       */
+/*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
+/*   Updated: 2024/01/20 11:24:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char ** env)
+void	print_tokens(char **tokens)
 {
-	char	*input;
-	char	*prompt;
-    char	**tokens;
+	int	i;
 
-	(void)ac;
-	(void)av;
-	prompt = get_prompt();
-	while (42)
+	i = -1;
+	while (tokens[++i])
 	{
-		input = readline(prompt);
-		if (input == NULL)
-			break ;
-		if (*input)
-			add_history(input);
-		handle_input(input, env);
-		tokens = custom_tokenize(input);
-		print_tokens(tokens);
-		free(input);
+		printf("Token %d: %s\n", i, tokens[i]);
+		free(tokens[i]);
 	}
-	free(prompt);
-	return (0);
+	free(tokens);
 }

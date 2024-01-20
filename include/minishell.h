@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/19 17:57:20 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 11:25:13 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,9 @@
 void	show_hist(void);
 char	*get_prompt(void);
 char	**custom_tokenize(char *input);
+void	handle_input(char *input, char **env);
+
+//*----------------------- Print -----------------------*//
+void	print_tokens(char **tokens);
 
 #endif
