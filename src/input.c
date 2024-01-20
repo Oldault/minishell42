@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/20 15:05:51 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:12:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,37 @@ int	cd_command(const char *path)
 	return (0);
 }
 
+void	print_echo(char *arg)
+{
+	int		newline;
+
+	newline = 1;
+	if (arg != NULL && strcmp(arg, "-n") == 0)
+	{
+		newline = 0;
+		arg = strtok(NULL, " ");
+	}
+	while (arg != NULL)
+	{
+		printf("%s", arg);
+		arg = strtok(NULL, " ");
+		if (arg != NULL)
+			printf(" ");
+	}
+	if (newline)
+		printf("\n");
+}
+
 void	handle_input(char *input, char **env)
 {
 	char	*pwd;
 	char	*tilde;
+	char	*command;
+	char	*arg;
 
+	command = strtok(input, " ");
+	(void)command;
+	arg = strtok(NULL, " ");
 	if (ft_strncmp(input, "history", 8) == 0)
 		show_hist();
 	else if (ft_strncmp(input, "exit", 5) == 0)
@@ -106,13 +132,11 @@ void	handle_input(char *input, char **env)
 	}
 	else if (ft_strncmp(input, "cd", 2) == 0)
 	{
-		char *command = strtok(input, " ");
-		(void)command;
-		char *path = strtok(NULL, " ");
-		//printf("path: %s\n", path);
-		if (path == NULL)
-            ft_putendl_fd("cd: missing argument", 2);
+		if (arg == NULL)
+			ft_putendl_fd("cd: missing argument", 2);
 		else
-            cd_command(path);
+			cd_command(arg);
 	}
+	else if (ft_strncmp(input, "echo", 4) == 0)
+		print_echo(arg);
 }
