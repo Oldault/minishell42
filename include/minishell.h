@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/21 14:30:57 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:13:23 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@
 # define COLOR_GREEN "\x1B[32m"
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
-
-int	g_status;
-
-typedef struct s_prompt
-{
-	t_list	*cmds;
-	char	**envp;
-	pid_t	pid;
-}		t_prompt;
-
-typedef struct s_mini
-{
-	char	**full_cmd;
-	char	*full_path;
-	int	infile;
-	int	outfile;
-}		t_mini;
 
 void	show_hist(void);
 char	*get_prompt(void);
