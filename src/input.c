@@ -6,30 +6,21 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 14:38:06 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:25:39 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_env(char **env)
-{
-	int	i;
+// char	*get_pwd(void)
+// {
+// 	char	cwd[1024];
 
-	i = -1;
-	while (env[++i] != NULL)
-		printf("%s\n", env[i]);
-}
-
-char	*get_pwd(void)
-{
-	char	cwd[1024];
-
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		return (ft_strdup(cwd));
-	else
-		return (NULL);
-}
+// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+// 		return (ft_strdup(cwd));
+// 	else
+// 		return (NULL);
+// }
 
 int	path_exists(const char *path)
 {
@@ -77,7 +68,7 @@ int	cd_command(const char *path)
 
 void	handle_input(char *input, char **env, char **paths)
 {
-	char	*pwd;
+	//char	*pwd;
 	char	*tilde;
 	
 	if (ft_strncmp(input, "history", 8) == 0)
@@ -87,14 +78,12 @@ void	handle_input(char *input, char **env, char **paths)
 		free(input);
 		exit(0);
 	}
-	else if (ft_strncmp(input, "env", 4) == 0)
-		execute_env(env);
-	else if (ft_strncmp(input, "pwd", 4) == 0)
-	{
-		pwd = get_pwd();
-		printf("%s\n", pwd);
-		free(pwd);
-	}
+	// else if (ft_strncmp(input, "pwd", 4) == 0)
+	// {
+	// 	pwd = get_pwd();
+	// 	printf("%s\n", pwd);
+	// 	free(pwd);
+	// }
 	else if (ft_strncmp(input, "~", 1) == 0)
 	{
 		tilde = expand_tilde(input);

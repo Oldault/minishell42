@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 14:38:49 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:30:23 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		if (*input)
 			add_history(input);
-		handle_input(input, env, paths);
 		tokens = tokenizer(input);
+		handle_input(input, env, paths);
 		print_tokens(tokens);
 		free(input);
 	}

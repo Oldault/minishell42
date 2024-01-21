@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 14:38:34 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:30:06 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_command(char *input, char **paths, char **env)
 	{
 		if (execve(find_path(paths, args), args, env) == -1)
 		{
-			perror("execve");
+			printf("%s: command not found\n", args[0]);
 			exit(EXIT_FAILURE);
 		}
 	}
