@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/20 15:26:49 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/21 14:30:57 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 
 //		COLORS
 # define COLOR_BLUE "\x1B[94m"
@@ -26,12 +27,18 @@
 
 void	show_hist(void);
 char	*get_prompt(void);
-char	**custom_tokenize(char *input);
 char	**tokenizer(const char *str);
-void	handle_input(char *input, char **env);
+void	handle_input(char *input, char **env, char **paths);
 void	setup_signal_handlers(void);
+void	execute_command(char *input, char **paths, char **env);
+
+//*----------------------- Paths -----------------------*//
+char	**get_paths(char **env);
+char	*find_path(char **paths, char **arg);
 
 //*----------------------- Print -----------------------*//
 void	print_tokens(char **tokens);
+void	print_2d_arr(char **arr, char separator);
+void	print_3d_arr(char ***arr);
 
 #endif
