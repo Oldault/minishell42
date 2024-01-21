@@ -25,6 +25,23 @@
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
 
+int	g_status;
+
+typedef struct s_prompt
+{
+	t_list	*cmds;
+	char	**envp;
+	pid_t	pid;
+}		t_prompt;
+
+typedef struct s_mini
+{
+	char	**full_cmd;
+	char	*full_path;
+	int	infile;
+	int	outfile;
+}		t_mini;
+
 void	show_hist(void);
 char	*get_prompt(void);
 char	**tokenizer(const char *str);
