@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 16:30:23 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:34:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	main(int ac, char **av, char **env)
 {
 	char	*input;
 	char	*prompt;
-	char	**tokens;
 	char	**paths;
+	char	***cmds;
 
 	(void)ac;
 	(void)av;
@@ -32,9 +32,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		if (*input)
 			add_history(input);
-		tokens = tokenizer(input);
-		handle_input(input, env, paths);
-		print_tokens(tokens);
+		cmds = parse(input);
+		handle_input(cmds, env, paths);
 		free(input);
 	}
 	free(prompt);
