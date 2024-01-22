@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 10:30:19 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:11:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	setup_pipes(int *pipe_end, int *pipe_fds, int i, int num_cmds)
 	}
 }
 
-void	execute_single_command(char **cmd, int pipe_end, int *pipe_fds, int i,
-		int num_cmds, char **env, char **paths)
+void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
+		int num_cmds)
 {
 	pid_t	pid;
 
@@ -54,7 +54,7 @@ void	execute_single_command(char **cmd, int pipe_end, int *pipe_fds, int i,
 			close(pipe_fds[0]);
 			close(pipe_fds[1]);
 		}
-		execve(find_path(paths, cmd), cmd, env);
+		execve(find_path(info->paths, info->cmds[i]), info->cmds[i], info->env);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
@@ -65,19 +65,18 @@ void	execute_single_command(char **cmd, int pipe_end, int *pipe_fds, int i,
 	}
 }
 
-void	execute_commands(char ***cmds, char **env, char **paths)
+void	execute_commands(t_mini *info)
 {
 	int	num_cmds;
 	int	pipe_fds[2];
 	int	pipe_end;
 
-	num_cmds = count_commands(cmds);
+	num_cmds = count_commands(info->cmds);
 	pipe_end = -1;
 	for (int i = 0; i < num_cmds; ++i)
 	{
 		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
-		execute_single_command(cmds[i], pipe_end, pipe_fds, i, num_cmds, env,
-			paths);
+		execute_single_command(info, pipe_end, pipe_fds, i, num_cmds);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)
@@ -87,8 +86,6 @@ void	execute_commands(char ***cmds, char **env, char **paths)
 		}
 		else
 			pipe_end = -1;
-		if (i < num_cmds - 1)
-			close(pipe_fds[1]);
 	}
 	for (int i = 0; i < num_cmds; ++i)
 		wait(NULL);
