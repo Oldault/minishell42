@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/21 18:13:23 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:34:26 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,20 @@
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
 
+typedef struct s_mini
+{
+	char	**full_cmd;
+}			t_mini;
+
 void	show_hist(void);
 char	*get_prompt(void);
-char	**tokenizer(const char *str);
-void	handle_input(char *input, char **env, char **paths);
+void	handle_input(char ***cmds, char **env, char **paths);
 void	setup_signal_handlers(void);
-void	execute_command(char *input, char **paths, char **env);
+
+void	execute_commands(char ***cmds, char **env, char **paths);
+
+//*----------------------- Parse -----------------------*//
+char	***parse(char *str);
 
 //*----------------------- Paths -----------------------*//
 char	**get_paths(char **env);

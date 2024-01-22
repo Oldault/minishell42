@@ -6,21 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 16:25:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:37:21 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	*get_pwd(void)
-// {
-// 	char	cwd[1024];
-
-// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-// 		return (ft_strdup(cwd));
-// 	else
-// 		return (NULL);
-// }
 
 int	path_exists(const char *path)
 {
@@ -66,40 +56,30 @@ int	cd_command(const char *path)
 	return (0);
 }
 
-void	handle_input(char *input, char **env, char **paths)
+void	handle_input(char ***cmds, char **env, char **paths)
 {
-	//char	*pwd;
 	char	*tilde;
 	
-	if (ft_strncmp(input, "history", 8) == 0)
+	if (ft_strncmp(cmds[0][0], "history", 8) == 0)
 		show_hist();
-	else if (ft_strncmp(input, "exit", 5) == 0)
-	{
-		free(input);
+	else if (ft_strncmp(cmds[0][0], "exit", 5) == 0)
 		exit(0);
-	}
-	// else if (ft_strncmp(input, "pwd", 4) == 0)
-	// {
-	// 	pwd = get_pwd();
-	// 	printf("%s\n", pwd);
-	// 	free(pwd);
-	// }
-	else if (ft_strncmp(input, "~", 1) == 0)
+	else if (ft_strncmp(cmds[0][0], "~", 1) == 0)
 	{
-		tilde = expand_tilde(input);
+		tilde = expand_tilde(cmds[0][0]);
 		if (path_exists(tilde))
 			printf("bash: %s: Is a directory\n", tilde);
 		else
 			printf("bash: %s: No such file or directory\n", tilde);
 		free(tilde);
 	}
-	// else if (ft_strncmp(input, "cd", 2) == 0)
-	// {
-	// 	if (arg == NULL)
-	// 		ft_putendl_fd("cd: missing argument", 2);
-	// 	else
-	// 		cd_command(arg);
-	// }
+	else if (ft_strncmp(cmds[0][0], "cd", 2) == 0)
+	{
+		if (cmds[0][1] == NULL)
+			ft_putendl_fd("cd: missing argument", 2);
+		else
+			cd_command(cmds[0][1]);
+	}
 	else
-		execute_command(input, paths, env);
+		execute_commands(cmds, env, paths);
 }
