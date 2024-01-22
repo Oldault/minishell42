@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 16:23:47 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:42:58 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	handle_input(char ***cmds, char **env, char **paths)
 	else if (ft_strncmp(cmds[0][0], "cd", 2) == 0)
 	{
 		if (cmds[0][1] == NULL)
-			ft_putendl_fd("cd: missing argument", 2); //todo redirect to root
+			cd_command("~");
 		else
 			cd_command(cmds[0][1]);
 	}
