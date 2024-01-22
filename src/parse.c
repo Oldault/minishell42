@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 09:53:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:19:46 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	***parse(char *str)
 	j = -1;
 	while (++j < i)
 	{
-		arr[j] = ft_split(segments[j], ' ');
+		arr[j] = ft_split(segments[j], ' '); //todo handle whitespaces
 		if (arr[j] == NULL)
 		{
 			free(segments[j]);
