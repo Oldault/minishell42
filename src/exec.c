@@ -6,11 +6,17 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 18:11:15 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:51:21 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	perror_exit(char *str)
+{
+	perror(str);
+	exit(EXIT_FAILURE);
+}
 
 static int	count_commands(char ***cmds)
 {
@@ -28,10 +34,7 @@ static void	setup_pipes(int *pipe_end, int *pipe_fds, int i, int num_cmds)
 	if (i < num_cmds - 1)
 	{
 		if (pipe(pipe_fds) < 0)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
+			perror_exit("pipe");
 	}
 }
 
@@ -55,14 +58,10 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 			close(pipe_fds[1]);
 		}
 		execve(find_path(info->paths, info->cmds[i]), info->cmds[i], info->env);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		perror_exit("execve");
 	}
 	else if (pid < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
+		perror_exit("fork");
 }
 
 void	execute_commands(t_mini *info)
