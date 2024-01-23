@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 07:49:31 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 10:25:09 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:10:09 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,48 @@ static char *get_filename(char *str)
     return (filename);
 }
 
-static void rmv_redir(char *redir_start, int left)
-{
-	char	*redir_end;
+// static void rmv_redir(char *redir_start, int left)
+// {
+// 	char	*redir_end;
 
-	redir_end = redir_start;
+// 	redir_end = redir_start;
+//     while (*redir_end && !isspace((unsigned char)*redir_end))
+//         redir_end++;
+//     while (*redir_end && isspace((unsigned char)*redir_end))
+// 	{
+//         redir_end++;
+// 	}
+// 	if (!left)
+// 	{
+// 		while (*redir_end && !isspace((unsigned char)*redir_end))
+//         	redir_end++;
+// 	}
+// 	while (*redir_end)
+// 		*redir_start++ = *redir_end++;
+//     *redir_start = '\0';
+// }
+
+static void rmv_test(char *redir_start)
+{
+    char    *redir_end;
+    
+    redir_end = redir_start;
+	if (*redir_end && (*(redir_end + 1) == ' '))
+	{
+		redir_end++;
+		while (*redir_end && isspace((unsigned char)*redir_end))
+    	    redir_end++;
+    }
     while (*redir_end && !isspace((unsigned char)*redir_end))
         redir_end++;
     while (*redir_end && isspace((unsigned char)*redir_end))
-	{
         redir_end++;
-	}
-	if (!left)
-	{
-		while (*redir_end && !isspace((unsigned char)*redir_end))
-        	redir_end++;
-	}
-	while (*redir_end)
-		*redir_start++ = *redir_end++;
-    *redir_start = '\0';
+    while (*redir_end)
+        *redir_start++ = *redir_end++;
+    *redir_start = '\0'; // Null-terminate the modified segment
 }
+
+
 
 void redirect(char *segment, t_mini *info)
 {
@@ -64,7 +86,8 @@ void redirect(char *segment, t_mini *info)
         if (fd < 0)
 			perror_exit("open");
         info->in_fd = fd;
-        rmv_redir(redir_symbol, 1);
+        //rmv_redir(redir_symbol, 1);
+        rmv_test(redir_symbol);
     }
 
     redir_symbol = strstr(segment, ">");
@@ -75,6 +98,7 @@ void redirect(char *segment, t_mini *info)
         if (fd < 0)
 			perror_exit("open");
         info->out_fd = fd;
-        rmv_redir(redir_symbol, 0);
+        // rmv_redir(redir_symbol, 0);
+        rmv_test(redir_symbol);
     }
 }

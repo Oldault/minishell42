@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 08:32:26 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:11:50 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ int	main(int ac, char **av, char **env)
 	setup_signal_handlers();
 	info.paths = get_paths(env);
 	info.env = env;
+	info.cmds = NULL;
+	info.in_fd = STDIN_FILENO;
+	info.out_fd = STDOUT_FILENO;
 	while (42)
 	{
-		info.in_fd = STDIN_FILENO;
-		info.out_fd = STDOUT_FILENO;
 		info.prompt = get_prompt();
 		info.input = readline(info.prompt);
 		if (info.input == NULL)

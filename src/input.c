@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 20:29:45 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:31:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	handle_input(t_mini *info)
 		else
 			cd_command(info->cmds[0][1]);
 	}
-	else
+	else if (info->cmds[0][0] != NULL)
 		execute_commands(info);
+	else
+		printf("No commands given\n");
 }
