@@ -19,6 +19,7 @@
 #include <unistd.h>
 
 int	last_exit_status = 0;
+int last_command_was_dollar = 0;
 
 void update_exit_status(int status) {
     last_exit_status = status;
@@ -125,43 +126,19 @@ void	setup_signal_handlers(void)
     sa.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sa, NULL);
 }
-/*
-int last_command_was_dollar = 0;
 
-int main() {
-    char input[1024];
-    char expanded_cmd[1024];
-
-    setup_signal_handlers();
-
-    while (1) {
-        printf("minishell> ");  // Prompt
-        if (fgets(input, sizeof(input), stdin) == NULL) {
-            printf("\n");
-            break;  // Exit on EOF (Ctrl+D)
+int    do_signal(char *input, int *last_command_was_dollar, int *last_exit_status)
+{
+    if (strcmp(input, "$?") == 0) {
+        if (*last_command_was_dollar) {
+            *last_exit_status = 127;
         }
-
-        // Remove newline character from input
-        input[strcspn(input, "\n")] = 0;
-
-        if (strcmp(input, "$?") == 0) {
-            if (last_command_was_dollar) {
-                last_exit_status = 127;
-            }
-            printf("%d : command not found\n", last_exit_status);
-            last_command_was_dollar = 1;
-            continue;
-        } else {
-            last_command_was_dollar = 0;
-        }
-
-        // Expand $? in the command
-        expand_exit_status(input, expanded_cmd);
-
-        // Execute the command
-        execute_command(expanded_cmd);
+        printf("%d : command not found\n", *last_exit_status);
+        *last_command_was_dollar = 1;
+        free(input);
+        return 1;
+    } else {
+        *last_command_was_dollar = 0;
+        return 0;
     }
-
-    return 0;
 }
-*/

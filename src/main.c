@@ -18,6 +18,8 @@ int	main(int ac, char **av, char **env)
 	char	*prompt;
 	char	**paths;
 	char	***cmds;
+	int last_command_was_dollar = 0;
+    int last_exit_status = 0;
 
 	(void)ac;
 	(void)av;
@@ -32,6 +34,12 @@ int	main(int ac, char **av, char **env)
 			return (-1); //todo handle
 		if (*input)
 			add_history(input);
+		if (!last_command_was_dollar) {
+            last_exit_status = 0;
+        }
+        if (do_signal(input, &last_command_was_dollar, &last_exit_status)) {
+            continue;
+        }
 		cmds = parse(input);
 		//print_3d_arr(cmds);
 		handle_input(cmds, env, paths);
