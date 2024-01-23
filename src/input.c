@@ -47,43 +47,37 @@ int	cd_command(const char *path)
 	{
 		path = getenv("HOME");
 		if (path == NULL)
-		{
-			ft_putendl_fd("cd: HOME not set", 2);
-			return (-1);
-		}
+			return (ft_putendl_fd("cd: HOME not set", 2), -1);
 	}
 	if (chdir(path) != 0)
-	{
-		perror("cd");
-		return (-1);
-	}
+		return (perror("cd"), -1);
 	return (0);
 }
 
-void	handle_input(char ***cmds, char **env, char **paths)
+void	handle_input(t_mini *info)
 {
 	char	*tilde;
 
-	if (ft_strncmp(cmds[0][0], "history", 8) == 0)
+	if (ft_strncmp(info->cmds[0][0], "history", 8) == 0)
 		show_hist();
-	else if (ft_strncmp(cmds[0][0], "exit", 5) == 0)
+	else if (ft_strncmp(info->cmds[0][0], "exit", 5) == 0)
 		exit(0);
-	else if (ft_strncmp(cmds[0][0], "~", 1) == 0)
+	else if (ft_strncmp(info->cmds[0][0], "~", 1) == 0)
 	{
-		tilde = expand_tilde(cmds[0][0]);
+		tilde = expand_tilde(info->cmds[0][0]);
 		if (path_exists(tilde))
 			printf("bash: %s: Is a directory\n", tilde);
 		else
 			printf("bash: %s: No such file or directory\n", tilde);
 		free(tilde);
 	}
-	else if (ft_strncmp(cmds[0][0], "cd", 2) == 0)
+	else if (ft_strncmp(info->cmds[0][0], "cd", 2) == 0)
 	{
-		if (cmds[0][1] == NULL)
+		if (info->cmds[0][1] == NULL)
 			cd_command("~");
 		else
-			cd_command(cmds[0][1]);
+			cd_command(info->cmds[0][1]);
 	}
 	else
-		execute_commands(cmds, env, paths);
+		execute_commands(info);
 }

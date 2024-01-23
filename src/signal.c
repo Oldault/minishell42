@@ -112,9 +112,9 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	printf("%s", get_prompt());
-	write(STDOUT_FILENO, "\n", 1);
 }
 
+//	! Ctrl+D Not working
 void	setup_signal_handlers(void)
 {
 	struct sigaction	sa;

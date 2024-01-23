@@ -20,41 +20,41 @@ int	main(int ac, char **av, char **env)
 	char	***cmds;
 	int		last_command_was_dollar;
 	int		last_exit_status;
+	t_mini	info;
 
-	(void)ac;
-	(void)av;
+	(void)ac, (void)av;
 	setup_signal_handlers();
-	paths = get_paths(env);
-	last_exit_status = 0;
+	info.paths = get_paths(env);
+	info.env = env;
+ 	last_exit_status = 0;
 	last_command_was_dollar = 0;
-	//print_2d_arr(paths, ',');
 	while (42)
 	{
-		prompt = get_prompt();
-		input = readline(prompt);
-		if (!input)
+		info.prompt = get_prompt();
+		info.input = readline(info.prompt);
+		if (!info.input)
 			return (-1); //todo handle
-		if (strcmp(input, "") == 0)
+		if (strcmp(info.input, "") == 0)
 		{
-			free(input); // Free the allocated empty string
+			free(info.input); // Free the allocated empty string
 			continue ;
 		}
-		if (*input)
-			add_history(input);
+		if (*(info.input))
+			add_history(info.input);
 		if (!last_command_was_dollar)
 		{
 			last_exit_status = 0;
 		}
-		if (do_signal(input, &last_command_was_dollar, &last_exit_status))
+		if (do_signal(info.input, &last_command_was_dollar, &last_exit_status))
 		{
 			continue ;
 		}
-		cmds = parse(input);
-		//print_3d_arr(cmds);
-		handle_input(cmds, env, paths);
-		free(input);
+		info.cmds = parse(info.input);
+		handle_input(&info);
+		free(info.input);
+		free_cmds(&(info.cmds));
 	}
-	free(prompt);
+	free_mini(&info);
 	rl_clear_history();
 	return (0);
 }

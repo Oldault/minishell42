@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
 #define PROMPT_SIZE 1024
 #define PATH_SIZE 1024
 
@@ -64,13 +59,9 @@ char *get_prompt(void) {
 
     // Réinitialiser le contenu de prompt
     prompt[0] = '\0';
-
-    // Construction du prompt
-    strncat(prompt, "[", PROMPT_SIZE - strlen(prompt) - 1);
     strncat(prompt, username, PROMPT_SIZE - strlen(prompt) - 1);
-    strncat(prompt, "@minishell ", PROMPT_SIZE - strlen(prompt) - 1);
+    strncat(prompt, "@minishell:", PROMPT_SIZE - strlen(prompt) - 1);
     strncat(prompt, cwd, PROMPT_SIZE - strlen(prompt) - 1);
-    strncat(prompt, "]$ ", PROMPT_SIZE - strlen(prompt) - 1);
-
-    return prompt;
+    strncat(prompt, "$ ", PROMPT_SIZE - strlen(prompt) - 1);
+    return (prompt);
 }
