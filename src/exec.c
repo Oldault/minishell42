@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 20:51:21 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 06:52:17 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 			close(pipe_fds[1]);
 		}
 		execve(find_path(info->paths, info->cmds[i]), info->cmds[i], info->env);
-		perror_exit("execve");
+		printf("%s: command not found\n", info->cmds[i][0]);
+		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 		perror_exit("fork");
