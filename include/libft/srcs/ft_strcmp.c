@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 17:06:32 by svolodin         ###   ########.fr       */
+/*   Created: 2024/01/22 20:31:04 by svolodin          #+#    #+#             */
+/*   Updated: 2024/01/22 20:31:25 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <signal.h>
+#include "libft.h"
 
-void	handle_sigint(int sig)
+int	ft_strcmp(char *s1, char *s2)
 {
-	(void)sig;
-	printf("%s", get_prompt());
-}
-
-void	setup_signal_handlers(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = handle_sigint;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sa, NULL);
+	while (*s1 == *s2 && *s1)
+	{
+		s1++;
+		s2++;
+	}
+	return (*s1 - *s2);
 }

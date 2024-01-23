@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/22 10:34:26 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:32:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,19 @@
 
 typedef struct s_mini
 {
-	char	**full_cmd;
+	char	*input;
+	char	*prompt;
+	char	**env;
+	char	**paths;
+	char	***cmds;
 }			t_mini;
 
 void	show_hist(void);
 char	*get_prompt(void);
-void	handle_input(char ***cmds, char **env, char **paths);
+void	handle_input(t_mini *info);
 void	setup_signal_handlers(void);
 
-void	execute_commands(char ***cmds, char **env, char **paths);
+void	execute_commands(t_mini *info);
 
 //*----------------------- Parse -----------------------*//
 char	***parse(char *str);
@@ -48,5 +52,11 @@ char	*find_path(char **paths, char **arg);
 void	print_tokens(char **tokens);
 void	print_2d_arr(char **arr, char separator);
 void	print_3d_arr(char ***arr);
+
+//*----------------------- Free ------------------------*//
+void	free_double_array(char **array);
+void	free_triple_array(char ***array);
+void	free_cmds(char ****cmds);
+void	free_mini(t_mini *info);
 
 #endif
