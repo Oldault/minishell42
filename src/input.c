@@ -19,22 +19,29 @@ int	path_exists(const char *path)
 	return (stat(path, &statbuf) == 0);
 }
 
-char	*expand_tilde(const char *input)
-{
-	char		*expanded_path;
-	const char	*home_dir;
+char *expand_tilde(const char *input) {
+    const char *home_dir = getenv("HOME");
+    if (!home_dir) {
+        return ft_strdup(input);
+    }
 
-	if (input[0] != '~')
-		return (ft_strdup(input));
-	home_dir = getenv("HOME");
-	if (!home_dir)
-		return (ft_strdup(input));
-	expanded_path = malloc(strlen(home_dir) + strlen(input));
-	if (!expanded_path)
-		return (NULL);
-	strcpy(expanded_path, home_dir);
-	strcat(expanded_path, input + 1);
-	return (expanded_path);
+    if (input[0] != '~') {
+        return ft_strdup(input);
+    }
+
+    // If input is exactly "~", just return the home directory
+    if (strcmp(input, "~") == 0) {
+        return ft_strdup(home_dir);
+    }
+
+    // For cases like "~/some/path"
+    char *expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
+    if (!expanded_path) {
+        return NULL;
+    }
+    strcpy(expanded_path, home_dir);
+    strcat(expanded_path, input + 1); // Skip the tilde and concatenate
+    return expanded_path;
 }
 
 int	cd_command(const char *path)
