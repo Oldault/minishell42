@@ -32,6 +32,10 @@ int	main(int ac, char **av, char **env)
 		input = readline(prompt);
 		if (!input)
 			return (-1); //todo handle
+		if (strcmp(input, "") == 0) {
+            free(input); // Free the allocated empty string
+            continue;    // Skip to the next iteration
+        }
 		if (*input)
 			add_history(input);
 		if (!last_command_was_dollar) {
