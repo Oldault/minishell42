@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/23 06:40:21 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:04:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/stat.h>
@@ -32,33 +33,37 @@ typedef struct s_mini
 	char	**env;
 	char	**paths;
 	char	***cmds;
+	int		in_fd;
+	int		out_fd;
 }			t_mini;
 
-void	show_hist(void);
-void	handle_input(t_mini *info);
-void	setup_signal_handlers(void);
+void		show_hist(void);
+void		handle_input(t_mini *info);
+void		setup_signal_handlers(void);
 
-void	execute_commands(t_mini *info);
+void		execute_commands(t_mini *info);
 
-char	*get_prompt(void);
+char		*get_prompt(void);
+
+void		redirect(char *segment, t_mini *info);
 
 //*----------------------- Parse -----------------------*//
-char	***parse(char *str);
+char		***parse(t_mini *info);
 
 //*----------------------- Paths -----------------------*//
-char	**get_paths(char **env);
-char	*find_path(char **paths, char **arg);
+char		**get_paths(char **env);
+char		*find_path(char **paths, char **arg);
 
 //*----------------------- Print -----------------------*//
-void	print_tokens(char **tokens);
-void	print_2d_arr(char **arr, char separator);
-void	print_3d_arr(char ***arr);
+void		print_tokens(char **tokens);
+void		print_2d_arr(char **arr, char separator);
+void		print_3d_arr(char ***arr);
 
 //*----------------------- Free ------------------------*//
-void	free_double_array(char **array);
-void	free_triple_array(char ***array);
-void	free_cmds(char ****cmds);
-void	free_mini(t_mini *info);
-void	perror_exit(char *str);
+void		free_double_array(char **array);
+void		free_triple_array(char ***array);
+void		free_cmds(char ****cmds);
+void		free_mini(t_mini *info);
+void		perror_exit(char *str);
 
 #endif

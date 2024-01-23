@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 14:12:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 08:36:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ void	print_3d_arr(char ***arr)
 	int	i;
 
 	i = -1;
+	printf("%s------------\n", RED);
 	while (arr[++i])
 	{
 		ft_printf("%d: ", i);
 		print_2d_arr(arr[i], ',');
-		ft_printf("\n");
 	}
+	printf("------------%s\n", COLOR_RESET);
 }

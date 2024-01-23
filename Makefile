@@ -29,8 +29,8 @@ $(LIBFT):
 $(NAME):			$(OBJS)
 					@echo "\n$(BOLD)┗▷$(GREEN)『./minishell Created』[✅]$(RESET)"
 					@$(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -L$(LIBFT_DIR) -lft
-					@clear
-					@echo "$$MINISHELL_HEADER"
+					@# @clear
+					@# @echo "$$MINISHELL_HEADER"
 
 $(OBJS_PATH)%.o:	$(SRCS_DIR)%.c
 					@mkdir -p $(@D)

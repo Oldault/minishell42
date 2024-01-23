@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 06:52:17 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:29:29 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,27 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 	pid = fork();
 	if (pid == 0)
 	{
-		if (pipe_end != -1)
+		//printf("Child process: in_fd = %d, out_fd = %d, pipe_end = %d\n", info->in_fd, info->out_fd, pipe_end);
+        if (info->in_fd != STDIN_FILENO)
 		{
-			dup2(pipe_end, STDIN_FILENO);
-			close(pipe_end);
-		}
-		if (i < num_cmds - 1)
+            dup2(info->in_fd, STDIN_FILENO);
+            close(info->in_fd);
+        } else if (pipe_end != -1)
 		{
-			dup2(pipe_fds[1], STDOUT_FILENO);
-			close(pipe_fds[0]);
-			close(pipe_fds[1]);
-		}
+            dup2(pipe_end, STDIN_FILENO);
+            close(pipe_end);
+        }
+        if (info->out_fd != STDOUT_FILENO)
+		{
+            dup2(info->out_fd, STDOUT_FILENO);
+            close(info->out_fd);
+        } else if (i < num_cmds - 1)
+		{
+            dup2(pipe_fds[1], STDOUT_FILENO);
+            close(pipe_fds[0]);
+            close(pipe_fds[1]);
+        }
+		//printf("in_fd: %d\nout_fd: %d\n", info->in_fd, info->out_fd);
 		execve(find_path(info->paths, info->cmds[i]), info->cmds[i], info->env);
 		printf("%s: command not found\n", info->cmds[i][0]);
 		exit(EXIT_FAILURE);
@@ -77,6 +87,7 @@ void	execute_commands(t_mini *info)
 	{
 		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
 		execute_single_command(info, pipe_end, pipe_fds, i, num_cmds);
+		//printf("After command execution: pipe_end = %d, pipe_fds[0] = %d, pipe_fds[1] = %d\n", pipe_end, pipe_fds[0], pipe_fds[1]);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)
