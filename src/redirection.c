@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 07:49:31 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:10:09 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:43:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,7 @@ static char *get_filename(char *str)
     return (filename);
 }
 
-// static void rmv_redir(char *redir_start, int left)
-// {
-// 	char	*redir_end;
-
-// 	redir_end = redir_start;
-//     while (*redir_end && !isspace((unsigned char)*redir_end))
-//         redir_end++;
-//     while (*redir_end && isspace((unsigned char)*redir_end))
-// 	{
-//         redir_end++;
-// 	}
-// 	if (!left)
-// 	{
-// 		while (*redir_end && !isspace((unsigned char)*redir_end))
-//         	redir_end++;
-// 	}
-// 	while (*redir_end)
-// 		*redir_start++ = *redir_end++;
-//     *redir_start = '\0';
-// }
-
-static void rmv_test(char *redir_start)
+static void rmv_redir(char *redir_start)
 {
     char    *redir_end;
     
@@ -66,39 +45,45 @@ static void rmv_test(char *redir_start)
         redir_end++;
     while (*redir_end)
         *redir_start++ = *redir_end++;
-    *redir_start = '\0'; // Null-terminate the modified segment
+    *redir_start = '\0';
 }
 
+//todo	here_doc to add
+void	handle_sign(t_mini *info, char *redir_symbol, char *sign)
+{
+	char	*filename;
+	int		fd;
 
+	filename = get_filename(redir_symbol + 1);
+	if (ft_strncmp(sign, "<", 2) == 0)
+		fd = open(filename, O_RDONLY);
+	if (ft_strncmp(sign, ">", 2) == 0)
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (ft_strncmp(sign, ">>", 3) == 0)
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		printf("%s: No such file or directory\n", filename);
+		return ;
+	}
+	if (ft_strcmp(sign, "<") == 0)
+		info->in_fd = fd;
+	if ((ft_strcmp(sign, ">") == 0) || (ft_strcmp(sign, ">>") == 0))
+		info->out_fd = fd;
+	rmv_redir(redir_symbol);
+}
 
 void redirect(char *segment, t_mini *info)
 {
     char *redir_symbol;
-    char *filename;
-    int fd;
 
     redir_symbol = strstr(segment, "<");
-    if (redir_symbol != NULL)
-	{
-        filename = get_filename(redir_symbol + 1);
-		printf(" < filename : %s\n", filename);
-        fd = open(filename, O_RDONLY);
-        if (fd < 0)
-			perror_exit("open");
-        info->in_fd = fd;
-        //rmv_redir(redir_symbol, 1);
-        rmv_test(redir_symbol);
-    }
-
+    if (redir_symbol)
+		handle_sign(info, redir_symbol, "<");
     redir_symbol = strstr(segment, ">");
-    if (redir_symbol != NULL) {
-        filename = get_filename(redir_symbol + 1);
-		printf(" > filename : %s\n", filename);
-        fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (fd < 0)
-			perror_exit("open");
-        info->out_fd = fd;
-        // rmv_redir(redir_symbol, 0);
-        rmv_test(redir_symbol);
-    }
+    if (redir_symbol)
+		handle_sign(info, redir_symbol, ">");
+	redir_symbol = strstr(segment, ">>");
+    if (redir_symbol)
+		handle_sign(info, redir_symbol, ">>");
 }
