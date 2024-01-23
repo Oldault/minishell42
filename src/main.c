@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:47:15 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:26:51 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int	main(int ac, char **av, char **env)
 {
-	char	*input;
-	char	*prompt;
-	char	**paths;
-	char	***cmds;
+
 	int		last_command_was_dollar;
 	int		last_exit_status;
 	t_mini	info;
