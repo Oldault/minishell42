@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 16:42:58 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:40:26 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,26 @@ int	path_exists(const char *path)
 	return (stat(path, &statbuf) == 0);
 }
 
-char *expand_tilde(const char *input) {
-    const char *home_dir = getenv("HOME");
-    if (!home_dir) {
-        return ft_strdup(input);
-    }
+char	*expand_tilde(const char *input)
+{
+	const char	*home_dir;
+	char		*expanded_path;
 
-    if (input[0] != '~') {
-        return ft_strdup(input);
-    }
-
-    // If input is exactly "~", just return the home directory
-    if (strcmp(input, "~") == 0) {
-        return ft_strdup(home_dir);
-    }
-
-    // For cases like "~/some/path"
-    char *expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
-    if (!expanded_path) {
-        return NULL;
-    }
-    strcpy(expanded_path, home_dir);
-    strcat(expanded_path, input + 1); // Skip the tilde and concatenate
-    return expanded_path;
+	*home_dir = getenv("HOME");
+	if (!home_dir)
+		return (ft_strdup(input));
+	if (input[0] != '~')
+		return (ft_strdup(input));
+	// If input is exactly "~", just return the home directory
+	if (strcmp(input, "~") == 0)
+		return (ft_strdup(home_dir));
+	// For cases like "~/some/path
+	*expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
+	if (!expanded_path)
+		return (NULL);
+	strcpy(expanded_path, home_dir);
+	strcat(expanded_path, input + 1); // Skip the tilde and concatenate
+	return (expanded_path);
 }
 
 int	cd_command(const char *path)
@@ -66,7 +63,7 @@ int	cd_command(const char *path)
 void	handle_input(char ***cmds, char **env, char **paths)
 {
 	char	*tilde;
-	
+
 	if (ft_strncmp(cmds[0][0], "history", 8) == 0)
 		show_hist();
 	else if (ft_strncmp(cmds[0][0], "exit", 5) == 0)
