@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 06:49:41 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 07:23:31 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #define PROMPT_SIZE 1024
 #define PATH_SIZE 1024
 
+// todo
 void	shorten_path(char *path, const char *home_dir)
 {
 	int	tot_len;
@@ -24,7 +25,7 @@ void	shorten_path(char *path, const char *home_dir)
 	{
 		ft_memmove(path, path + ft_strlen(home_dir), tot_len);
 		path[0] = '~';
-	}
+	} //! Directory should be "~/" not just "~"!
 }
 
 char	*get_prompt(void)

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 17:06:32 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 07:24:45 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handle_sigint(int sig)
 	printf("%s", get_prompt());
 }
 
+//	! Ctrl+D Not working
 void	setup_signal_handlers(void)
 {
 	struct sigaction	sa;

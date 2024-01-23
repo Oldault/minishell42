@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/21 14:08:38 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 07:25:27 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ char	**get_paths(char **env)
 		}
 	}
 	if (!full_path)
-	{
-		perror("PATH not found\n");
-		exit(EXIT_FAILURE);
-	}
+		perror_exit("full_path");
 	paths = ft_split(full_path, ':');
 	free(full_path);
 	return (paths);
