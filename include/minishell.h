@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/23 06:40:21 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 14:46:52 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ void	show_hist(void);
 void	handle_input(t_mini *info);
 void	setup_signal_handlers(void);
 
+int	do_signal(char *input, int *last_command_was_dollar, int *last_exit_status);
+
 void	execute_commands(t_mini *info);
 
 char	*get_prompt(void);
+
 
 //*----------------------- Parse -----------------------*//
 char	***parse(char *str);
