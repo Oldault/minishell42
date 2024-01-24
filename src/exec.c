@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 15:17:23 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:10:20 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 
 void apply_redirections(t_mini *info, int cmd_index)
 {
-    Redirection *redir = info->redir[cmd_index];
+    redir_t *redir = info->redir[cmd_index];
     if (redir == NULL)
         return;
 
