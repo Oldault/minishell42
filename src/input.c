@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:40:26 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:28:06 by albeninc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*expand_tilde(const char *input)
 	const char	*home_dir;
 	char		*expanded_path;
 
-	*home_dir = getenv("HOME");
+	home_dir = getenv("HOME");
 	if (!home_dir)
 		return (ft_strdup(input));
 	if (input[0] != '~')
@@ -33,7 +33,7 @@ char	*expand_tilde(const char *input)
 	if (strcmp(input, "~") == 0)
 		return (ft_strdup(home_dir));
 	// For cases like "~/some/path
-	*expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
+	expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
 	if (!expanded_path)
 		return (NULL);
 	strcpy(expanded_path, home_dir);
