@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 18:28:06 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:05:34 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	handle_input(t_mini *info)
 		else
 			cd_command(info->cmds[0][1]);
 	}
-	else
+	else if (info->cmds)
 		execute_commands(info);
 }
