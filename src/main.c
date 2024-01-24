@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 12:05:20 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:22:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,19 @@ int	main(int ac, char **av, char **env)
 		info.prompt = get_prompt();
 		info.input = readline(info.prompt);
 		if (!info.input)
-			return (-1); //todo handle
+			return (-1);
 		if (strcmp(info.input, "") == 0)
 		{
-			free(info.input); // Free the allocated empty string
+			free(info.input);
 			continue ;
 		}
 		if (*(info.input))
 			add_history(info.input);
 		if (!last_command_was_dollar)
-		{
 			last_exit_status = 0;
-		}
 		if (do_signal(info.input, &last_command_was_dollar, &last_exit_status))
-		{
 			continue ;
-		}
-    info.cmds = parse(&info);
+    	info.cmds = parse(&info);
 		//print_3d_arr(info.cmds);
 		handle_input(&info);
 		free(info.input);
