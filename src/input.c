@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 12:05:34 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:30:26 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ char	*expand_tilde(const char *input)
 		return (ft_strdup(input));
 	if (input[0] != '~')
 		return (ft_strdup(input));
-	// If input is exactly "~", just return the home directory
 	if (strcmp(input, "~") == 0)
 		return (ft_strdup(home_dir));
-	// For cases like "~/some/path
-	expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
+	expanded_path = malloc(strlen(home_dir) + strlen(input));
 	if (!expanded_path)
 		return (NULL);
 	strcpy(expanded_path, home_dir);
-	strcat(expanded_path, input + 1); // Skip the tilde and concatenate
+	strcat(expanded_path, input + 1);
 	return (expanded_path);
 }
 

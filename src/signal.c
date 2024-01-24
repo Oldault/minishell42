@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/22 20:39:08 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:38:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	last_exit_status = 0;
-int last_command_was_dollar = 0;
+int	lst_ext_stat = 0;
+int lst_cmd_dlr = 0;
 
 void update_exit_status(int status) {
-    last_exit_status = status;
+    lst_ext_stat = status;
 }
 
 void execute_command(char *cmd) {
     pid_t pid = fork();
     if (pid == -1) {
         perror("fork");
-        last_exit_status = 1;  // Set exit status to 1 on fork failure
+        lst_ext_stat = 1;  // Set exit status to 1 on fork failure
     } else if (pid == 0) {
         // Child process: Execute the command
         if (execlp(cmd, cmd, (char *)NULL) == -1) {
@@ -41,9 +41,9 @@ void execute_command(char *cmd) {
         int status;
         waitpid(pid, &status, 0);
         if (WIFEXITED(status)) {
-            last_exit_status = WEXITSTATUS(status);
+            lst_ext_stat = WEXITSTATUS(status);
         } else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGUSR1) {
-            last_exit_status = 127;  // Set exit status to 127 if command not found
+            lst_ext_stat = 127;  // Set exit status to 127 if command not found
         }
     }
 }
@@ -90,8 +90,8 @@ void int_to_str(int num, char *str) {
 void expand_exit_status(char *cmd, char *expanded_cmd) {
     char exit_status_str[20];  // Buffer for the exit status as a string
 
-    // Convert last_exit_status to a string
-    int_to_str(last_exit_status, exit_status_str);
+    // Convert lst_ext_stat to a string
+    int_to_str(lst_ext_stat, exit_status_str);
 
     // Search for $? in cmd
     char *dollar_pos = strstr(cmd, "$?");
@@ -127,18 +127,18 @@ void	setup_signal_handlers(void)
     sigaction(SIGQUIT, &sa, NULL);
 }
 
-int    do_signal(char *input, int *last_command_was_dollar, int *last_exit_status)
+int    do_signal(char *input, int *lst_cmd_dlr, int *lst_ext_stat)
 {
     if (strcmp(input, "$?") == 0) {
-        if (*last_command_was_dollar) {
-            *last_exit_status = 127;
+        if (*lst_cmd_dlr) {
+            *lst_ext_stat = 127;
         }
-        printf("%d : command not found\n", *last_exit_status);
-        *last_command_was_dollar = 1;
+        printf("%d : command not found\n", *lst_ext_stat);
+        *lst_cmd_dlr = 1;
         free(input);
         return 1;
     } else {
-        *last_command_was_dollar = 0;
+        *lst_cmd_dlr = 0;
         return 0;
     }
 }

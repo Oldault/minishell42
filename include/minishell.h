@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/23 08:04:42 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:38:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_mini
 void		show_hist(void);
 void		handle_input(t_mini *info);
 void		setup_signal_handlers(void);
-int     do_signal(char *input, int *last_command_was_dollar, int *last_exit_status);
+int     do_signal(char *input, int *lst_cmd_dlr, int *lst_ext_stat);
 void    execute_commands(t_mini *info);
 char		*get_prompt(void);
 void		redirect(char *segment, t_mini *info);

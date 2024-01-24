@@ -6,32 +6,42 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 12:22:59 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:38:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	set_info_out(t_mini	*info, char **env)
+{
+	info->paths = get_paths(env);
+	info->env = env;
+}
+
+void	set_info_in(t_mini	*info)
+{
+	info->in_fd = STDIN_FILENO;
+	info->out_fd = STDOUT_FILENO;
+	info->cmds = NULL;
+	info->prompt = get_prompt();
+	info->input = readline(info->prompt);
+}
+
 int	main(int ac, char **av, char **env)
 {
 
-	int		last_command_was_dollar;
-	int		last_exit_status;
+	int		lst_cmd_dlr;
+	int		lst_ext_stat;
 	t_mini	info;
 
 	(void)ac, (void)av;
 	setup_signal_handlers();
-	info.paths = get_paths(env);
-	info.env = env;
- 	last_exit_status = 0;
-	last_command_was_dollar = 0;
+	set_info_out(&info, env);
+ 	lst_ext_stat = 0;
+	lst_cmd_dlr = 0;
 	while (42)
 	{
-		info.in_fd = STDIN_FILENO;
-		info.out_fd = STDOUT_FILENO;
-		info.cmds = NULL;
-		info.prompt = get_prompt();
-		info.input = readline(info.prompt);
+		set_info_in(&info);
 		if (!info.input)
 			return (-1);
 		if (strcmp(info.input, "") == 0)
@@ -41,9 +51,9 @@ int	main(int ac, char **av, char **env)
 		}
 		if (*(info.input))
 			add_history(info.input);
-		if (!last_command_was_dollar)
-			last_exit_status = 0;
-		if (do_signal(info.input, &last_command_was_dollar, &last_exit_status))
+		if (!lst_cmd_dlr)
+			lst_ext_stat = 0;
+		if (do_signal(info.input, &lst_cmd_dlr, &lst_ext_stat))
 			continue ;
     	info.cmds = parse(&info);
 		//print_3d_arr(info.cmds);
