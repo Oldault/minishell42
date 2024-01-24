@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 07:49:31 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:43:12 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:06:01 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static char *get_filename(char *str)
     char *filename = strndup(start, end - start);
     if (filename == NULL)
 		perror_exit("strndup");
-
     return (filename);
 }
 
@@ -59,17 +58,17 @@ void	handle_sign(t_mini *info, char *redir_symbol, char *sign)
 		fd = open(filename, O_RDONLY);
 	if (ft_strncmp(sign, ">", 2) == 0)
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (ft_strncmp(sign, ">>", 3) == 0)
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		printf("%s: No such file or directory\n", filename);
+		free(filename);
 		return ;
 	}
 	if (ft_strcmp(sign, "<") == 0)
 		info->in_fd = fd;
 	if ((ft_strcmp(sign, ">") == 0) || (ft_strcmp(sign, ">>") == 0))
 		info->out_fd = fd;
+	free(filename);
 	rmv_redir(redir_symbol);
 }
 
@@ -83,7 +82,4 @@ void redirect(char *segment, t_mini *info)
     redir_symbol = strstr(segment, ">");
     if (redir_symbol)
 		handle_sign(info, redir_symbol, ">");
-	redir_symbol = strstr(segment, ">>");
-    if (redir_symbol)
-		handle_sign(info, redir_symbol, ">>");
 }

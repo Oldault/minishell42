@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:41:40 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:05:20 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ int	main(int ac, char **av, char **env)
 	info.paths = get_paths(env);
 	info.env = env;
 	info.cmds = NULL;
-	info.in_fd = STDIN_FILENO;
-	info.out_fd = STDOUT_FILENO;
 	while (42)
 	{
+		info.in_fd = STDIN_FILENO;
+		info.out_fd = STDOUT_FILENO;
+		info.cmds = NULL;
 		info.prompt = get_prompt();
 		info.input = readline(info.prompt);
 		if (info.input == NULL)
@@ -38,7 +39,7 @@ int	main(int ac, char **av, char **env)
 		//print_3d_arr(info.cmds);
 		handle_input(&info);
 		free(info.input);
-		free_cmds(&(info.cmds));
+		//free_cmds(&(info.cmds));
 	}
 	free_mini(&info);
 	rl_clear_history();
