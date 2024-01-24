@@ -40,12 +40,11 @@ typedef struct s_mini
 void		show_hist(void);
 void		handle_input(t_mini *info);
 void		setup_signal_handlers(void);
-
-void		execute_commands(t_mini *info);
-
+int     do_signal(char *input, int *last_command_was_dollar, int *last_exit_status);
+void    execute_commands(t_mini *info);
 char		*get_prompt(void);
-
 void		redirect(char *segment, t_mini *info);
+
 
 //*----------------------- Parse -----------------------*//
 char		***parse(t_mini *info);

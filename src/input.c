@@ -21,19 +21,23 @@ int	path_exists(const char *path)
 
 char	*expand_tilde(const char *input)
 {
-	char		*expanded_path;
 	const char	*home_dir;
+	char		*expanded_path;
 
-	if (input[0] != '~')
-		return (ft_strdup(input));
 	home_dir = getenv("HOME");
 	if (!home_dir)
 		return (ft_strdup(input));
-	expanded_path = malloc(strlen(home_dir) + strlen(input));
+	if (input[0] != '~')
+		return (ft_strdup(input));
+	// If input is exactly "~", just return the home directory
+	if (strcmp(input, "~") == 0)
+		return (ft_strdup(home_dir));
+	// For cases like "~/some/path
+	expanded_path = malloc(strlen(home_dir) + strlen(input)); // +1 for null terminator
 	if (!expanded_path)
 		return (NULL);
 	strcpy(expanded_path, home_dir);
-	strcat(expanded_path, input + 1);
+	strcat(expanded_path, input + 1); // Skip the tilde and concatenate
 	return (expanded_path);
 }
 

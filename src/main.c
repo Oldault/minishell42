@@ -14,13 +14,17 @@
 
 int	main(int ac, char **av, char **env)
 {
+
+	int		last_command_was_dollar;
+	int		last_exit_status;
 	t_mini	info;
 
 	(void)ac, (void)av;
 	setup_signal_handlers();
 	info.paths = get_paths(env);
 	info.env = env;
-	info.cmds = NULL;
+ 	last_exit_status = 0;
+	last_command_was_dollar = 0;
 	while (42)
 	{
 		info.in_fd = STDIN_FILENO;
@@ -28,14 +32,24 @@ int	main(int ac, char **av, char **env)
 		info.cmds = NULL;
 		info.prompt = get_prompt();
 		info.input = readline(info.prompt);
-		if (info.input == NULL)
+		if (!info.input)
+			return (-1); //todo handle
+		if (strcmp(info.input, "") == 0)
 		{
-			free(info.input);
+			free(info.input); // Free the allocated empty string
 			continue ;
 		}
-		if (*info.input)
+		if (*(info.input))
 			add_history(info.input);
-		info.cmds = parse(&info);
+		if (!last_command_was_dollar)
+		{
+			last_exit_status = 0;
+		}
+		if (do_signal(info.input, &last_command_was_dollar, &last_exit_status))
+		{
+			continue ;
+		}
+    info.cmds = parse(&info);
 		//print_3d_arr(info.cmds);
 		handle_input(&info);
 		free(info.input);
