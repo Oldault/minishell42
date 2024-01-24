@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 17:02:16 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:17:23 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,48 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 		perror_exit("fork");
 }
 
+void apply_redirections(t_mini *info, int cmd_index)
+{
+    Redirection *redir = info->redir[cmd_index];
+    if (redir == NULL)
+        return;
+
+    if (redir->type == REDIR_INPUT)
+    {
+        info->in_fd = open(redir->filename, O_RDONLY);
+        if (info->in_fd < 0)
+            perror_exit("open input file");
+    }
+    else if (redir->type == REDIR_OUTPUT)
+    {
+        info->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (info->out_fd < 0)
+            perror_exit("open output file");
+    }
+    else if (redir->type == REDIR_APPEND)
+    {
+        info->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        if (info->out_fd < 0)
+            perror_exit("open append file");
+    }
+}
+
+void reset_file_descriptors(t_mini *info)
+{
+    if (info->in_fd != STDIN_FILENO)
+    {
+        close(info->in_fd);
+        info->in_fd = STDIN_FILENO;
+    }
+    if (info->out_fd != STDOUT_FILENO)
+    {
+        close(info->out_fd);
+        info->out_fd = STDOUT_FILENO;
+    }
+}
+
+
+
 void	execute_commands(t_mini *info)
 {
 	int	num_cmds;
@@ -86,8 +128,8 @@ void	execute_commands(t_mini *info)
 	for (int i = 0; i < num_cmds; ++i)
 	{
 		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
+		apply_redirections(info, i);
 		execute_single_command(info, pipe_end, pipe_fds, i, num_cmds);
-		//printf("After command execution: pipe_end = %d, pipe_fds[0] = %d, pipe_fds[1] = %d\n", pipe_end, pipe_fds[0], pipe_fds[1]);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)
@@ -97,6 +139,7 @@ void	execute_commands(t_mini *info)
 		}
 		else
 			pipe_end = -1;
+		reset_file_descriptors(info);
 	}
 	for (int i = 0; i < num_cmds; ++i)
 		wait(NULL);

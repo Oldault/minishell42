@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/24 12:38:12 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:58:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,48 +21,63 @@
 # include <sys/wait.h>
 
 //		COLORS
-# define COLOR_BLUE "\x1B[94m"
-# define COLOR_GREEN "\x1B[32m"
+# define BLUE "\x1B[94m"
+# define GREEN "\x1B[32m"
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
 
+typedef enum
+{
+	REDIR_NONE,
+	REDIR_INPUT,
+	REDIR_OUTPUT,
+	REDIR_APPEND
+}					RedirectionType;
+
+typedef struct
+{
+	RedirectionType	type;
+	char			*filename;
+}					Redirection;
+
 typedef struct s_mini
 {
-	char	*input;
-	char	*prompt;
-	char	**env;
-	char	**paths;
-	char	***cmds;
-	int		in_fd;
-	int		out_fd;
-}			t_mini;
+	char			*input;
+	char			*prompt;
+	char			**env;
+	char			**paths;
+	char			***cmds;
+	Redirection		**redir;
+	int				in_fd;
+	int				out_fd;
+}					t_mini;
 
-void		show_hist(void);
-void		handle_input(t_mini *info);
-void		setup_signal_handlers(void);
-int     do_signal(char *input, int *lst_cmd_dlr, int *lst_ext_stat);
-void    execute_commands(t_mini *info);
-char		*get_prompt(void);
-void		redirect(char *segment, t_mini *info);
-
+void				show_hist(void);
+void				handle_input(t_mini *info);
+void				setup_signal_handlers(void);
+int					do_signal(char *input, int *lst_cmd_dlr, int *lst_ext_stat);
+void				execute_commands(t_mini *info);
+char				*get_prompt(void);
+void				redirect(char *segment, t_mini *info);
 
 //*----------------------- Parse -----------------------*//
-char		***parse(t_mini *info);
+int					parse(t_mini *info);
 
 //*----------------------- Paths -----------------------*//
-char		**get_paths(char **env);
-char		*find_path(char **paths, char **arg);
+char				**get_paths(char **env);
+char				*find_path(char **paths, char **arg);
 
 //*----------------------- Print -----------------------*//
-void		print_tokens(char **tokens);
-void		print_2d_arr(char **arr, char separator);
-void		print_3d_arr(char ***arr);
+void				print_tokens(char **tokens);
+void				print_2d_arr(char **arr, char separator);
+void				print_3d_arr(char ***arr, int clr);
+void				print_redir(Redirection **redir_arr);
 
 //*----------------------- Free ------------------------*//
-void		free_double_array(char **array);
-void		free_triple_array(char ***array);
-void		free_cmds(char ****cmds);
-void		free_mini(t_mini *info);
-void		perror_exit(char *str);
+void				free_double_array(char **array);
+void				free_triple_array(char ***array);
+void				free_cmds(char ****cmds);
+void				free_mini(t_mini *info);
+void				perror_exit(char *str);
 
 #endif
