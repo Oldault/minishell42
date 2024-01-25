@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 07:25:27 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:35:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*find_path(char **paths, char **arg)
 	i = -1;
 	path = NULL;
 	temp = NULL;
+	if (arg[0][0] == '/')
+		return(arg[0]);
 	while (paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
