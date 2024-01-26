@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 16:27:34 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:32:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,28 @@ void	print_redir(redir_t **redir_arr)
 		else
 			printf("%d: No redirection\n", i);
 	}
+	printf("------------%s\n", COLOR_RESET);
+}
+
+void print_redir_blue(t_mini *info)
+{
+	printf("%s------------\n", BLUE);
+    for (int i = 0; info->redir[i].redirs != NULL; i++)
+    {
+        printf("Command %d redirections:\n", i + 1);
+        for (int j = 0; j < info->redir[i].count; j++)
+        {
+            redir_t *redir = &info->redir[i].redirs[j];
+            printf("Redirection type: ");
+            switch (redir->type)
+            {
+                case REDIR_INPUT:  printf("Input (<)"); break;
+                case REDIR_OUTPUT: printf("Output (>)"); break;
+                case REDIR_APPEND: printf("Append (>>)"); break;
+                default:           printf("None"); break;
+            }
+            printf(", Filename: %s\n", redir->filename);
+        }
+    }
 	printf("------------%s\n", COLOR_RESET);
 }

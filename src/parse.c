@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/24 16:23:46 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 13:11:18 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,42 +29,35 @@ re_type	redir_type(char *symbol)
 	return (REDIR_NONE);
 }
 
-void	free_redir_array(redir_t **redir_arr)
+// Updated to handle an array of redir_t
+void free_redir_array(redirs_t *redirections)
 {
-	int	i;
+    if (redirections == NULL || redirections->redirs == NULL)
+        return;
 
-	if (redir_arr == NULL)
-		return ;
-	i = -1;
-	while (redir_arr[++i])
-	{
-		free(redir_arr[i]->filename);
-		free(redir_arr[i]);
-	}
-	free(redir_arr);
+    for (int i = 0; i < redirections->count; ++i)
+    {
+        free(redirections->redirs[i].filename);
+    }
+    free(redirections->redirs);
 }
 
-int	redir_start(char *word)
+
+int redir_start(char *word)
 {
-	return (word[0] == '<' || word[0] == '>');
+    return (strchr(word, '<') || strchr(word, '>'));
 }
 
-void	redir_split(char *word, redir_t **redirection)
+void redir_split(char *word, redir_t *redirection)
 {
-	int		i;
-	char	*symbol;
-
-	symbol = (char *)malloc(3 * sizeof(char));
-	i = 0;
-	while (word[i] == '<' || word[i] == '>')
-	{
-		symbol[i] = word[i];
-		i++;
-	}
-	symbol[i] = '\0';
-	(*redirection)->type = redir_type(symbol);
-	(*redirection)->filename = strdup(&word[i]);
-	free(symbol);
+    int i = 0;
+    while (word[i] == '<' || word[i] == '>')
+        i++;
+    
+    char *symbol = strndup(word, i); // Extract the redirection symbol
+    redirection->type = redir_type(symbol);
+    redirection->filename = strdup(&word[i]); // Extract the filename
+    free(symbol);
 }
 
 int     get_cmd_len(char **words)
@@ -82,73 +75,112 @@ int     get_cmd_len(char **words)
     return (cmd_len);
 }
 
-char	**parse_segment(char *segment, redir_t **redirection)
+char **parse_segment(char *segment, redirs_t *redirections)
 {
-	char	**words;
-	char	**cmd;
-	int		i;
-	int		j;
+    char **words = ft_split(segment, ' ');
+    if (words == NULL)
+        return (NULL);
 
-	words = ft_split(segment, ' ');
-	if (words == NULL)
-		return (NULL);
-    
-	*redirection = (redir_t *)malloc(sizeof(redir_t));
-	(*redirection)->type = REDIR_NONE;
-	(*redirection)->filename = NULL;
+    int max_redirs = 10; // Arbitrary limit, adjust as needed
+    redirections->redirs = (redir_t *)malloc(max_redirs * sizeof(redir_t));
+    redirections->count = 0;
 
-	cmd = (char **)malloc((get_cmd_len(words) + 1) * sizeof(char *));
-	if (cmd == NULL)
-		return (free_double_array(words), free(*redirection), NULL);
-	i = -1;
-	j = 0;
-	while (words[++i])
-	{
-		if (redir_symb(words[i]))
-		{
-			(*redirection)->type = redir_type(words[i]);
-			(*redirection)->filename = strdup(words[i + 1]);
-			i++;
-		}
-		else if (redir_start(words[i]))
-			redir_split(words[i], redirection);
-		else
-			cmd[j++] = strdup(words[i]);
-	}
-	cmd[j] = NULL;
-	free_double_array(words);
-	return (cmd);
+    int cmd_len = get_cmd_len(words);
+    char **cmd = (char **)malloc((cmd_len + 1) * sizeof(char *));
+    if (cmd == NULL)
+    {
+        free_double_array(words);
+        free(redirections->redirs);
+        return (NULL);
+    }
+
+    int i = 0, j = 0, k = 0;
+    while (words[i])
+    {
+        if (redir_symb(words[i]) || redir_start(words[i]))
+        {
+            redir_t *redir = &redirections->redirs[k];
+            if (redir_start(words[i]) && !redir_symb(words[i]))
+                redir_split(words[i], redir);
+            else
+            {
+                redir->type = redir_type(words[i]);
+                if (words[i + 1] && !redir_symb(words[i + 1]))
+                {
+                    redir->filename = strdup(words[i + 1]);
+                    printf("Detected separated redirection: %s, filename: %s\n", words[i], words[i + 1]);
+                    i++; // Skip the filename
+                }
+                else
+                    redir->filename = NULL;
+            }
+            k++;
+        }
+        else
+            cmd[j++] = strdup(words[i]);
+        i++;
+    }
+    redirections->count = k;
+    cmd[j] = NULL;
+    free_double_array(words);
+    return (cmd);
 }
 
-int	parse(t_mini *info)
+int parse(t_mini *info)
 {
-	int		i;
-	int		j;
-	char	**segments;
-	char	***cmd_arr;
-	redir_t	**redir_arr;
+    char **segments = ft_split(info->input, '|');
+    if (segments == NULL)
+        return (-1);
 
-	segments = ft_split(info->input, '|');
-	if (segments == NULL)
-		return (-1);
-	i = 0;
-	while (segments[i])
-		i++;
-	cmd_arr = (char ***)malloc((i + 1) * sizeof(char **));
-	redir_arr = (redir_t **)malloc((i + 1) * sizeof(redir_t *));
-	if (cmd_arr == NULL || redir_arr == NULL)
-		return (free_double_array(segments), -1);
-	j = -1;
-	while (++j < i)
-	{
-		cmd_arr[j] = parse_segment(segments[j], &redir_arr[j]);
-		if (cmd_arr[j] == NULL)
-			return (free(segments[j]), free_triple_array(cmd_arr), -1);
-	}
-	free_double_array(segments);
-	cmd_arr[j] = NULL;
-	redir_arr[j] = NULL;
-	info->cmds = cmd_arr;
-	info->redir = redir_arr;
-	return (0);
+    // Count the number of segments
+    int num_segments = 0;
+    while (segments[num_segments])
+        num_segments++;
+
+    // Allocate arrays for commands and redirections
+    char ***cmd_arr = (char ***)malloc((num_segments + 1) * sizeof(char **));
+    redirs_t *redir_arr = (redirs_t *)malloc((num_segments + 1) * sizeof(redirs_t));
+    if (cmd_arr == NULL || redir_arr == NULL)
+    {
+        free_double_array(segments);
+        return (cmd_arr ? free(cmd_arr), -1 : free(redir_arr), -1);
+    }
+
+    // Parse each segment
+    for (int i = 0; i < num_segments; ++i)
+    {
+        cmd_arr[i] = parse_segment(segments[i], &redir_arr[i]);
+        if (cmd_arr[i] == NULL)
+        {
+            free_double_array(segments);
+            for (int j = 0; j < i; ++j)
+                free_double_array(cmd_arr[j]);
+            free(cmd_arr);
+            for (int j = 0; j <= i; ++j) // Free redirections up to the current index
+                free_redir_array(&redir_arr[j]);
+            free(redir_arr);
+            return (-1);
+        }
+		printf("Segment %d: Command: ", i);
+        for (int k = 0; cmd_arr[i][k] != NULL; k++)
+            printf("%s ", cmd_arr[i][k]);
+        printf("\nRedirections:\n");
+        for (int k = 0; k < redir_arr[i].count; k++)
+        {
+            printf("Type: %d, Filename: %s\n", redir_arr[i].redirs[k].type, redir_arr[i].redirs[k].filename);
+        }
+    }
+
+    // Set the end markers for the arrays
+    cmd_arr[num_segments] = NULL;
+    redir_arr[num_segments].redirs = NULL;
+    redir_arr[num_segments].count = 0;
+
+    // Assign the arrays to the info struct
+    info->cmds = cmd_arr;
+    info->redir = redir_arr;
+
+    // Clean up
+    free_double_array(segments);
+    return (0);
 }

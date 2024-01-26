@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/25 18:32:50 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:31:14 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,38 @@ void	execute_single_command(t_mini *info, int pipe_end, int *pipe_fds, int i,
 
 void apply_redirections(t_mini *info, int cmd_index)
 {
-    redir_t *redir = info->redir[cmd_index];
-    if (redir == NULL)
-        return;
+    redirs_t redirs = info->redir[cmd_index];
+    for (int i = 0; i < redirs.count; ++i)
+    {
+        redir_t redir = redirs.redirs[i];
 
-    if (redir->type == REDIR_INPUT)
-    {
-        info->in_fd = open(redir->filename, O_RDONLY);
-        if (info->in_fd < 0)
-            perror_exit("open input file");
-    }
-    else if (redir->type == REDIR_OUTPUT)
-    {
-        info->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (info->out_fd < 0)
-            perror_exit("open output file");
-    }
-    else if (redir->type == REDIR_APPEND)
-    {
-        info->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        if (info->out_fd < 0)
-            perror_exit("open append file");
+        if (redir.type == REDIR_INPUT)
+        {
+            if (info->in_fd != STDIN_FILENO)
+                close(info->in_fd);
+            info->in_fd = open(redir.filename, O_RDONLY);
+            if (info->in_fd < 0)
+                perror_exit("open input file");
+        }
+        else if (redir.type == REDIR_OUTPUT)
+        {
+            if (info->out_fd != STDOUT_FILENO)
+                close(info->out_fd);
+            info->out_fd = open(redir.filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (info->out_fd < 0)
+                perror_exit("open output file");
+        }
+        else if (redir.type == REDIR_APPEND)
+        {
+            if (info->out_fd != STDOUT_FILENO)
+                close(info->out_fd);
+            info->out_fd = open(redir.filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (info->out_fd < 0)
+                perror_exit("open append file");
+        }
     }
 }
+
 
 void reset_file_descriptors(t_mini *info)
 {
