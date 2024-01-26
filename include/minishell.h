@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/26 12:28:55 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:23:20 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ void			redirect(char *segment, t_mini *info);
 
 //*----------------------- Parse -----------------------*//
 int				parse(t_mini *info);
+char			**parse_segment(char *segment, redirs_t *redirections);
+
+//*-------------------- Parse Utils --------------------*//
+int				redir_start(char *word);
+int				redir_symb(char *word);
+re_type			redir_type(char *symbol);
+int				get_cmd_len(char **words);
+void			redir_split(char *word, redir_t *redirection);
 
 //*----------------------- Paths -----------------------*//
 char			**get_paths(char **env);
@@ -85,5 +93,6 @@ void			free_triple_array(char ***array);
 void			free_cmds(char ****cmds);
 void			free_mini(t_mini *info);
 void			perror_exit(char *str);
+void			free_redir_array(redirs_t *redirections);
 
 #endif
