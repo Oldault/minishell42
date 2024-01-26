@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/26 16:23:20 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:49:46 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef enum
 	REDIR_NONE,
 	REDIR_INPUT,
 	REDIR_OUTPUT,
-	REDIR_APPEND
+	REDIR_APPEND,
+	REDIR_HEREDOC
 }				re_type;
 
 typedef struct

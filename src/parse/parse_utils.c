@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:36:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 15:42:26 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:29:03 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	redir_start(char *word)
 int	redir_symb(char *word)
 {
 	return (ft_strcmp(word, "<") == 0 || ft_strcmp(word, ">") == 0
-		|| ft_strcmp(word, ">>") == 0);
+		|| ft_strcmp(word, ">>") == 0 || ft_strcmp(word, "<<") == 0);
 }
 
 re_type	redir_type(char *symbol)
@@ -31,6 +31,8 @@ re_type	redir_type(char *symbol)
 		return (REDIR_OUTPUT);
 	if (ft_strcmp(symbol, ">>") == 0)
 		return (REDIR_APPEND);
+	if (ft_strcmp(symbol, "<<") == 0)
+		return (REDIR_HEREDOC);
 	return (REDIR_NONE);
 }
 
