@@ -6,26 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 08:36:47 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:32:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_tokens(char **tokens)
-{
-	int	i;
-
-	i = -1;
-	printf("%s------------\n", RED);
-	while (tokens[++i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		free(tokens[i]);
-	}
-	printf("------------%s\n", COLOR_RESET);
-	free(tokens);
-}
 
 void	print_2d_arr(char **arr, char separator)
 {
@@ -42,16 +27,66 @@ void	print_2d_arr(char **arr, char separator)
 	ft_putstr_fd("]\n", 1);
 }
 
-void	print_3d_arr(char ***arr)
+void	print_3d_arr(char ***arr, int clr)
 {
 	int	i;
 
 	i = -1;
-	printf("%s------------\n", RED);
+	if (clr == 1)
+		printf("%s------------\n", RED);
+	else if (clr == 2)
+		printf("%s------------\n", GREEN);
+	else if (clr == 3)
+		printf("%s------------\n", BLUE);
+	else
+		printf("------------\n");
 	while (arr[++i])
 	{
 		ft_printf("%d: ", i);
 		print_2d_arr(arr[i], ',');
 	}
+	printf("------------%s\n", COLOR_RESET);
+}
+
+void	print_redir(redir_t **redir_arr)
+{
+	int	i;
+
+	i = -1;
+	printf("%s------------\n", BLUE);
+	while (redir_arr[++i])
+	{
+		if (redir_arr[i]->type == REDIR_INPUT)
+			printf("%d: < %s\n", i, redir_arr[i]->filename);
+		else if (redir_arr[i]->type == REDIR_OUTPUT)
+			printf("%d: > %s\n", i, redir_arr[i]->filename);
+		else if (redir_arr[i]->type == REDIR_APPEND)
+			printf("%d: >> %s\n", i, redir_arr[i]->filename);
+		else
+			printf("%d: No redirection\n", i);
+	}
+	printf("------------%s\n", COLOR_RESET);
+}
+
+void print_redir_blue(t_mini *info)
+{
+	printf("%s------------\n", BLUE);
+    for (int i = 0; info->redir[i].redirs != NULL; i++)
+    {
+        printf("Command %d redirections:\n", i + 1);
+        for (int j = 0; j < info->redir[i].count; j++)
+        {
+            redir_t *redir = &info->redir[i].redirs[j];
+            printf("Redirection type: ");
+            switch (redir->type)
+            {
+                case REDIR_INPUT:  printf("Input (<)"); break;
+                case REDIR_OUTPUT: printf("Output (>)"); break;
+                case REDIR_APPEND: printf("Append (>>)"); break;
+                default:           printf("None"); break;
+            }
+            printf(", Filename: %s\n", redir->filename);
+        }
+    }
 	printf("------------%s\n", COLOR_RESET);
 }
