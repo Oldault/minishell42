@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 12:27:11 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 14:16:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	main(int ac, char **av, char **env)
 		if (do_signal(info.input, &lst_cmd_dlr, &lst_ext_stat))
 			continue ;
     	parse(&info);
-		print_3d_arr(info.cmds, 1);
-		print_redir_blue(&info);
+		//print_3d_arr(info.cmds, 1);
+		//print_redir_blue(&info);
 		handle_input(&info);
 		free(info.input);
 		//free_cmds(&(info.cmds));

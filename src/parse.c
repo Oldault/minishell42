@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 13:11:18 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/26 14:25:54 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char **parse_segment(char *segment, redirs_t *redirections)
                 if (words[i + 1] && !redir_symb(words[i + 1]))
                 {
                     redir->filename = strdup(words[i + 1]);
-                    printf("Detected separated redirection: %s, filename: %s\n", words[i], words[i + 1]);
+                    //printf("Detected separated redirection: %s, filename: %s\n", words[i], words[i + 1]);
                     i++; // Skip the filename
                 }
                 else
@@ -161,14 +161,6 @@ int parse(t_mini *info)
             free(redir_arr);
             return (-1);
         }
-		printf("Segment %d: Command: ", i);
-        for (int k = 0; cmd_arr[i][k] != NULL; k++)
-            printf("%s ", cmd_arr[i][k]);
-        printf("\nRedirections:\n");
-        for (int k = 0; k < redir_arr[i].count; k++)
-        {
-            printf("Type: %d, Filename: %s\n", redir_arr[i].redirs[k].type, redir_arr[i].redirs[k].filename);
-        }
     }
 
     // Set the end markers for the arrays
@@ -176,11 +168,9 @@ int parse(t_mini *info)
     redir_arr[num_segments].redirs = NULL;
     redir_arr[num_segments].count = 0;
 
-    // Assign the arrays to the info struct
     info->cmds = cmd_arr;
     info->redir = redir_arr;
 
-    // Clean up
     free_double_array(segments);
     return (0);
 }
