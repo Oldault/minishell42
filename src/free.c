@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 16:23:07 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:35:09 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	free_cmds(char ****cmds)
 	free(*cmds);
 }
 
-void	free_mini(t_mini *info)
+void	free_mini(t_mini *data)
 {
-	free(info->prompt);
-	free(info->paths);
+	free(data->prompt);
+	free(data->paths);
 }
 
 void	free_redir_array(redirs_t *redirections)

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 12:32:32 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:35:11 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ void	print_redir(redir_t **redir_arr)
 	printf("------------%s\n", COLOR_RESET);
 }
 
-void print_redir_blue(t_mini *info)
+void print_redir_blue(t_mini *data)
 {
 	printf("%s------------\n", BLUE);
-    for (int i = 0; info->redir[i].redirs != NULL; i++)
+    for (int i = 0; data->redir[i].redirs != NULL; i++)
     {
         printf("Command %d redirections:\n", i + 1);
-        for (int j = 0; j < info->redir[i].count; j++)
+        for (int j = 0; j < data->redir[i].count; j++)
         {
-            redir_t *redir = &info->redir[i].redirs[j];
+            redir_t *redir = &data->redir[i].redirs[j];
             printf("Redirection type: ");
             switch (redir->type)
             {

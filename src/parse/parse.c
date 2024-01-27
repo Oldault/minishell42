@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 17:36:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/27 11:35:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ int	process_segments(char **segs, char ***cmds, redirs_t *r_arr, int seg_num)
 	return (0);
 }
 
-int	parse(t_mini *info)
+int	parse(t_mini *data)
 {
 	redirs_t	*redir_arr;
 	char		***cmd_arr;
 	char		**segments;
 	int			seg_num;
 
-	segments = ft_split(info->input, '|');
+	segments = ft_split(data->input, '|');
 	if (segments == NULL)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
@@ -85,8 +85,8 @@ int	parse(t_mini *info)
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;
-	info->cmds = cmd_arr;
-	info->redir = redir_arr;
+	data->cmds = cmd_arr;
+	data->redir = redir_arr;
 	free_double_array(segments);
 	return (0);
 }

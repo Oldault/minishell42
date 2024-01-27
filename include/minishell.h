@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/26 17:49:46 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:28:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,28 @@ typedef struct s_mini
 	redirs_t	*redir;
 }				t_mini;
 
-void			show_hist(void);
-void			handle_input(t_mini *info);
+void			handle_input(t_mini *data);
 void			setup_signal_handlers(void);
 int				do_signal(char *input, int *lst_cmd_dlr, int *lst_ext_stat);
-void			execute_commands(t_mini *info);
+void			execute_commands(t_mini *data);
 char			*get_prompt(void);
-void			redirect(char *segment, t_mini *info);
+
+//*---------------------- Builtins ----------------------*//
+void			handle_echo(t_mini *data);
+void			handle_cd(t_mini *data);
+void			handle_pwd(t_mini *data);
+void			handle_export(t_mini *data);
+void			handle_unset(t_mini *data);
+void			handle_env(t_mini *data);
+void			handle_exit(t_mini *data);
+void			handle_tilde(t_mini *data);
+void			handle_hist(t_mini *data);
+
+int				path_exists(const char *path);
+char			*expand_tilde(const char *input);
 
 //*----------------------- Parse -----------------------*//
-int				parse(t_mini *info);
+int				parse(t_mini *data);
 char			**parse_segment(char *segment, redirs_t *redirections);
 
 //*-------------------- Parse Utils --------------------*//
@@ -86,13 +98,13 @@ char			*find_path(char **paths, char **arg);
 void			print_2d_arr(char **arr, char separator);
 void			print_3d_arr(char ***arr, int clr);
 void			print_redir(redir_t **redir_arr);
-void			print_redir_blue(t_mini *info);
+void			print_redir_blue(t_mini *data);
 
 //*----------------------- Free ------------------------*//
 void			free_double_array(char **array);
 void			free_triple_array(char ***array);
 void			free_cmds(char ****cmds);
-void			free_mini(t_mini *info);
+void			free_mini(t_mini *data);
 void			perror_exit(char *str);
 void			free_redir_array(redirs_t *redirections);
 
