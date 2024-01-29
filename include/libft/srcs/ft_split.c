@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 08:53:04 by svolodin          #+#    #+#             */
-/*   Updated: 2023/12/16 11:37:10 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:44:25 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int	unleah(char **str, int size)
 {
-	while (size--)
-		free(str[size]);
+	while (size >= 0)
+		free(str[size--]);
+	free(str);
 	return (-1);
 }
 
@@ -68,7 +69,7 @@ static int	write_split(char **split, const char *str, char charset)
 				j++;
 			split[word] = (char *)malloc(sizeof(char) * (j + 1));
 			if (!(split[word]))
-				return (unleah(split, word - 1));
+				return (unleah(split, word));
 			write_word(split[word], str + i, charset);
 			i += j;
 			word++;
@@ -88,6 +89,9 @@ char	**ft_split(const char *str, char c)
 		return (NULL);
 	res[words] = 0;
 	if (write_split(res, str, c) == -1)
+	{
+		free(res);
 		return (NULL);
+	}
 	return (res);
 }

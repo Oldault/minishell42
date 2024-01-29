@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 11:35:04 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 17:21:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	perror_exit(char *str)
 {
 	perror(str);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 static int	count_commands(char ***cmds)
@@ -67,10 +67,21 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
         }
 		execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
 		printf("%s: command not found\n", data->cmds[i][0]);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	else if (pid < 0)
 		perror_exit("fork");
+    else
+    {
+        int status;
+        waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+        {
+            last_exit_status = WEXITSTATUS(status);
+        } else {
+            last_exit_status = 127;
+        }
+    }
 }
 
 void	handle_heredoc(t_mini *data, char *lim)
@@ -118,7 +129,7 @@ void apply_redirections(t_mini *data, int cmd_index)
                 close(data->in_fd);
             data->in_fd = open(redir.filename, O_RDONLY);
             if (data->in_fd < 0)
-                perror_exit("open input file");
+                data->err = "open input file : Bad adress";
         }
         else if (redir.type == REDIR_OUTPUT)
         {
@@ -126,7 +137,7 @@ void apply_redirections(t_mini *data, int cmd_index)
                 close(data->out_fd);
             data->out_fd = open(redir.filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (data->out_fd < 0)
-                perror_exit("open output file");
+                data->err = "open output file : Bad adress";
         }
         else if (redir.type == REDIR_APPEND)
         {
@@ -134,7 +145,7 @@ void apply_redirections(t_mini *data, int cmd_index)
                 close(data->out_fd);
             data->out_fd = open(redir.filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (data->out_fd < 0)
-                perror_exit("open append file");
+                data->err = "open append file : Bad adress";
         }
         else if (redir.type == REDIR_HEREDOC)
         {
@@ -143,7 +154,7 @@ void apply_redirections(t_mini *data, int cmd_index)
             data->in_fd = open(".here_doc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
             handle_heredoc(data, redir.filename);
             if (data->out_fd < 0)
-                perror_exit("open heredoc file");
+                data->err = "open heredoc file : Bad adress";
         }
     }
 }
@@ -176,7 +187,10 @@ void	execute_commands(t_mini *data)
 	{
 		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
 		apply_redirections(data, i);
-		execute_single_command(data, pipe_end, pipe_fds, i, num_cmds);
+        if (data->err != NULL)
+            printf("%s\n", data->err);
+        else
+		    execute_single_command(data, pipe_end, pipe_fds, i, num_cmds);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)

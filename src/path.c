@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/25 18:35:42 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:48:06 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*find_path(char **paths, char **arg)
 	return (NULL);
 }
 
-char	**get_paths(char **env)
+char	**get_paths(t_mini	*data, char **env)
 {
 	int		i;
 	char	*full_path;
@@ -57,7 +57,7 @@ char	**get_paths(char **env)
 		}
 	}
 	if (!full_path)
-		perror_exit("full_path");
+		data->err = "problem getting PATH";
 	paths = ft_split(full_path, ':');
 	free(full_path);
 	return (paths);

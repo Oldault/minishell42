@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:09:07 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 12:34:56 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:37:23 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void handle_cd(t_mini *data)
 	}
 	if (chdir(path) != 0)
 		perror("cd");
+	last_exit_status = EXIT_SUCCESS;
 }
 
 void handle_pwd(t_mini *data)
@@ -39,15 +40,39 @@ void handle_pwd(t_mini *data)
 
 	(void)data;
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
 		printf("%s\n", cwd);
+		last_exit_status = EXIT_SUCCESS;
+	}
 	else
+	{
 		printf("pathname of current directory not found\n");
+		exit(127);
+	}
 }
 
 void handle_export(t_mini *data)
 {
-	(void)data;
-    printf("export not yet implemented\n");
+	char	*input = data->input + 7;
+    const char *delimiter = strchr(input, '=');
+
+    if (delimiter != NULL)
+	{
+        size_t name_length = delimiter - input;
+		
+        char *name = malloc(name_length + 1);
+        if (name == NULL) {
+            perror("malloc failed");
+            return;
+        }
+        strncpy(name, input, name_length);
+        name[name_length] = '\0';
+        const char *value = delimiter + 1;
+        setenv(name, value, 1);
+        free(name);
+    } else {
+        printf("Usage: export NAME=VALUE\n");
+    }
 }
 
 void handle_unset(t_mini *data)
@@ -65,12 +90,20 @@ void handle_env(t_mini *data)
 	i = -1;
 	while (env[++i])
 		printf("%s\n", env[i]);
+	last_exit_status = EXIT_SUCCESS;
 }
 
 void handle_exit(t_mini *data)
 {
 	(void)data;
     exit(0);
+}
+
+void handle_doll(t_mini *data)
+{
+	(void)data;
+	printf("%d : command not found\n", last_exit_status);
+    last_exit_status = 127;
 }
 
 void handle_tilde(t_mini *data)
@@ -83,6 +116,7 @@ void handle_tilde(t_mini *data)
 	else
 		printf("bash: %s: No such file or directory\n", tilde);
 	free(tilde);
+	last_exit_status = EXIT_SUCCESS;
 }
 
 void	handle_hist(t_mini *data)
@@ -98,4 +132,5 @@ void	handle_hist(t_mini *data)
 		while (list_hist[++i])
 			printf("%d: %s\n", i + 1, list_hist[i]->line);
 	}
+	last_exit_status = EXIT_SUCCESS;
 }

@@ -6,14 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 12:36:07 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:39:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 typedef void	(*t_cmd_func)(t_mini *);
-
 typedef struct
 {
     char		*command_name;
@@ -21,7 +20,6 @@ typedef struct
 }				cmd_entry_t;
 
 cmd_entry_t	cmds[] = {
-	{"echo", handle_echo},
 	{"cd", handle_cd},
 	{"pwd", handle_pwd},
 	{"export", handle_export},
@@ -30,6 +28,7 @@ cmd_entry_t	cmds[] = {
 	{"exit", handle_exit},
 	{"~", handle_tilde},
 	{"history", handle_hist},
+	{"$?", handle_doll},
 	{NULL, NULL}
 };
 
