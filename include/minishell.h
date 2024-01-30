@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/29 17:10:42 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:56:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_mini
 	redirs_t	*redir;
 }				t_mini;
 
-extern int last_exit_status;
+extern int		last_exit_status;
 
 void			handle_input(t_mini *data);
 void			setup_signal_handlers(void);
@@ -77,10 +77,15 @@ void			handle_env(t_mini *data);
 void			handle_exit(t_mini *data);
 void			handle_tilde(t_mini *data);
 void			handle_hist(t_mini *data);
-void 			handle_doll(t_mini *data);
+void			handle_doll(t_mini *data);
 
 int				path_exists(const char *path);
 char			*expand_tilde(const char *input);
+
+//*--------------------- Execution -----------------------*//
+void			apply_redirections(t_mini *data, int cmd_index);
+void			execute_single_command(t_mini *data, int pipe_end,
+					int *pipe_fds, int i, int num_cmds);
 
 //*----------------------- Parse -----------------------*//
 int				parse(t_mini *data);
@@ -94,7 +99,7 @@ int				get_cmd_len(char **words);
 void			redir_split(char *word, redir_t *redirection);
 
 //*----------------------- Paths -----------------------*//
-char			**get_paths(t_mini	*data, char **env);
+char			**get_paths(t_mini *data, char **env);
 char			*find_path(char **paths, char **arg);
 
 //*----------------------- Print -----------------------*//

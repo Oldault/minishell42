@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/29 18:37:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:18:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	main(int ac, char **av, char **env)
 		handle_input(&data);
 		free(data.input);
 		free_cmds(&(data.cmds));
-		printf("TERM in program: %s\n", getenv("TERM"));
-		printf("TERM2 in program: %s\n", getenv("TERM2"));
 	}
 	free_mini(&data);
 	rl_clear_history();
