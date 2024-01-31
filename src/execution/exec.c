@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/30 11:55:27 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:01:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,15 @@ void reset_file_descriptors(t_mini *data, int i)
 
 void	execute_commands(t_mini *data)
 {
-	int	num_cmds;
-	int	pipe_fds[2];
-	int	pipe_end;
+	int		num_cmds;
+	pid_t*	child_pids;
+	int		pipe_fds[2];
+	int		pipe_end;
 
 	num_cmds = count_commands(data->cmds);
+	child_pids = malloc(num_cmds * sizeof(pid_t));
+	if (!child_pids)
+		perror_exit("malloc");
 	pipe_end = -1;
 	for (int i = 0; i < num_cmds; ++i)
 	{
@@ -69,7 +73,7 @@ void	execute_commands(t_mini *data)
         if (data->err != NULL)
             printf("%s\n", data->err);
         else
-		    execute_single_command(data, pipe_end, pipe_fds, i, num_cmds);
+		    execute_single_command(data, pipe_end, pipe_fds, i, num_cmds, child_pids);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)
@@ -81,6 +85,15 @@ void	execute_commands(t_mini *data)
 			pipe_end = -1;
 		reset_file_descriptors(data, i);
 	}
-	for (int i = 0; i < num_cmds; ++i)
-		wait(NULL);
+    for (int i = 0; i < num_cmds; ++i)
+	{
+        int status;
+        waitpid(child_pids[i], &status, 0);
+        if (WIFEXITED(status))
+            last_exit_status = WEXITSTATUS(status);
+        else
+            last_exit_status = 127;
+    }
+
+    free(child_pids);
 }

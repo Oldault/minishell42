@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/30 11:55:50 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:02:31 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,7 @@ static void handle_output_redir(t_mini *data, int *pipe_fds, int i, int num_cmds
     }
 }
 
-static void handle_parent_process(pid_t pid)
-{
-    if (pid < 0)
-    {
-        perror_exit("fork");
-    }
-    else
-    {
-        int status;
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status))
-            last_exit_status = WEXITSTATUS(status);
-        else
-            last_exit_status = 127;
-    }
-}
-
-
-void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
-		int num_cmds)
+void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, int num_cmds, pid_t *child_pids)
 {
 	pid_t	pid;
 
@@ -72,7 +53,9 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 		execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
 		printf("%s: command not found\n", data->cmds[i][0]);
 		exit(127);
-	}
+    }
+    else if (pid > 0)
+        child_pids[i] = pid;
     else
-		handle_parent_process(pid);
+        perror_exit("fork");
 }

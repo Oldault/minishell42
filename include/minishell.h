@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/30 11:56:04 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:49:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ char			*expand_tilde(const char *input);
 
 //*--------------------- Execution -----------------------*//
 void			apply_redirections(t_mini *data, int cmd_index);
-void			execute_single_command(t_mini *data, int pipe_end,
-					int *pipe_fds, int i, int num_cmds);
-
+void			execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, int num_cmds, pid_t *child_pids);
 //*----------------------- Parse -----------------------*//
 int				parse(t_mini *data);
 char			**parse_segment(char *segment, redirs_t *redirections);
