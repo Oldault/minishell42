@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/30 11:18:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:49:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,37 @@
 
 int last_exit_status = 0;
 
+int str_count(char **array)
+{
+    int	count;
+	
+	count = 0;
+    while (*array)
+	{
+        count++;
+        array++;
+    }
+    return (count);
+}
+
+char	**get_env(char **env)
+{
+	int		env_vars;
+	char	**new_env;
+	int		i;
+
+	env_vars = str_count(env);
+	new_env = (char **)malloc(sizeof(char *) * (env_vars + 1));
+	i = -1;
+	while (++i < env_vars)
+		new_env[i] = ft_strdup(env[i]);
+	new_env[i] = NULL;
+	return (new_env);
+}
+
 void	set_data_out(t_mini	*data, char **env)
 {
-	data->paths = get_paths(data, env);
-	data->env = env;
+	data->env = get_env(env);
 }
 
 void	set_data_in(t_mini	*data)
@@ -29,6 +56,7 @@ void	set_data_in(t_mini	*data)
 	data->redir = NULL;
 	data->prompt = get_prompt();
 	data->input = readline(data->prompt);
+	data->paths = get_paths(data, data->env);
 }
 
 int	main(int ac, char **av, char **env)

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:09:07 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/29 18:37:23 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:05:01 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ void handle_cd(t_mini *data)
 			ft_putendl_fd("cd: HOME not set", 2);
 	}
 	if (chdir(path) != 0)
-		perror("cd");
+	{
+		printf("cd : no such file or directory\n");
+		last_exit_status = EXIT_FAILURE;
+		return ;
+	}
 	last_exit_status = EXIT_SUCCESS;
 }
 
@@ -77,8 +81,30 @@ void handle_export(t_mini *data)
 
 void handle_unset(t_mini *data)
 {
-	(void)data;
-    printf("unset not yet implemented\n");
+	char	*to_unset;
+	char	**env;
+	char	*temp;
+	int		i;
+
+	to_unset = data->cmds[0][1];
+	env = data->env;
+	i = -1;
+	while (env[++i] != NULL)
+	{
+		temp = (ft_split(env[i], '='))[0];
+		if (ft_strcmp(temp, to_unset) == 0)
+		{
+			free(env[i]);
+			free(temp);
+			while (env[i] != NULL)
+			{
+				env[i] = env[i + 1];
+				i++;
+			}
+			break ;
+		}
+		free(temp);
+	}
 }
 
 void handle_env(t_mini *data)

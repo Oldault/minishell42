@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/31 12:10:55 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:58:36 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*find_path(char **paths, char **arg)
 	temp = NULL;
 	if (arg[0][0] == '/' || arg[0][0] == '.')
 		return(arg[0]);
+	if (!paths)
+		return(NULL);
 	while (paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
@@ -45,6 +47,7 @@ char	**get_paths(t_mini	*data, char **env)
 	char	*full_path;
 	char	**paths;
 
+	(void)data;
 	i = -1;
 	full_path = NULL;
 	paths = NULL;
@@ -57,7 +60,7 @@ char	**get_paths(t_mini	*data, char **env)
 		}
 	}
 	if (!full_path)
-		data->err = "problem getting PATH";
+		return (NULL);
 	paths = ft_split(full_path, ':');
 	free(full_path);
 	return (paths);

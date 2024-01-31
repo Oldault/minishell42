@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/31 13:49:40 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:18:14 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <signal.h>
 
 //		COLORS
 # define BLUE "\x1B[94m"
