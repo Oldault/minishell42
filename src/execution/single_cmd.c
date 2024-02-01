@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/31 16:02:31 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:08:52 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,15 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
 	{
         handle_input_redir(data, pipe_end);
         handle_output_redir(data, pipe_fds, i, num_cmds);
-		execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
-		printf("%s: command not found\n", data->cmds[i][0]);
-		exit(127);
+        if (handle_builtin(data, data->cmds[i][0]))
+        {
+            //ft_printf("%s⇒ BUILTIN%s\n", RED, COLOR_RESET);
+            return ;
+        }
+        //ft_printf("%s⇒ NOT BUILTIN%s\n", RED, COLOR_RESET);
+        execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
+        printf("%s: command not found\n", data->cmds[i][0]);
+        exit(127);
     }
     else if (pid > 0)
         child_pids[i] = pid;
