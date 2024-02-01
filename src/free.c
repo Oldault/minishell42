@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 11:35:09 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:26:46 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ void	free_double_array(char **array)
 	int	i;
 
 	i = -1;
-	if (array != NULL)
-	{
-		while (array[++i])
-			free(array[i]);
-		free(array);
-	}
+	if (array == NULL)
+        return;
+	while (array[++i])
+		free(array[i]);
+	free(array);
 }
 
 void	free_triple_array(char ***array)
@@ -44,20 +43,27 @@ void	free_cmds(char ****cmds)
 	int	j;
 
 	i = -1;
-	j = -1;
-	while ((*cmds)[++i] != NULL)
-	{
-		while ((*cmds)[i][++j] != NULL)
-			free((*cmds)[i][j]);
-		free((*cmds)[i]);
-	}
-	free(*cmds);
+    if (cmds == NULL || *cmds == NULL)
+        return ;
+    while ((*cmds)[++i] != NULL)
+    {
+		j = -1;
+        while ((*cmds)[i][++j] != NULL)
+        {
+            free((*cmds)[i][j]);
+            (*cmds)[i][j] = NULL;
+        }
+        free((*cmds)[i]);
+        (*cmds)[i] = NULL;
+    }
+    free(*cmds);
+    *cmds = NULL;
 }
 
 void	free_mini(t_mini *data)
 {
 	free(data->prompt);
-	free(data->paths);
+	free_double_array(data->paths);
 }
 
 void	free_redir_array(redirs_t *redirections)
