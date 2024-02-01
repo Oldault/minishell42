@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/01/31 17:18:14 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 11:45:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ typedef struct
 	int			count;
 }				redirs_t;
 
+typedef struct s_mini t_mini;
+
+typedef struct
+{
+    char	*command_name;
+    void	(*func)(t_mini *);;
+}			cmd_entry_t;
+
 typedef struct s_mini
 {
 	char		*input;
@@ -59,6 +67,7 @@ typedef struct s_mini
 	int			out_fd;
 	char		*err;
 	redirs_t	*redir;
+	cmd_entry_t	*builtin_cmds;
 }				t_mini;
 
 extern int		last_exit_status;
