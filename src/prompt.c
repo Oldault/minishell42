@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 15:11:33 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:09:06 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void shorten_path(char *path, const char *home_dir) {
 }
 
 
-char *get_prompt(void) {
+char *get_prompt(void)
+{
     char *prompt = malloc(PROMPT_SIZE);
     if (prompt == NULL) {
         perror("Unable to allocate memory for prompt");
@@ -65,3 +66,4 @@ char *get_prompt(void) {
     strncat(prompt, "$ ", PROMPT_SIZE - strlen(prompt) - 1);
     return (prompt);
 }
+

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 12:08:52 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:48:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
         if (handle_builtin(data, data->cmds[i][0]))
         {
             //ft_printf("%s⇒ BUILTIN%s\n", RED, COLOR_RESET);
-            return ;
+            exit(EXIT_SUCCESS);
         }
         //ft_printf("%s⇒ NOT BUILTIN%s\n", RED, COLOR_RESET);
         execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);

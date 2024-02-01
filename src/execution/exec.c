@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 11:54:04 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:42:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,4 @@ void	execute_commands(t_mini *data)
 
     free(child_pids);
 }
+

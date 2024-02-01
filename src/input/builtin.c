@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:09:07 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/31 17:05:01 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:47:17 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,23 +57,42 @@ void handle_pwd(t_mini *data)
 
 void handle_export(t_mini *data)
 {
-	char	*input = data->input + 7;
+    char *input = data->input + 7;
     const char *delimiter = strchr(input, '=');
+	size_t name_length;
 
-    if (delimiter != NULL)
+    if (delimiter != NULL && delimiter != input)
 	{
-        size_t name_length = delimiter - input;
-		
-        char *name = malloc(name_length + 1);
-        if (name == NULL) {
+        name_length = delimiter - input;
+
+        char *new_var = malloc(name_length + 1 + ft_strlen(delimiter + 1) + 1);
+        if (new_var == NULL) {
             perror("malloc failed");
             return;
         }
-        strncpy(name, input, name_length);
-        name[name_length] = '\0';
-        const char *value = delimiter + 1;
-        setenv(name, value, 1);
-        free(name);
+        strncpy(new_var, input, name_length);
+        new_var[name_length] = '=';
+        strcpy(new_var + name_length + 1, delimiter + 1);
+
+        size_t env_count = str_count(data->env);
+
+        char **new_env = calloc(env_count + 2, sizeof(char*));
+        if (new_env == NULL) {
+            perror("calloc failed");
+            free(new_var);
+            return;
+        }
+
+        for (size_t i = 0; i < env_count; i++) {
+            new_env[i] = data->env[i];
+        }
+
+        new_env[env_count] = new_var;
+
+        free(data->env);
+        data->env = new_env;
+
+        printf("Exported: %s\n", new_var);
     } else {
         printf("Usage: export NAME=VALUE\n");
     }

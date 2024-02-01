@@ -6,13 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 12:07:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:00:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	str_count(char **array)
+int	str_count(char **array)
 {
 	int	count;
 

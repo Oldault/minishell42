@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/01 12:04:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:04:03 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int						handle_builtin(t_mini *data, char *cmd);
 void					setup_signal_handlers(void);
 void					execute_commands(t_mini *data);
 char					*get_prompt(void);
+
+int						str_count(char **array);
 
 //*------------------------ Init ------------------------*//
 void					set_data_out(t_mini *data, char **env);
