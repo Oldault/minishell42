@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/01 13:04:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:29:08 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct
 {
 	char				*command_name;
 	void				(*func)(t_mini *);
-	;
 }						cmd_entry_t;
 
 typedef struct s_mini
@@ -68,12 +67,13 @@ typedef struct s_mini
 	int					out_fd;
 	char				*err;
 	redirs_t			*redir;
-	cmd_entry_t			*builtin_cmds;
+	cmd_entry_t			*bltn;
+	cmd_entry_t			*bltn_fork;
 }						t_mini;
 
 extern int				last_exit_status;
 
-int						handle_builtin(t_mini *data, char *cmd);
+int						handle_builtin(t_mini *data, char *cmd, cmd_entry_t *builtin);
 void					setup_signal_handlers(void);
 void					execute_commands(t_mini *data);
 char					*get_prompt(void);

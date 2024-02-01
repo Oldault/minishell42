@@ -6,16 +6,103 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:09:07 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 14:47:17 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:29:39 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*skip_echo_flags(char *input, int *newline)
+{
+	while (*input == ' ')
+		input++;
+	while (ft_strncmp(input, "-n", 2) == 0)
+	{
+		*newline = 0;
+		input += 2;
+		while (*input == 'n')
+			input++;
+		while (*input == ' ')
+			input++;
+	}
+	return (input);
+}
+
+char *strdup_spc(const char *src)
+{
+    const char *end = src;
+    
+    // Find the end of the substring (space or NULL terminator)
+    while (*end != ' ' && *end != '\0') {
+        end++;
+    }
+    // Calculate the length of the substring to copy
+    size_t length = end - src;
+
+    // Allocate memory for the new string (+1 for the NULL terminator)
+    char *dest = (char *)malloc(length + 1);
+    if (dest == NULL) {
+        perror("Failed to allocate memory");
+        return NULL; // Allocation failed
+    }
+
+    // Copy the substring to dest
+    for (size_t i = 0; i < length; i++) {
+        dest[i] = src[i];
+    }
+    dest[length] = '\0'; // Null-terminate the string
+
+    return dest;
+}
+
+char *get_env_value(char *var, char **env)
+{
+	char **splitted;
+	
+    for (int i = 0; env && env[i] != NULL; i++)
+	{
+		splitted = ft_split(env[i], '=');
+        if (!splitted)
+			return (NULL);
+        if (strcmp(var, splitted[0]) == 0)
+		{
+            return (splitted[1]);
+        }
+        free_double_array(splitted);
+    }
+    return (NULL);
+}
+
 void handle_echo(t_mini *data)
 {
-	(void)data;
-    printf("echo not yet implemented\n");
+	int		newline;
+	char	*input;
+	char	*name;
+	char	*value;
+
+	newline = 1;
+	input = skip_echo_flags(data->input + 5, &newline);
+	while (*input != '\0')
+	{
+		if (*input == '$')
+		{
+			if (*(input + 1) == '?')
+				printf("%d", last_exit_status);
+			name = strdup_spc(input + 1);
+			value = get_env_value(name, data->env);
+			if (value)
+				printf("%s", value);
+			input += ft_strlen(name) + 1;
+			free(name);
+		}
+		else
+			printf("%c", *input);
+		input++;
+	}
+	
+    printf("%s", input);
+	if (newline)
+		printf("\n");
 }
 
 void handle_cd(t_mini *data)
@@ -23,6 +110,7 @@ void handle_cd(t_mini *data)
 	char	*path;
 
 	path = data->cmds[0][1];
+	//printf("CD path = %s\n", path);
 	if (path == NULL || strcmp(path, "~") == 0)
 	{
 		path = getenv("HOME");
