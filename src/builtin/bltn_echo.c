@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:39:43 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 16:40:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:14:45 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*skip_echo_flags(char *input, int *newline)
 }
 
 
-static char *get_env_value(char *var, char **env)
+char *get_env_value(char *var, char **env)
 {
 	char **splitted;
 	

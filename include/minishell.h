@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/02 16:40:30 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:16:18 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void					handle_doll(t_mini *data);
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
 char 					*strdup_spc(const char *src);
+char 					*get_env_value(char *var, char **env);
 
 //*--------------------- Execution -----------------------*//
 void					apply_redirections(t_mini *data, int cmd_index);
@@ -107,7 +108,7 @@ void					execute_single_command(t_mini *data, int pipe_end,
 
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
-char					**parse_segment(char *segment, redirs_t *redirections);
+char					**parse_segment(t_mini *data, char *segment, redirs_t *redirections);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);

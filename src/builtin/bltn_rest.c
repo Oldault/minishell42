@@ -1,0 +1,105 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bltn_rest.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
+/*   Updated: 2024/02/02 16:45:36 by svolodin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void handle_cd(t_mini *data)
+{
+	char	*path;
+
+	path = data->cmds[0][1];
+	//printf("CD path = %s\n", path);
+	if (path == NULL || strcmp(path, "~") == 0)
+	{
+		path = getenv("HOME");
+		if (path == NULL)
+			ft_putendl_fd("cd: HOME not set", 2);
+	}
+	if (chdir(path) != 0)
+	{
+		printf("cd : no such file or directory\n");
+		last_exit_status = EXIT_FAILURE;
+		return ;
+	}
+	last_exit_status = EXIT_SUCCESS;
+}
+
+void handle_pwd(t_mini *data)
+{
+	char	cwd[1024];
+
+	(void)data;
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+		last_exit_status = EXIT_SUCCESS;
+	}
+	else
+	{
+		printf("pathname of current directory not found\n");
+		exit(127);
+	}
+}
+
+void handle_env(t_mini *data)
+{
+	char	**env;
+	int		i;
+
+	env = data->env;
+	i = -1;
+	while (env[++i])
+		printf("%s\n", env[i]);
+	last_exit_status = EXIT_SUCCESS;
+}
+
+void handle_exit(t_mini *data)
+{
+	(void)data;
+    exit(0);
+}
+
+void handle_doll(t_mini *data)
+{
+	(void)data;
+	printf("%d : command not found\n", last_exit_status);
+    last_exit_status = 127;
+}
+
+void handle_tilde(t_mini *data)
+{
+	char	*tilde;
+
+	tilde = data->cmds[0][0];
+	if (path_exists(tilde))
+		printf("bash: %s: Is a directory\n", tilde);
+	else
+		printf("bash: %s: No such file or directory\n", tilde);
+	free(tilde);
+	last_exit_status = EXIT_SUCCESS;
+}
+
+void	handle_hist(t_mini *data)
+{
+	int			i;
+	HIST_ENTRY	**list_hist;
+
+	(void)data;
+	i = -1;
+	list_hist = history_list();
+	if (list_hist)
+	{
+		while (list_hist[++i])
+			printf("%d: %s\n", i + 1, list_hist[i]->line);
+	}
+	last_exit_status = EXIT_SUCCESS;
+}
