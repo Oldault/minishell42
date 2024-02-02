@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/01 17:29:08 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:40:30 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct s_mini
 	char				*err;
 	redirs_t			*redir;
 	cmd_entry_t			*bltn;
-	cmd_entry_t			*bltn_fork;
 }						t_mini;
 
 extern int				last_exit_status;
@@ -98,6 +97,7 @@ void					handle_doll(t_mini *data);
 
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
+char 					*strdup_spc(const char *src);
 
 //*--------------------- Execution -----------------------*//
 void					apply_redirections(t_mini *data, int cmd_index);

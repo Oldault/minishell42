@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:25:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 12:26:53 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:39:10 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,24 @@ int	path_exists(const char *path)
 	struct stat	statbuf;
 
 	return (stat(path, &statbuf) == 0);
+}
+
+char *strdup_spc(const char *src)
+{
+    const char *end = src;
+    
+    while (*end != ' ' && *end != '\0') {
+        end++;
+    }
+    size_t length = end - src;
+    char *dest = (char *)malloc(length + 1);
+    if (dest == NULL) {
+        perror("Failed to allocate memory");
+        return NULL; 
+    }
+    for (size_t i = 0; i < length; i++) {
+        dest[i] = src[i];
+    }
+    dest[length] = '\0';
+    return dest;
 }

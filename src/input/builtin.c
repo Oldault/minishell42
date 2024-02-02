@@ -6,104 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:09:07 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 17:29:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:39:35 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*skip_echo_flags(char *input, int *newline)
-{
-	while (*input == ' ')
-		input++;
-	while (ft_strncmp(input, "-n", 2) == 0)
-	{
-		*newline = 0;
-		input += 2;
-		while (*input == 'n')
-			input++;
-		while (*input == ' ')
-			input++;
-	}
-	return (input);
-}
-
-char *strdup_spc(const char *src)
-{
-    const char *end = src;
-    
-    // Find the end of the substring (space or NULL terminator)
-    while (*end != ' ' && *end != '\0') {
-        end++;
-    }
-    // Calculate the length of the substring to copy
-    size_t length = end - src;
-
-    // Allocate memory for the new string (+1 for the NULL terminator)
-    char *dest = (char *)malloc(length + 1);
-    if (dest == NULL) {
-        perror("Failed to allocate memory");
-        return NULL; // Allocation failed
-    }
-
-    // Copy the substring to dest
-    for (size_t i = 0; i < length; i++) {
-        dest[i] = src[i];
-    }
-    dest[length] = '\0'; // Null-terminate the string
-
-    return dest;
-}
-
-char *get_env_value(char *var, char **env)
-{
-	char **splitted;
-	
-    for (int i = 0; env && env[i] != NULL; i++)
-	{
-		splitted = ft_split(env[i], '=');
-        if (!splitted)
-			return (NULL);
-        if (strcmp(var, splitted[0]) == 0)
-		{
-            return (splitted[1]);
-        }
-        free_double_array(splitted);
-    }
-    return (NULL);
-}
-
-void handle_echo(t_mini *data)
-{
-	int		newline;
-	char	*input;
-	char	*name;
-	char	*value;
-
-	newline = 1;
-	input = skip_echo_flags(data->input + 5, &newline);
-	while (*input != '\0')
-	{
-		if (*input == '$')
-		{
-			if (*(input + 1) == '?')
-				printf("%d", last_exit_status);
-			name = strdup_spc(input + 1);
-			value = get_env_value(name, data->env);
-			if (value)
-				printf("%s", value);
-			input += ft_strlen(name) + 1;
-			free(name);
-		}
-		else
-			printf("%c", *input);
-		input++;
-	}
-	
-    printf("%s", input);
-	if (newline)
-		printf("\n");
-}
 
 void handle_cd(t_mini *data)
 {
@@ -143,58 +50,126 @@ void handle_pwd(t_mini *data)
 	}
 }
 
-void handle_export(t_mini *data)
+char	**export_var(char *to_export, char **env)
 {
-    char *input = data->input + 7;
-    const char *delimiter = strchr(input, '=');
+	char *delimiter = ft_strchr(to_export, '=');
 	size_t name_length;
 
-    if (delimiter != NULL && delimiter != input)
+    if (delimiter != NULL && delimiter != to_export)
 	{
-        name_length = delimiter - input;
+        name_length = delimiter - to_export;
 
         char *new_var = malloc(name_length + 1 + ft_strlen(delimiter + 1) + 1);
         if (new_var == NULL) {
             perror("malloc failed");
-            return;
+            return (env);
         }
-        strncpy(new_var, input, name_length);
+        strncpy(new_var, to_export, name_length);
         new_var[name_length] = '=';
         strcpy(new_var + name_length + 1, delimiter + 1);
 
-        size_t env_count = str_count(data->env);
+        size_t env_count = str_count(env);
 
         char **new_env = calloc(env_count + 2, sizeof(char*));
         if (new_env == NULL) {
             perror("calloc failed");
             free(new_var);
-            return;
+            return (env);
         }
 
         for (size_t i = 0; i < env_count; i++) {
-            new_env[i] = data->env[i];
+            new_env[i] = env[i];
         }
 
         new_env[env_count] = new_var;
-
-        free(data->env);
-        data->env = new_env;
+        new_env[env_count + 1] = NULL;
 
         printf("Exported: %s\n", new_var);
+		return (new_env);
     } else {
         printf("Usage: export NAME=VALUE\n");
+		return (env);
     }
 }
 
-void handle_unset(t_mini *data)
+void handle_export(t_mini *data)
 {
-	char	*to_unset;
+	char	*to_export;
+	char	*input;
 	char	**env;
+	char	**new_env;
+
+	env = data->env;
+	input = data->input + 7;
+	while (*input != '\0' && *input != '|')
+	{
+		if (*input != ' ')
+		{
+			to_export = strdup_spc(input);
+			input += ft_strlen(to_export);
+			new_env = export_var(to_export, env);
+			if (new_env != env)
+			{
+				free(env);
+				env = new_env;
+			}
+			free(to_export);
+		}
+		input++;
+	}
+	data->env = env;
+}
+
+//todo add exit status
+// void handle_export(t_mini *data)
+// {
+//     char *input = data->input + 7;
+//     const char *delimiter = strchr(input, '=');
+// 	size_t name_length;
+
+//     if (delimiter != NULL && delimiter != input)
+// 	{
+//         name_length = delimiter - input;
+
+//         char *new_var = malloc(name_length + 1 + ft_strlen(delimiter + 1) + 1);
+//         if (new_var == NULL) {
+//             perror("malloc failed");
+//             return;
+//         }
+//         strncpy(new_var, input, name_length);
+//         new_var[name_length] = '=';
+//         strcpy(new_var + name_length + 1, delimiter + 1);
+
+//         size_t env_count = str_count(data->env);
+
+//         char **new_env = calloc(env_count + 2, sizeof(char*));
+//         if (new_env == NULL) {
+//             perror("calloc failed");
+//             free(new_var);
+//             return;
+//         }
+
+//         for (size_t i = 0; i < env_count; i++) {
+//             new_env[i] = data->env[i];
+//         }
+
+//         new_env[env_count] = new_var;
+
+//         free(data->env);
+//         data->env = new_env;
+
+//         printf("Exported: %s\n", new_var);
+//     } else {
+//         printf("Usage: export NAME=VALUE\n");
+//     }
+// }
+
+//todo add exit status
+void	unset_var(char *to_unset, char **env)
+{
 	char	*temp;
 	int		i;
 
-	to_unset = data->cmds[0][1];
-	env = data->env;
 	i = -1;
 	while (env[++i] != NULL)
 	{
@@ -211,6 +186,27 @@ void handle_unset(t_mini *data)
 			break ;
 		}
 		free(temp);
+	}
+}
+
+void handle_unset(t_mini *data)
+{
+	char	*to_unset;
+	char	*input;
+	char	**env;
+
+	env = data->env;
+	input = data->input + 6;
+	while (*input != '\0' && *input != '|')
+	{
+		if (*input != ' ')
+		{
+			to_unset = strdup_spc(input);
+			input += ft_strlen(to_unset);
+			unset_var(to_unset, env);
+			free(to_unset);
+		}
+		input++;
 	}
 }
 

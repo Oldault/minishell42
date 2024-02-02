@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 17:26:24 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:03:08 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	execute_commands(t_mini *data)
 
 	if (data->cmds == NULL || data->cmds[0] == NULL || data->cmds[0][0] == NULL)
 		return ;
-	if (handle_builtin(data, data->cmds[0][0], data->bltn))
-		return ;
 	num_cmds = count_commands(data->cmds);
+	if (num_cmds == 1 && handle_builtin(data, data->cmds[0][0], data->bltn))
+		return ;
 	child_pids = malloc(num_cmds * sizeof(pid_t));
 	if (!child_pids)
 		perror_exit("malloc");
