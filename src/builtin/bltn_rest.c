@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 16:45:36 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 09:14:03 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void handle_cd(t_mini *data)
 	char	*path;
 
 	path = data->cmds[0][1];
-	//printf("CD path = %s\n", path);
 	if (path == NULL || strcmp(path, "~") == 0)
 	{
 		path = getenv("HOME");
@@ -73,19 +72,6 @@ void handle_doll(t_mini *data)
 	(void)data;
 	printf("%d : command not found\n", last_exit_status);
     last_exit_status = 127;
-}
-
-void handle_tilde(t_mini *data)
-{
-	char	*tilde;
-
-	tilde = data->cmds[0][0];
-	if (path_exists(tilde))
-		printf("bash: %s: Is a directory\n", tilde);
-	else
-		printf("bash: %s: No such file or directory\n", tilde);
-	free(tilde);
-	last_exit_status = EXIT_SUCCESS;
 }
 
 void	handle_hist(t_mini *data)

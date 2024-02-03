@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/31 17:26:23 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:45:43 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 	printf("\n%s", get_prompt());
+	// close(STDIN_FILENO);
 }
 
 void	setup_signal_handlers(void)

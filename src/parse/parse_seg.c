@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:20 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 18:42:34 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 15:07:18 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ char *ensure_capacity(char *result, int current_len, int needed_len, int *chunk_
     return result;
 }
 
-char *expand_doll(char *str, char **env) {
+char *expand_doll(char *str, char **env)
+{
     int chunk_size = 1024;
     char *result = (char *)calloc(1, chunk_size);
     if (!result) return NULL;
@@ -125,16 +126,23 @@ char *expand_doll(char *str, char **env) {
             result[result_len++] = *str++;
         }
     }
-    result[result_len] = '\0'; // Null-terminate the result string.
+    result[result_len] = '\0';
 
     char *final_result = (char *)malloc(result_len + 1);
     if (final_result) {
         strcpy(final_result, result);
     }
     free(result);
-
-    return final_result;
+    return (final_result);
 }
+
+// char	*quotes_and_doll(char *str, char **env)
+// {
+//     int chunk_size = 1024;
+//     char *result = (char *)calloc(1, chunk_size);
+//     if (!result) return NULL;
+// }
+
 
 char	**parse_segment(t_mini *data, char *segment, redirs_t *redirections)
 {

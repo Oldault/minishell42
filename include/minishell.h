@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/02 17:16:18 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 14:47:03 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ void					handle_export(t_mini *data);
 void					handle_unset(t_mini *data);
 void					handle_env(t_mini *data);
 void					handle_exit(t_mini *data);
-void					handle_tilde(t_mini *data);
 void					handle_hist(t_mini *data);
 void					handle_doll(t_mini *data);
 
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
 char 					*strdup_spc(const char *src);
+char 					*strdup_alpha(const char *src);
 char 					*get_env_value(char *var, char **env);
 
 //*--------------------- Execution -----------------------*//

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 15:00:31 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 09:12:29 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	**get_env(char **env)
 
 static void	initialize_commands(t_mini *data)
 {
-	data->bltn = malloc(sizeof(cmd_entry_t) * 11);
+	data->bltn = malloc(sizeof(cmd_entry_t) * 10);
 
 	data->bltn[0] = (cmd_entry_t){"echo", handle_echo};
 	data->bltn[1] = (cmd_entry_t){"cd", handle_cd};
@@ -51,10 +51,9 @@ static void	initialize_commands(t_mini *data)
 	data->bltn[4] = (cmd_entry_t){"unset", handle_unset};
 	data->bltn[5] = (cmd_entry_t){"env", handle_env};
 	data->bltn[6] = (cmd_entry_t){"exit", handle_exit};
-	data->bltn[7] = (cmd_entry_t){"~", handle_tilde};
-	data->bltn[8] = (cmd_entry_t){"history", handle_hist};
-	data->bltn[9] = (cmd_entry_t){"$?", handle_doll};
-	data->bltn[10] = (cmd_entry_t){NULL, NULL};
+	data->bltn[7] = (cmd_entry_t){"history", handle_hist};
+	data->bltn[8] = (cmd_entry_t){"$?", handle_doll};
+	data->bltn[9] = (cmd_entry_t){NULL, NULL};
 }
 
 void	set_data_out(t_mini *data, char **env)
