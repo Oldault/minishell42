@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 09:12:29 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:10:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	initialize_commands(t_mini *data)
 
 void	set_data_out(t_mini *data, char **env)
 {
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &ft_signal);
 	data->env = get_env(env);
 	initialize_commands(data);
 }

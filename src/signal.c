@@ -6,30 +6,29 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 15:45:43 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:35:07 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_sigint(int sig)
+void	ft_signal_fork(int num)
 {
-	(void)sig;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	printf("\n%s", get_prompt());
-	// close(STDIN_FILENO);
+	if (num == SIGINT)
+		exit(130);
+	if (num == SIGQUIT)
+		exit(131);
 }
 
-void	setup_signal_handlers(void)
+void	ft_signal(int signal)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = handle_sigint;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sa, NULL);
+	if (signal == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		last_exit_status = 1;
+	}
 }
+

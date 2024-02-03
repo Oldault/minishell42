@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/03 14:47:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:35:20 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ typedef struct s_mini
 extern int				last_exit_status;
 
 int						handle_builtin(t_mini *data, char *cmd, cmd_entry_t *builtin);
-void					setup_signal_handlers(void);
+
+void					ft_signal_fork(int num);
+void					ft_signal(int signal);
+
 void					execute_commands(t_mini *data);
 char					*get_prompt(void);
 

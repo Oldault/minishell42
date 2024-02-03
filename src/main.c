@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 17:31:45 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:03:25 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 	t_mini	data;
 
 	(void)ac, (void)av;
-	setup_signal_handlers();
+	//setup_signal_handlers();
 	set_data_out(&data, env);
 	while (42)
 	{

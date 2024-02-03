@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 15:03:08 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:25:10 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	execute_commands(t_mini *data)
         else
             last_exit_status = 127;
     }
-
+	signal(SIGINT, &ft_signal);
     free(child_pids);
 }
 
