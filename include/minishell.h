@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/04 12:17:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:23:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void					execute_single_command(t_mini *data, int pipe_end,
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
 char					**parse_segment(t_mini *data, char *segment, redirs_t *redirections);
+char					**parse_command_segment(char *segment, char **env);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);
