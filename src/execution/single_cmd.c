@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 17:25:28 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:26:52 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
 	pid = fork();
 	if (pid == 0)
 	{
+        signal(SIGINT, &ft_signal_fork);
+		signal(SIGQUIT, &ft_signal_fork);
         handle_input_redir(data, pipe_end);
         handle_output_redir(data, pipe_fds, i, num_cmds);
         //ft_printf("%s⇒ NOT BUILTIN%s\n", RED, COLOR_RESET);
-        if (handle_builtin(data, data->cmds[i][0], data->bltn_fork))
+        if (handle_builtin(data, data->cmds[i][0], data->bltn))
         {
             exit(EXIT_SUCCESS);
         }
@@ -63,4 +65,5 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
         child_pids[i] = pid;
     else
         perror_exit("fork");
+    signal(SIGINT, SIG_IGN);
 }

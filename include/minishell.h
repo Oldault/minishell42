@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/01 17:29:08 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 12:17:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define GREEN "\x1B[32m"
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
+
+#define MAX_ENV_VARS 100
 
 typedef enum
 {
@@ -68,17 +70,19 @@ typedef struct s_mini
 	char				*err;
 	redirs_t			*redir;
 	cmd_entry_t			*bltn;
-	cmd_entry_t			*bltn_fork;
 }						t_mini;
 
 extern int				last_exit_status;
 
 int						handle_builtin(t_mini *data, char *cmd, cmd_entry_t *builtin);
-void					setup_signal_handlers(void);
+
+void					ft_signal_fork(int num);
+void					ft_signal(int signal);
+
 void					execute_commands(t_mini *data);
 char					*get_prompt(void);
 
-int						str_count(char **array);
+int						dbl_arr_len(char **arr);
 
 //*------------------------ Init ------------------------*//
 void					set_data_out(t_mini *data, char **env);
@@ -92,12 +96,14 @@ void					handle_export(t_mini *data);
 void					handle_unset(t_mini *data);
 void					handle_env(t_mini *data);
 void					handle_exit(t_mini *data);
-void					handle_tilde(t_mini *data);
 void					handle_hist(t_mini *data);
 void					handle_doll(t_mini *data);
 
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
+char 					*strdup_spc(const char *src);
+char 					*strdup_alpha(const char *src);
+char 					*get_env_value(char *var, char **env);
 
 //*--------------------- Execution -----------------------*//
 void					apply_redirections(t_mini *data, int cmd_index);
@@ -107,7 +113,7 @@ void					execute_single_command(t_mini *data, int pipe_end,
 
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
-char					**parse_segment(char *segment, redirs_t *redirections);
+char					**parse_segment(t_mini *data, char *segment, redirs_t *redirections);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);

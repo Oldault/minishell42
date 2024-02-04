@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 11:35:12 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:22:37 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void	free_resources(char **segments, char ***cmd_arr, redirs_t *redir_arr,
 	free(redir_arr);
 }
 
-int	process_segments(char **segs, char ***cmds, redirs_t *r_arr, int seg_num)
+int	process_segments(t_mini *data, char **segs, char ***cmds, redirs_t *r_arr, int seg_num)
 {
 	int	i;
 
 	i = -1;
 	while (++i < seg_num)
 	{
-		cmds[i] = parse_segment(segs[i], &r_arr[i]);
+		cmds[i] = parse_segment(data, segs[i], &r_arr[i]);
 		if (cmds[i] == NULL)
 			return (free_resources(segs, cmds, r_arr, i), -1);
 	}
@@ -80,7 +80,7 @@ int	parse(t_mini *data)
 	seg_num = dbl_arr_len(segments);
 	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
 		return (free_double_array(segments), -1);
-	if (process_segments(segments, cmd_arr, redir_arr, seg_num) != 0)
+	if (process_segments(data, segments, cmd_arr, redir_arr, seg_num) != 0)
 		return (-1);
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
