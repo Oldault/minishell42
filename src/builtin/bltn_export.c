@@ -6,78 +6,134 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 14:50:15 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 12:28:25 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**export_var(char *to_export, char **env)
+int	quote_error(char *input)
 {
-	char *delimiter = ft_strchr(to_export, '=');
-	size_t name_length;
-
-    if (delimiter != NULL && delimiter != to_export)
+	while (*input)
 	{
-        name_length = delimiter - to_export;
-
-        char *new_var = malloc(name_length + 1 + ft_strlen(delimiter + 1) + 1);
-        if (new_var == NULL) {
-            perror("malloc failed");
-            return (env);
-        }
-        strncpy(new_var, to_export, name_length);
-        new_var[name_length] = '=';
-        strcpy(new_var + name_length + 1, delimiter + 1);
-
-        size_t env_count = str_count(env);
-
-        char **new_env = calloc(env_count + 2, sizeof(char*));
-        if (new_env == NULL) {
-            perror("calloc failed");
-            free(new_var);
-            return (env);
-        }
-
-        for (size_t i = 0; i < env_count; i++) {
-            new_env[i] = env[i];
-        }
-
-        new_env[env_count] = new_var;
-        new_env[env_count + 1] = NULL;
-
-        printf("Exported: %s\n", new_var);
-		return (new_env);
-    } else {
-        printf("Usage: export NAME=VALUE\n");
-		return (env);
-    }
+		if (*input == '\"')
+			return (0);
+		input++;
+	}
+	return (1);
 }
 
-void handle_export(t_mini *data)
+char	*find_name(char *input)
 {
-	char	*to_export;
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '=')
+			return (strndup(input, i));
+		i++;
+	}
+	return (NULL);
+}
+
+char	*find_value(char *input)
+{
+	int	i;
+
+	i = 0;
+	if (input[i] == '\"')
+	{
+		input++;
+		if (quote_error(input))
+			return (printf("Quote error\n"), NULL);
+		while (input[i] && input[i] != '\"')
+			i++;
+		return (strndup(input, i));
+	}
+	while (input[i] && input[i] != ' ' && input[i] != '\0' && input[i] != '|')
+		i++;
+	return (strndup(input, i));
+}
+
+void	export_to_env(char *name, char *value, char **env, int max_env_size)
+{
+	size_t	name_len;
+	char	*new_var;
+
+	name_len = ft_strlen(name);
+	new_var = malloc(name_len + ft_strlen(value) + 2);
+	if (new_var == NULL)
+	{
+		ft_putstr_fd("Error creating new env var\n", 2);
+		return ;
+	}
+	strcpy(new_var, name);
+	strcat(new_var, "=");
+	strcat(new_var, value);
+	for (int i = 0; i < max_env_size; i++)
+	{
+		if (env[i] == NULL)
+		{
+			env[i] = new_var;
+			return ;
+		}
+		else if (strncmp(env[i], name, name_len) == 0
+			&& env[i][name_len] == '=')
+		{
+			free(env[i]);
+			env[i] = new_var;
+			return ;
+		}
+	}
+	ft_putstr_fd("Error : env is full\n", 2);
+	free(new_var);
+}
+
+void	handle_export(t_mini *data)
+{
 	char	*input;
 	char	**env;
-	char	**new_env;
+	char	*name;
+	char	*value;
 
 	env = data->env;
 	input = data->input + 7;
-	while (*input != '\0' && *input != '|')
+	name = NULL;
+	value = NULL;
+	while (*input)
 	{
-		if (*input != ' ')
+		while (*input == ' ')
+			input++;
+		if (*input == '\0' || *input == '|')
+			break ;
+		name = find_name(input);
+		if (!name)
 		{
-			to_export = strdup_spc(input);
-			input += ft_strlen(to_export);
-			new_env = export_var(to_export, env);
-			if (new_env != env)
-			{
-				free(env);
-				env = new_env;
-			}
-			free(to_export);
+			printf("Error: Problem getting name\n");
+			return ;
 		}
-		input++;
+		input += ft_strlen(name) + 1;
+		if (*input)
+		{
+			value = find_value(input);
+			if (!value)
+			{
+				printf("Error: Problem getting value\n");
+				free(name);
+				return ;
+			}
+			if (*input == '\"')
+				input += strlen(value) + 2;
+			else
+				input += strlen(value);
+		}
+		if (name && value)
+			export_to_env(name, value, data->env, MAX_ENV_VARS);
+		if (value)
+			free(value);
+		free(name);
+		while (*input == ' ')
+			input++;
 	}
-	data->env = env;
 }

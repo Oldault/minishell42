@@ -6,24 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 16:10:40 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 12:17:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	str_count(char **array)
-{
-	int	count;
-
-	count = 0;
-	while (*array)
-	{
-		count++;
-		array++;
-	}
-	return (count);
-}
 
 static char	**get_env(char **env)
 {
@@ -31,19 +18,30 @@ static char	**get_env(char **env)
 	char	**new_env;
 	int		i;
 
-	env_vars = str_count(env);
-	new_env = (char **)malloc(sizeof(char *) * (env_vars + 1));
+	env_vars = dbl_arr_len(env);
+	new_env = (char **)malloc(sizeof(char *) * MAX_ENV_VARS);
+	if (!new_env)
+		return (perror("malloc failed"), NULL);
 	i = -1;
 	while (++i < env_vars)
+	{
 		new_env[i] = ft_strdup(env[i]);
-	new_env[i] = NULL;
+		if (!new_env[i])
+		{
+			while (--i >= 0)
+				free(new_env[i]);
+			free(new_env);
+			return (NULL);
+		}
+	}
+	while(i < MAX_ENV_VARS)
+		new_env[i++] = NULL;
 	return (new_env);
 }
 
 static void	initialize_commands(t_mini *data)
 {
 	data->bltn = malloc(sizeof(cmd_entry_t) * 10);
-
 	data->bltn[0] = (cmd_entry_t){"echo", handle_echo};
 	data->bltn[1] = (cmd_entry_t){"cd", handle_cd};
 	data->bltn[2] = (cmd_entry_t){"pwd", handle_pwd};

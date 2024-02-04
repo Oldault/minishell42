@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:56:27 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/23 07:47:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 11:27:37 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
+void				*ft_realloc(void *ptr, size_t newsize);
 // ft_printf
 int					ft_printf(const char *s, ...);
 int					pf_putchar(char c);

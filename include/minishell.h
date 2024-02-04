@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/03 16:35:20 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 12:17:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define GREEN "\x1B[32m"
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
+
+#define MAX_ENV_VARS 100
 
 typedef enum
 {
@@ -80,7 +82,7 @@ void					ft_signal(int signal);
 void					execute_commands(t_mini *data);
 char					*get_prompt(void);
 
-int						str_count(char **array);
+int						dbl_arr_len(char **arr);
 
 //*------------------------ Init ------------------------*//
 void					set_data_out(t_mini *data, char **env);
