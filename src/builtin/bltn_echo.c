@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:39:43 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 15:23:19 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:34:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,22 @@ char	*expand_env_variable(char **input_ptr, char **env)
 	if (*input == '$')
 	{
 		if (*(input + 1) == '\0')
-			return (*input_ptr += 1, NULL);
+			return (NULL);
 		input++;
 		if (*input == '?')
 			return (*input_ptr += 2, ft_itoa(last_exit_status));
 		name = strdup_alpha(input);
 		if (*name == '\0')
-			return (free(name), *input_ptr += 1, NULL);
+			return (free(name), NULL);
 		value = get_env_value(name, env);
 		if (value)
 		{
 			result = ft_strdup(value);
 			free(value);
+			*input_ptr += (ft_strlen(name) + 1);
 		}
 		else
 			result = NULL;
-		*input_ptr += (ft_strlen(name) + 1);
 		free(name);
 		return (result);
 	}
@@ -131,7 +131,11 @@ void	handle_expand(char **input, char **env)
 		free(expanded);
 	}
 	else
+	{
 		printf("$");
+		if (*(input + 1))
+			*input += 1;
+	}
 }
 
 char	*handle_double_quotes(char **input_ptr, char **env)
