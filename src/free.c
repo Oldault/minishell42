@@ -18,7 +18,7 @@ void	free_double_array(char **array)
 
 	i = -1;
 	if (array == NULL)
-        return;
+		return ;
 	while (array[++i])
 		free(array[i]);
 	free(array);
@@ -43,30 +43,31 @@ void	free_cmds(char ****cmds)
 	int	j;
 
 	i = -1;
-    if (cmds == NULL || *cmds == NULL)
-        return ;
-    while ((*cmds)[++i] != NULL)
-    {
+	if (cmds == NULL || *cmds == NULL)
+		return ;
+	while ((*cmds)[++i] != NULL)
+	{
 		j = -1;
-        while ((*cmds)[i][++j] != NULL)
-        {
-            free((*cmds)[i][j]);
-            (*cmds)[i][j] = NULL;
-        }
-        free((*cmds)[i]);
-        (*cmds)[i] = NULL;
-    }
-    free(*cmds);
-    *cmds = NULL;
+		while ((*cmds)[i][++j] != NULL)
+		{
+			free((*cmds)[i][j]);
+			(*cmds)[i][j] = NULL;
+		}
+		free((*cmds)[i]);
+		(*cmds)[i] = NULL;
+	}
+	free(*cmds);
+	*cmds = NULL;
 }
 
 void	free_mini(t_mini *data)
 {
+	free(data->input);
 	free(data->prompt);
-	free_double_array(data->paths);
 	free_double_array(data->env);
-	
-	if (data->redir != NULL)
+	free_double_array(data->paths);
+	free_cmds(&data->cmds);
+	if (data->redir)
 	{
 		for (int i = 0; i < data->redir->count; i++)
 		{
@@ -75,6 +76,9 @@ void	free_mini(t_mini *data)
 		free(data->redir->redirs);
 		free(data->redir);
 	}
+	free(data->bltn);
+	free(data->err);
+	free(data);
 }
 
 void	free_redir_array(t_redirs *redirections)

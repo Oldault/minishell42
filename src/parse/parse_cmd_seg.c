@@ -87,13 +87,12 @@ int	ft_isalnum_quest(int c)
 int	handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
 {
     char    var_name[256];
-    int     var_len = 0;
+    size_t     var_len = 0;
     char    *expanded_value;
     size_t  segment_len = strlen(segment);
 
     if (pdata->c == '$' && pdata->should_expand)
     {
-        int start_i = *i;
         (*i)++;
         while (segment[*i] && (ft_isalnum_quest(segment[*i]) || segment[*i] == '_') && var_len < 255)
         {

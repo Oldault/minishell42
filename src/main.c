@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int last_exit_status = 0;
+int	last_exit_status = 0;
 
 int	main(int ac, char **av, char **env)
 {
@@ -20,22 +20,31 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac, (void)av;
 	data = malloc(sizeof(t_mini));
+	if (data == NULL)
+		return (EXIT_FAILURE);
+	*data = (t_mini){0};
 	set_data_out(data, env);
 	while (42)
 	{
 		set_data_in(data);
 		if (!data->input)
-			return (-1);
+			break ;
 		if (strcmp(data->input, "") == 0)
 		{
 			free(data->input);
 			continue ;
 		}
+		if (strcmp(data->input, "exit") == 0)
+		{
+			free_mini(data);    // Free all allocated resources
+			rl_clear_history(); // If using readline
+			exit(EXIT_SUCCESS); // Exit the program
+		}
 		if (data->input)
 			add_history(data->input);
-    	parse(data);
+		parse(data);
 		print_3d_arr(data->cmds, 1);
-		//print_redir_blue(data);
+		// print_redir_blue(data);
 		execute_commands(data);
 		free(data->input);
 		free_cmds(&data->cmds);
