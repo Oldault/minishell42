@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 11:56:52 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:43:17 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,30 +79,54 @@ int	handle_space(t_parse_seg *pdata)
 	return (0);
 }
 
+int	ft_isalnum_quest(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c) || c == '?');
+}
+
 int	handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
 {
-	char	var_name[256];
-	int		var_len;
-	char	*expanded_value;
+    char    var_name[256];
+    int     var_len = 0;
+    char    *expanded_value;
+    size_t  segment_len = strlen(segment);
 
-	var_len = 0;
-	if (pdata->c == '$' && pdata->should_expand)
-	{
-		(*i)++;
-		while (segment[*i] && (ft_isalnum(segment[*i]) || segment[*i] == '_'))
-		{
-			var_name[var_len++] = segment[(*i)++];
-		}
-		var_name[var_len] = '\0';
-		expanded_value = expand_variable(var_name, env, pdata->should_expand);
-		strcpy(pdata->current_arg + pdata->current_length, expanded_value);
-		pdata->current_length += strlen(expanded_value);
-		free(expanded_value);
-		(*i)--;
-		return (1);
-	}
-	return (0);
+    if (pdata->c == '$' && pdata->should_expand)
+    {
+        int start_i = *i;
+        (*i)++;
+        while (segment[*i] && (ft_isalnum_quest(segment[*i]) || segment[*i] == '_') && var_len < 255)
+        {
+            var_name[var_len++] = segment[(*i)++];
+        }
+        var_name[var_len] = '\0';
+
+        expanded_value = expand_variable(var_name, env, pdata->should_expand);
+        if (expanded_value)
+        {
+            size_t space_needed = ft_strlen(expanded_value);
+            if (pdata->current_length + space_needed < segment_len)
+            {
+                strcpy(pdata->current_arg + pdata->current_length, expanded_value);
+                pdata->current_length += space_needed;
+            }
+            free(expanded_value);
+        }
+        else
+        {
+            if (pdata->current_length + var_len + 1 < segment_len)
+            {
+                pdata->current_arg[pdata->current_length++] = '$';
+                strncpy(pdata->current_arg + pdata->current_length, var_name, var_len);
+                pdata->current_length += var_len;
+            }
+        }
+        pdata->current_arg[pdata->current_length] = '\0';
+        return (1);
+    }
+    return (0);
 }
+
 
 char	**parse_command_segment(char *segment, char **env)
 {

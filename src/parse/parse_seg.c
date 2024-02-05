@@ -6,33 +6,31 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:20 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 11:18:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:12:30 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	init_segment_parsing(char ***cmd, redirs_t *redirections,
+static int	init_segment_parsing(char ***cmd, t_redirs *redirections,
 		char **words, int cmd_len)
 {
 	int	max_redirs;
 
 	max_redirs = 10;
-	*cmd = (char **)malloc((cmd_len + 1) * sizeof(char *));
-	redirections->redirs = (redir_t *)malloc(max_redirs * sizeof(redir_t));
-	redirections->count = 0;
-	if (*cmd == NULL || redirections->redirs == NULL)
-	{
-		if (*cmd != NULL)
-			free(*cmd);
-		if (redirections->redirs != NULL)
-			free(redirections->redirs);
+	*cmd = (char **)ft_calloc((cmd_len + 1), sizeof(char *));
+	if (*cmd == NULL)
 		return (free_double_array(words), -1);
-	}
+	redirections->redirs = (t_rdr *)ft_calloc(max_redirs, sizeof(t_rdr));
+	if (redirections->redirs == NULL)
+		return (free_double_array(words), -1);
+	redirections->redirs->filename = NULL;
+	redirections->redirs->type = REDIR_NONE;
+	redirections->count = 0;
 	return (0);
 }
 
-static void	process_redirection(redir_t *redir, char **words, int *i)
+static void	process_redirection(t_rdr *redir, char **words, int *i)
 {
 	if (redir_start(words[*i]) && !redir_symb(words[*i]))
 		redir_split(words[*i], redir);
@@ -50,7 +48,7 @@ static void	process_redirection(redir_t *redir, char **words, int *i)
 }
 
 static void	process_segment_parts(char **words, char ***cmd,
-		redirs_t *redirections)
+		t_redirs *redirections)
 {
 	int	i;
 	int	j;
@@ -67,7 +65,7 @@ static void	process_segment_parts(char **words, char ***cmd,
 			k++;
 		}
 		else
-			(*cmd)[j++] = strdup(words[i]);
+			(*cmd)[j++] = ft_strdup(words[i]);
 	}
 	redirections->count = k;
 	(*cmd)[j] = NULL;
@@ -83,7 +81,7 @@ int var_name_length(char *input)
     return len;
 }
 
-char	**parse_segment(t_mini *data, char *segment, redirs_t *redirections)
+char	**parse_segment(t_mini *data, char *segment, t_redirs *redirections)
 {
 	char	**words;
 	char	**cmd;

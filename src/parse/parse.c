@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 17:22:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:13:56 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	dbl_arr_len(char **arr)
 	return (count);
 }
 
-int	initialize_arrays(char ****cmd_arr, redirs_t **redir_arr, int seg_num)
+int	initialize_arrays(char ****cmd_arr, t_redirs **redir_arr, int seg_num)
 {
 	*cmd_arr = (char ***)malloc((seg_num + 1) * sizeof(char **));
-	*redir_arr = (redirs_t *)malloc((seg_num + 1) * sizeof(redirs_t));
+	*redir_arr = (t_redirs *)malloc((seg_num + 1) * sizeof(t_redirs));
 	if (*cmd_arr == NULL || *redir_arr == NULL)
 	{
 		if (*cmd_arr != NULL)
@@ -37,7 +37,7 @@ int	initialize_arrays(char ****cmd_arr, redirs_t **redir_arr, int seg_num)
 	return (0);
 }
 
-void	free_resources(char **segments, char ***cmd_arr, redirs_t *redir_arr,
+void	free_resources(char **segments, char ***cmd_arr, t_redirs *redir_arr,
 		int i)
 {
 	int	j;
@@ -53,7 +53,7 @@ void	free_resources(char **segments, char ***cmd_arr, redirs_t *redir_arr,
 	free(redir_arr);
 }
 
-int	process_segments(t_mini *data, char **segs, char ***cmds, redirs_t *r_arr, int seg_num)
+int	process_segments(t_mini *data, char **segs, char ***cmds, t_redirs *r_arr, int seg_num)
 {
 	int	i;
 
@@ -69,7 +69,7 @@ int	process_segments(t_mini *data, char **segs, char ***cmds, redirs_t *r_arr, i
 
 int	parse(t_mini *data)
 {
-	redirs_t	*redir_arr;
+	t_redirs	*redir_arr;
 	char		***cmd_arr;
 	char		**segments;
 	int			seg_num;

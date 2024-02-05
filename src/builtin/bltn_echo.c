@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:39:43 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/04 10:10:26 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:23:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,22 @@ static char	*skip_echo_flags(char *input, int *newline)
 char	*get_env_value(char *var, char **env)
 {
 	char	**splitted;
+	char	*value;
 	int		i;
 
 	i = -1;
+	value = NULL;
 	while (env && env[++i] != NULL)
 	{
 		splitted = ft_split(env[i], '=');
 		if (!splitted)
 			return (NULL);
 		if (strcmp(var, splitted[0]) == 0)
-			return (splitted[1]);
+		{
+			value = ft_strdup(splitted[1]);
+			free_double_array(splitted);
+			return (value);
+		}
 		free_double_array(splitted);
 	}
 	return (NULL);
@@ -78,17 +84,22 @@ char	*expand_env_variable(char **input_ptr, char **env)
 	input = *input_ptr;
 	if (*input == '$')
 	{
+		if (*(input + 1) == '\0')
+			return (*input_ptr += 1, NULL);
 		input++;
 		if (*input == '?')
 			return (*input_ptr += 2, ft_itoa(last_exit_status));
 		name = strdup_alpha(input);
-		if (name == NULL)
-			return (NULL);
+		if (*name == '\0')
+			return (free(name), *input_ptr += 1, NULL);
 		value = get_env_value(name, env);
 		if (value)
-			result = strdup(value);
+		{
+			result = ft_strdup(value);
+			free(value);
+		}
 		else
-			result = strdup("");
+			result = NULL;
 		*input_ptr += (ft_strlen(name) + 1);
 		free(name);
 		return (result);
@@ -109,23 +120,29 @@ char	*handle_single_quotes(char **input_ptr)
 	return (input);
 }
 
-char	*handle_double_quotes(char **input_ptr, char **env)
+void	handle_expand(char **input, char **env)
 {
 	char	*expanded;
+
+	expanded = expand_env_variable(input, env);
+	if (expanded)
+	{
+		printf("%s", expanded);
+		free(expanded);
+	}
+	else
+		printf("$");
+}
+
+char	*handle_double_quotes(char **input_ptr, char **env)
+{
 	char	*input;
 
 	input = *input_ptr + 1;
 	while (*input && *input != '"')
 	{
 		if (*input == '$')
-		{
-			expanded = expand_env_variable(&input, env);
-			if (expanded)
-			{
-				printf("%s", expanded);
-				free(expanded);
-			}
-		}
+			handle_expand(&input, env);
 		else
 			printf("%c", *input++);
 	}
@@ -138,21 +155,13 @@ char	*handle_double_quotes(char **input_ptr, char **env)
 char	*handle_unquoted_text(char **input_ptr, char **env)
 {
 	char	*input;
-	char	*expanded;
 
 	input = *input_ptr;
 	while (*input && *input != '"' && *input != '\'' && *input != '|'
 		&& *input != '\0')
 	{
 		if (*input == '$')
-		{
-			expanded = expand_env_variable(&input, env);
-			if (expanded)
-			{
-				printf("%s", expanded);
-				free(expanded);
-			}
-		}
+			handle_expand(&input, env);
 		else
 			printf("%c", *input++);
 	}

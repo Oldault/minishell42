@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 16:35:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:13:55 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static void	redir_append(t_mini *data, char *filename)
 
 void	apply_redirections(t_mini *data, int cmd_index)
 {
-	redirs_t	redirs;
-	redir_t		redir;
+	t_redirs	redirs;
+	t_rdr		redir;
 
 	redirs = data->redir[cmd_index];
 	for (int i = 0; i < redirs.count; ++i)

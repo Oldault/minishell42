@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/29 15:26:46 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:05:35 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,20 @@ void	free_mini(t_mini *data)
 {
 	free(data->prompt);
 	free_double_array(data->paths);
+	free_double_array(data->env);
+	
+	if (data->redir != NULL)
+	{
+		for (int i = 0; i < data->redir->count; i++)
+		{
+			free(data->redir->redirs[i].filename);
+		}
+		free(data->redir->redirs);
+		free(data->redir);
+	}
 }
 
-void	free_redir_array(redirs_t *redirections)
+void	free_redir_array(t_redirs *redirections)
 {
 	int	i;
 

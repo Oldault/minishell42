@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:25:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/04 10:20:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:50:56 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ char *strdup_alpha(const char *src)
 {
     const char *end = src;
     
-    while (ft_isalpha(*end) && *end != '\0') {
+    while (*end && ft_isalpha(*end))
+    {
         end++;
     }
     size_t length = end - src;
@@ -75,5 +76,5 @@ char *strdup_alpha(const char *src)
         dest[i] = src[i];
     }
     dest[length] = '\0';
-    return dest;
+    return (dest);
 }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:36:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 11:59:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:13:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	get_cmd_len(char **words)
 	return (cmd_len);
 }
 
-void	redir_split(char *word, redir_t *redirection)
+void	redir_split(char *word, t_rdr *redirection)
 {
 	char	*symbol;
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:43:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/02 16:46:01 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:45:56 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,30 @@ static void	unset_var(char *to_unset, char **env)
 	}
 }
 
-void handle_unset(t_mini *data)
+void	handle_unset(t_mini *data)
 {
 	char	*to_unset;
 	char	*input;
 	char	**env;
+	char	*temp_input;
 
 	env = data->env;
-	input = data->input + 6;
+	input = data->input + 5;
 	while (*input != '\0' && *input != '|')
 	{
-		if (*input != ' ')
+		if (*input == ' ')
 		{
-			to_unset = strdup_spc(input);
-			input += ft_strlen(to_unset);
-			unset_var(to_unset, env);
-			free(to_unset);
+			input++;
+			continue ;
 		}
-		input++;
+		to_unset = strdup_spc(input);
+		temp_input = input;
+		while (*temp_input != '\0' && temp_input < input + ft_strlen(to_unset))
+			temp_input++;
+		input = temp_input;
+		unset_var(to_unset, env);
+		free(to_unset);
+		while (*input == ' ')
+			input++;
 	}
 }

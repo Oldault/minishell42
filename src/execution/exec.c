@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 16:25:10 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:09:11 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void reset_file_descriptors(t_mini *data, int i)
         close(data->out_fd);
         data->out_fd = STDOUT_FILENO;
     }
-    if (data->redir->redirs[i].type == REDIR_HEREDOC)
+    if (data->redir != NULL && data->redir->redirs[i].type == REDIR_HEREDOC)
         unlink(".here_doc.tmp");
 }
 

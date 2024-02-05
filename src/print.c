@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/27 11:35:11 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:13:39 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_3d_arr(char ***arr, int clr)
 	printf("------------%s\n", COLOR_RESET);
 }
 
-void	print_redir(redir_t **redir_arr)
+void	print_redir(t_rdr **redir_arr)
 {
 	int	i;
 
@@ -76,7 +76,7 @@ void print_redir_blue(t_mini *data)
         printf("Command %d redirections:\n", i + 1);
         for (int j = 0; j < data->redir[i].count; j++)
         {
-            redir_t *redir = &data->redir[i].redirs[j];
+            t_rdr *redir = &data->redir[i].redirs[j];
             printf("Redirection type: ");
             switch (redir->type)
             {

@@ -6,13 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/01 17:29:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:14:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		handle_builtin(t_mini *data, char *cmd, cmd_entry_t *builtin)
+int		handle_builtin(t_mini *data, char *cmd, t_cmd_entry *builtin)
 {
 	int	i;
 

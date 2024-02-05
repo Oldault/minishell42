@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/04 15:48:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:24:09 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,14 @@ void	handle_export(t_mini *data)
 	char	*value;
 
 	env = data->env;
-	input = data->input + 7;
+	input = data->input + 6;
 	name = NULL;
 	value = NULL;
 	if (data->cmds[0][1] == NULL)
+	{
 		print_exp_env(data->env);
+		return ;
+	}
 	while (*input)
 	{
 		while (*input == ' ')

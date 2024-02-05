@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 11:15:32 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:28:14 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
         handle_output_redir(data, pipe_fds, i, num_cmds);
         if (handle_builtin(data, data->cmds[i][0], data->bltn))
             exit(EXIT_SUCCESS);
-        //signal(SIGQUIT, SIG_DFL);
         execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
         printf("%s: command not found\n", data->cmds[i][0]);
         exit(127);

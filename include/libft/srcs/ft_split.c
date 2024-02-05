@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 08:53:04 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/29 15:44:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 13:17:50 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	**ft_split(const char *str, char c)
 	int		words;
 
 	words = count_words(str, c);
-	res = (char **)malloc(sizeof(char *) * (words + 1));
+	res = ft_calloc(words + 1, sizeof(char *));
 	if (!res)
 		return (NULL);
 	res[words] = 0;

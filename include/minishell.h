@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/05 11:58:58 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:36:34 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ typedef enum	s_re_type
 	REDIR_HEREDOC
 }						t_re_type;
 
-typedef struct
+typedef struct s_redir
 {
 	t_re_type				type;
 	char				*filename;
-}						redir_t;
+}						t_rdr;
 
-typedef struct
+typedef struct s_redirs
 {
-	redir_t				*redirs;
+	t_rdr				*redirs;
 	int					count;
-}						redirs_t;
+}						t_redirs;
 
 //* ~~~ Builtins ~~~ *//
 
@@ -77,7 +77,7 @@ typedef struct
 {
 	char				*command_name;
 	void				(*func)(t_mini *);
-}						cmd_entry_t;
+}						t_cmd_entry;
 
 //* ~~~ Main ~~~ *//
 
@@ -91,8 +91,8 @@ typedef struct s_mini
 	int					in_fd;
 	int					out_fd;
 	char				*err;
-	redirs_t			*redir;
-	cmd_entry_t			*bltn;
+	t_redirs			*redir;
+	t_cmd_entry			*bltn;
 }						t_mini;
 
 //* ~~~ Exit Status ~~~ *//
@@ -132,20 +132,20 @@ void					execute_single_command(t_mini *data, int pipe_end,
 							int *pipe_fds, int i, int num_cmds,
 							pid_t *child_pids);
 int						handle_builtin(t_mini *data, char *cmd,
-							cmd_entry_t *builtin);
+							t_cmd_entry *builtin);
 
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
 char					**parse_segment(t_mini *data, char *segment,
-							redirs_t *redirections);
+							t_redirs *redirections);
 char					**parse_command_segment(char *segment, char **env);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);
 int						redir_symb(char *word);
-t_re_type					redir_type(char *symbol);
+t_re_type				redir_type(char *symbol);
 int						get_cmd_len(char **words);
-void					redir_split(char *word, redir_t *redirection);
+void					redir_split(char *word, t_rdr *redirection);
 
 //*----------------------- Paths -----------------------*//
 char					**get_paths(t_mini *data, char **env);
@@ -154,7 +154,7 @@ char					*find_path(char **paths, char **arg);
 //*----------------------- Print -----------------------*//
 void					print_2d_arr(char **arr, char separator);
 void					print_3d_arr(char ***arr, int clr);
-void					print_redir(redir_t **redir_arr);
+void					print_redir(t_rdr **redir_arr);
 void					print_redir_blue(t_mini *data);
 
 //*----------------------- Free ------------------------*//
@@ -163,7 +163,7 @@ void					free_triple_array(char ***array);
 void					free_cmds(char ****cmds);
 void					free_mini(t_mini *data);
 void					perror_exit(char *str);
-void					free_redir_array(redirs_t *redirections);
+void					free_redir_array(t_redirs *redirections);
 
 int						dbl_arr_len(char **arr);
 
