@@ -40,7 +40,6 @@ static char	**get_env(char **env)
 static void	initialize_commands(t_mini *data)
 {
 	data->bltn = ft_calloc(10, sizeof(t_cmd_entry));
-	
 	data->bltn[0] = (t_cmd_entry){"echo", handle_echo};
 	data->bltn[1] = (t_cmd_entry){"cd", handle_cd};
 	data->bltn[2] = (t_cmd_entry){"pwd", handle_pwd};
@@ -60,7 +59,9 @@ void	set_data_out(t_mini *data, char **env)
 	data->env = get_env(env);
 	initialize_commands(data);
 	data->redir = ft_calloc(1, sizeof(t_redirs));
-	if (!data->redir) {
+	if (!data->redir)
+	{
+		free_mini(data);
 		perror("malloc failed");
 		exit(EXIT_FAILURE);
 	}
@@ -68,17 +69,18 @@ void	set_data_out(t_mini *data, char **env)
 	data->redir->count = 0;
 }
 
-void reset_redirections(t_redirs *redir)
+void	reset_redirections(t_redirs *redir)
 {
-    if (redir != NULL)
+	if (redir != NULL)
 	{
-        for (int i = 0; i < redir->count; i++) {
-            free(redir->redirs[i].filename);
-        }
-        free(redir->redirs);
-        redir->redirs = NULL;
-        redir->count = 0;
-    }
+		for (int i = 0; i < redir->count; i++)
+		{
+			free(redir->redirs[i].filename);
+		}
+		free(redir->redirs);
+		redir->redirs = NULL;
+		redir->count = 0;
+	}
 }
 
 void	set_data_in(t_mini *data)
