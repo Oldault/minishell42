@@ -6,12 +6,14 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/04 17:23:41 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:58:58 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+//*--------------------- Libraries ---------------------*//
 
 # include "libft.h"
 # include <fcntl.h>
@@ -21,26 +23,43 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
-//		COLORS
+//*-------------------- Definitions --------------------*//
+
 # define BLUE "\x1B[94m"
 # define GREEN "\x1B[32m"
 # define RED "\x1B[31m"
 # define COLOR_RESET "\x1B[0m"
 
-#define MAX_ENV_VARS 100
+# define MAX_ENV_VARS 100
 
-typedef enum
+//*---------------------- Structs ----------------------*//
+
+//* ~~~ Parsing ~~~ *//
+typedef struct s_parse_seg
+{
+	char				**args;
+	char				*current_arg;
+	char				c;
+	int					in_single_quote;
+	int					in_double_quote;
+	int					arg_count;
+	int					current_length;
+	int					should_expand;
+}						t_parse_seg;
+
+//* ~~~ Redirections ~~~ *//
+typedef enum	s_re_type
 {
 	REDIR_NONE,
 	REDIR_INPUT,
 	REDIR_OUTPUT,
 	REDIR_APPEND,
 	REDIR_HEREDOC
-}						re_type;
+}						t_re_type;
 
 typedef struct
 {
-	re_type				type;
+	t_re_type				type;
 	char				*filename;
 }						redir_t;
 
@@ -50,6 +69,8 @@ typedef struct
 	int					count;
 }						redirs_t;
 
+//* ~~~ Builtins ~~~ *//
+
 typedef struct s_mini	t_mini;
 
 typedef struct
@@ -57,6 +78,8 @@ typedef struct
 	char				*command_name;
 	void				(*func)(t_mini *);
 }						cmd_entry_t;
+
+//* ~~~ Main ~~~ *//
 
 typedef struct s_mini
 {
@@ -72,21 +95,18 @@ typedef struct s_mini
 	cmd_entry_t			*bltn;
 }						t_mini;
 
+//* ~~~ Exit Status ~~~ *//
+
 extern int				last_exit_status;
-
-int						handle_builtin(t_mini *data, char *cmd, cmd_entry_t *builtin);
-
-void					ft_signal_fork(int num);
-void					ft_signal(int signal);
-
-void					execute_commands(t_mini *data);
-char					*get_prompt(void);
-
-int						dbl_arr_len(char **arr);
 
 //*------------------------ Init ------------------------*//
 void					set_data_out(t_mini *data, char **env);
 void					set_data_in(t_mini *data);
+char					*get_prompt(void);
+
+//*---------------------- Signals -----------------------*//
+void					ft_signal_fork(int num);
+void					ft_signal(int signal);
 
 //*---------------------- Builtins ----------------------*//
 void					handle_echo(t_mini *data);
@@ -101,25 +121,29 @@ void					handle_doll(t_mini *data);
 
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
-char 					*strdup_spc(const char *src);
-char 					*strdup_alpha(const char *src);
-char 					*get_env_value(char *var, char **env);
+char					*strdup_spc(const char *src);
+char					*strdup_alpha(const char *src);
+char					*get_env_value(char *var, char **env);
 
 //*--------------------- Execution -----------------------*//
+void					execute_commands(t_mini *data);
 void					apply_redirections(t_mini *data, int cmd_index);
 void					execute_single_command(t_mini *data, int pipe_end,
 							int *pipe_fds, int i, int num_cmds,
 							pid_t *child_pids);
+int						handle_builtin(t_mini *data, char *cmd,
+							cmd_entry_t *builtin);
 
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
-char					**parse_segment(t_mini *data, char *segment, redirs_t *redirections);
+char					**parse_segment(t_mini *data, char *segment,
+							redirs_t *redirections);
 char					**parse_command_segment(char *segment, char **env);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);
 int						redir_symb(char *word);
-re_type					redir_type(char *symbol);
+t_re_type					redir_type(char *symbol);
 int						get_cmd_len(char **words);
 void					redir_split(char *word, redir_t *redirection);
 
@@ -140,5 +164,7 @@ void					free_cmds(char ****cmds);
 void					free_mini(t_mini *data);
 void					perror_exit(char *str);
 void					free_redir_array(redirs_t *redirections);
+
+int						dbl_arr_len(char **arr);
 
 #endif

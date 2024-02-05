@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:36:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/26 18:29:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:59:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	redir_symb(char *word)
 		|| ft_strcmp(word, ">>") == 0 || ft_strcmp(word, "<<") == 0);
 }
 
-re_type	redir_type(char *symbol)
+t_re_type	redir_type(char *symbol)
 {
 	if (ft_strcmp(symbol, "<") == 0)
 		return (REDIR_INPUT);
