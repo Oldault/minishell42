@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 17:51:19 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:30:38 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main(int ac, char **av, char **env)
 		if (data->input)
 			add_history(data->input);
 		parse(data);
-		print_3d_arr(data->cmds, 1);
-		// print_redir_blue(data);
+		//print_3d_arr(data->cmds, 1);
+		//print_redir_blue(data);
 		execute_commands(data);
 		free(data->input);
 		free_cmds(&data->cmds);

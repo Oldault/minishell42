@@ -1,113 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bltn_echo.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:39:43 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 17:34:41 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:18:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*skip_echo_flags(char *input, int *newline)
-{
-	while (*input == ' ')
-		input++;
-	while (ft_strncmp(input, "-n", 2) == 0)
-	{
-		input += 2;
-		while (*input == 'n')
-			input++;
-		if (*input == ' ')
-			*newline = 0;
-		while (*input == ' ')
-			input++;
-	}
-	return (input);
-}
-
-char	*get_env_value(char *var, char **env)
-{
-	char	**splitted;
-	char	*value;
-	int		i;
-
-	i = -1;
-	value = NULL;
-	while (env && env[++i] != NULL)
-	{
-		splitted = ft_split(env[i], '=');
-		if (!splitted)
-			return (NULL);
-		if (strcmp(var, splitted[0]) == 0)
-		{
-			value = ft_strdup(splitted[1]);
-			free_double_array(splitted);
-			return (value);
-		}
-		free_double_array(splitted);
-	}
-	return (NULL);
-}
-
-int	has_even_quotes(const char *input)
-{
-	int	single_cnt;
-	int	double_cnt;
-
-	single_cnt = 0;
-	double_cnt = 0;
-	while (*input)
-	{
-		if (*input == '\'')
-			single_cnt++;
-		if (*input == '"')
-			double_cnt++;
-		input++;
-	}
-	if ((single_cnt % 2 == 0) && (double_cnt % 2 == 0))
-		return (1);
-	else
-		return (0);
-}
-
-char	*expand_env_variable(char **input_ptr, char **env)
-{
-	char	*name;
-	char	*value;
-	char	*result;
-	char	*input;
-
-	input = *input_ptr;
-	if (*input == '$')
-	{
-		if (*(input + 1) == '\0')
-			return (NULL);
-		input++;
-		if (*input == '?')
-			return (*input_ptr += 2, ft_itoa(last_exit_status));
-		name = strdup_alpha(input);
-		if (*name == '\0')
-			return (free(name), NULL);
-		value = get_env_value(name, env);
-		if (value)
-		{
-			result = ft_strdup(value);
-			free(value);
-			*input_ptr += (ft_strlen(name) + 1);
-		}
-		else
-			result = NULL;
-		free(name);
-		return (result);
-	}
-	return (NULL);
-}
-
-char	*handle_single_quotes(char **input_ptr)
+static char	*handle_single_quotes(char **input_ptr)
 {
 	char	*input;
 
@@ -120,7 +25,7 @@ char	*handle_single_quotes(char **input_ptr)
 	return (input);
 }
 
-void	handle_expand(char **input, char **env)
+static void	handle_expand(char **input, char **env)
 {
 	char	*expanded;
 
@@ -138,7 +43,7 @@ void	handle_expand(char **input, char **env)
 	}
 }
 
-char	*handle_double_quotes(char **input_ptr, char **env)
+static char	*handle_double_quotes(char **input_ptr, char **env)
 {
 	char	*input;
 
@@ -156,7 +61,7 @@ char	*handle_double_quotes(char **input_ptr, char **env)
 	return (input);
 }
 
-char	*handle_unquoted_text(char **input_ptr, char **env)
+static char	*handle_unquoted_text(char **input_ptr, char **env)
 {
 	char	*input;
 
@@ -182,9 +87,9 @@ void	handle_echo(t_mini *data)
 	input = skip_echo_flags(data->input + 5, &newline);
 	if (!has_even_quotes(input))
 	{
-        printf("Error: Mismatched quotes in input\n");
-        return ;
-    }
+		printf("Error: Mismatched quotes in input\n");
+		return ;
+	}
 	while (*input != '\0' && *input != '|')
 	{
 		if (*input == '\'')

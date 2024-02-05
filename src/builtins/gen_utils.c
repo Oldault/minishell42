@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bltn_utils.c                                       :+:      :+:    :+:   */
+/*   gen_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:25:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 14:50:56 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:22:08 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,42 +39,54 @@ int	path_exists(const char *path)
 	return (stat(path, &statbuf) == 0);
 }
 
-char *strdup_spc(const char *src)
+char	*strdup_spc(const char *src)
 {
-    const char *end;
-    
-    end = src;
-    while (*end != ' ' && *end != '\0') {
-        end++;
-    }
-    size_t length = end - src;
-    char *dest = (char *)malloc(length + 1);
-    if (dest == NULL)
-        return (perror("malloc failed"), NULL);
-    for (size_t i = 0; i < length; i++) {
-        dest[i] = src[i];
-    }
-    dest[length] = '\0';
-    return (dest);
+	const char	*end;
+	char		*dest;
+	size_t		length;
+	size_t		i;
+
+	end = src;
+	while (*end != ' ' && *end != '\0')
+	{
+		end++;
+	}
+	length = end - src;
+	dest = (char *)malloc(length + 1);
+	if (dest == NULL)
+		return (perror("malloc failed"), NULL);
+	i = -1;
+	while (++i < length)
+	{
+		dest[i] = src[i];
+	}
+	dest[length] = '\0';
+	return (dest);
 }
 
-char *strdup_alpha(const char *src)
+char	*strdup_alpha(const char *src)
 {
-    const char *end = src;
-    
-    while (*end && ft_isalpha(*end))
-    {
-        end++;
-    }
-    size_t length = end - src;
-    char *dest = (char *)malloc(length + 1);
-    if (dest == NULL) {
-        perror("Failed to allocate memory");
-        return NULL; 
-    }
-    for (size_t i = 0; i < length; i++) {
-        dest[i] = src[i];
-    }
-    dest[length] = '\0';
-    return (dest);
+	const char	*end = src;
+	size_t		length;
+	size_t		i;
+	char		*dest;
+
+	while (*end && ft_isalpha(*end))
+	{
+		end++;
+	}
+	length = end - src;
+	dest = (char *)malloc(length + 1);
+	if (dest == NULL)
+	{
+		perror("Failed to allocate memory");
+		return (NULL);
+	}
+	i = -1;
+	while (++i < length)
+	{
+		dest[i] = src[i];
+	}
+	dest[length] = '\0';
+	return (dest);
 }

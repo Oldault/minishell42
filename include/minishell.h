@@ -6,14 +6,14 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/05 12:36:34 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:10:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-//*--------------------- Libraries ---------------------*//
+//*--------------------- LIBRARIES ---------------------*//
 
 # include "libft.h"
 # include <fcntl.h>
@@ -23,7 +23,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
-//*-------------------- Definitions --------------------*//
+//*-------------------- DEFINITIONS --------------------*//
 
 # define BLUE "\x1B[94m"
 # define GREEN "\x1B[32m"
@@ -32,9 +32,10 @@
 
 # define MAX_ENV_VARS 100
 
-//*---------------------- Structs ----------------------*//
+//*---------------------- STRUCTS ----------------------*//
 
-//* ~~~ Parsing ~~~ *//
+//*                ~~~    Parsing    ~~~                 *//
+
 typedef struct s_parse_seg
 {
 	char				**args;
@@ -47,8 +48,8 @@ typedef struct s_parse_seg
 	int					should_expand;
 }						t_parse_seg;
 
-//* ~~~ Redirections ~~~ *//
-typedef enum	s_re_type
+//*                ~~~ Redirections  ~~~                 *//
+typedef enum s_re_type
 {
 	REDIR_NONE,
 	REDIR_INPUT,
@@ -59,7 +60,7 @@ typedef enum	s_re_type
 
 typedef struct s_redir
 {
-	t_re_type				type;
+	t_re_type			type;
 	char				*filename;
 }						t_rdr;
 
@@ -69,8 +70,7 @@ typedef struct s_redirs
 	int					count;
 }						t_redirs;
 
-//* ~~~ Builtins ~~~ *//
-
+//*                ~~~   Builtins   ~~~                 *//
 typedef struct s_mini	t_mini;
 
 typedef struct
@@ -79,8 +79,7 @@ typedef struct
 	void				(*func)(t_mini *);
 }						t_cmd_entry;
 
-//* ~~~ Main ~~~ *//
-
+//*                ~~~     Main      ~~~                 *//
 typedef struct s_mini
 {
 	char				*input;
@@ -95,20 +94,22 @@ typedef struct s_mini
 	t_cmd_entry			*bltn;
 }						t_mini;
 
-//* ~~~ Exit Status ~~~ *//
+//*                ~~~  Exit Status  ~~~                 *//
 
 extern int				last_exit_status;
 
-//*------------------------ Init ------------------------*//
+//*------------------------ INIT ------------------------*//
 void					set_data_out(t_mini *data, char **env);
 void					set_data_in(t_mini *data);
 char					*get_prompt(void);
 
-//*---------------------- Signals -----------------------*//
+//*---------------------- SIGNALS -----------------------*//
 void					ft_signal_fork(int num);
 void					ft_signal(int signal);
 
-//*---------------------- Builtins ----------------------*//
+//*---------------------- BUILTINS ----------------------*//
+
+//*                ~~~  handle each  ~~~                 *//
 void					handle_echo(t_mini *data);
 void					handle_cd(t_mini *data);
 void					handle_pwd(t_mini *data);
@@ -118,6 +119,18 @@ void					handle_env(t_mini *data);
 void					handle_exit(t_mini *data);
 void					handle_hist(t_mini *data);
 void					handle_doll(t_mini *data);
+
+//*                ~~~  export utils  ~~~                *//
+int						quote_error(char *input);
+void					print_exp_env(char **env);
+int						find_name(char **org_input, char **name);
+int						find_value(char **org_input, char **value, char **name);
+
+//*                ~~~   echo utils   ~~~                *//
+char					*skip_echo_flags(char *input, int *newline);
+char					*get_env_value(char *var, char **env);
+int						has_even_quotes(const char *input);
+char					*expand_env_variable(char **input_ptr, char **env);
 
 int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
