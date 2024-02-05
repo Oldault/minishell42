@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/04 11:53:18 by albeninc         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:06:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,6 @@
 
 #define PROMPT_SIZE 1024
 #define PATH_SIZE 1024
-
-char	*ft_strncat(char *dest, const char *src, size_t n)
-{
-	char	*ptr;
-
-	ptr = dest + ft_strlen(dest);
-	while (*src != '\0' && n--)
-		*ptr++ = *src++;
-	*ptr = '\0';
-	return (dest);
-}
-
-char	*ft_strcpy(char *dest, const char *src)
-{
-	char	*ptr;
-
-	ptr = dest;
-	while (*src != '\0')
-		*ptr++ = *src++;
-	*ptr = '\0';
-	return (dest);
-}
 
 void	shorten_path(char *path, const char *home_dir)
 {
