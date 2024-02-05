@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/04 12:28:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:48:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,27 @@ void	export_to_env(char *name, char *value, char **env, int max_env_size)
 	free(new_var);
 }
 
+void	print_exp_env(char **env)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (env[++i])
+	{
+		j = -1;
+		printf("declare -x ");
+		while(env[i][++j])
+		{
+			printf("%c", env[i][j]);
+			if (env[i][j] && env[i][j] == '=')
+				printf("\"");
+			if (!(env[i][j + 1]))
+				printf("\"\n");
+		}
+	}
+}
+
 void	handle_export(t_mini *data)
 {
 	char	*input;
@@ -101,6 +122,8 @@ void	handle_export(t_mini *data)
 	input = data->input + 7;
 	name = NULL;
 	value = NULL;
+	if (data->cmds[0][1] == NULL)
+		print_exp_env(data->env);
 	while (*input)
 	{
 		while (*input == ' ')

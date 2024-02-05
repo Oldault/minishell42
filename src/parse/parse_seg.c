@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 16:20:20 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 15:07:18 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:18:33 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,75 +83,13 @@ int var_name_length(char *input)
     return len;
 }
 
-char *ensure_capacity(char *result, int current_len, int needed_len, int *chunk_size)
-{
-    if (current_len + needed_len >= *chunk_size) {
-        while (current_len + needed_len >= *chunk_size) {
-            *chunk_size *= 2;
-        }
-        char *new_result = (char *)calloc(1, *chunk_size);
-        if (!new_result) return NULL;
-        strcpy(new_result, result);
-        free(result);
-        result = new_result;
-    }
-    return result;
-}
-
-char *expand_doll(char *str, char **env)
-{
-    int chunk_size = 1024;
-    char *result = (char *)calloc(1, chunk_size);
-    if (!result) return NULL;
-
-    int result_len = 0;
-    while (*str) {
-        if (*str == '$') {
-            str++;
-            int name_len = var_name_length(str);
-            char *name = strndup(str, name_len);
-            char *value = get_env_value(name, env);
-            if (value) {
-                int value_len = strlen(value);
-                result = ensure_capacity(result, result_len, value_len, &chunk_size);
-                if (!result) return NULL;
-                strcpy(result + result_len, value);
-                result_len += value_len;
-            }
-            str += name_len;
-            free(name);
-        } else {
-            result = ensure_capacity(result, result_len, 1, &chunk_size);
-            if (!result) return NULL;
-            result[result_len++] = *str++;
-        }
-    }
-    result[result_len] = '\0';
-
-    char *final_result = (char *)malloc(result_len + 1);
-    if (final_result) {
-        strcpy(final_result, result);
-    }
-    free(result);
-    return (final_result);
-}
-
-// char	*quotes_and_doll(char *str, char **env)
-// {
-//     int chunk_size = 1024;
-//     char *result = (char *)calloc(1, chunk_size);
-//     if (!result) return NULL;
-// }
-
-
 char	**parse_segment(t_mini *data, char *segment, redirs_t *redirections)
 {
 	char	**words;
 	char	**cmd;
 	int		cmd_len;
 
-	segment = expand_doll(segment, data->env);
-	words = ft_split(segment, ' ');
+	words = parse_command_segment(segment, data->env);
 	if (!words)
 		return (NULL);
 	cmd_len = get_cmd_len(words);
