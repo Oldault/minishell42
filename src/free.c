@@ -62,12 +62,15 @@ void	free_cmds(char ****cmds)
 
 void	free_mini(t_mini *data)
 {
-	free(data->input);
-	free(data->prompt);
-	free_double_array(data->env);
-	free_double_array(data->paths);
-	free_cmds(&data->cmds);
-	if (data->redir)
+	if (data != NULL)
+	{
+		free(data->input);
+		free(data->prompt);
+		free_double_array(data->env);
+		free_double_array(data->paths);
+		free_cmds(&data->cmds);
+	}
+	if (data->redir != NULL)
 	{
 		for (int i = 0; i < data->redir->count; i++)
 		{
@@ -89,6 +92,9 @@ void	free_redir_array(t_redirs *redirections)
 	if (redirections == NULL || redirections->redirs == NULL)
 		return ;
 	while (++i < redirections->count)
+	{
 		free(redirections->redirs[i].filename);
+		redirections->redirs[i].filename = NULL;
+	}
 	free(redirections->redirs);
 }

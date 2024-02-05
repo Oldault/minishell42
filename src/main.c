@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **env)
 		//print_redir_blue(data);
 		execute_commands(data);
 		free(data->input);
+		free(data->prompt);
 		free_cmds(&data->cmds);
 	}
 	free_mini(data);
