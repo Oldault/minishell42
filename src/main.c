@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:23:52 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:51:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@ int	main(int ac, char **av, char **env)
 		{
 			free(data->input);
 			continue ;
-		}
-		if (strcmp(data->input, "exit") == 0)
-		{
-			free_mini(data);    // Free all allocated resources
-			rl_clear_history(); // If using readline
-			exit(EXIT_SUCCESS); // Exit the program
 		}
 		if (data->input)
 			add_history(data->input);

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/03 09:14:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:51:13 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ void handle_env(t_mini *data)
 
 void handle_exit(t_mini *data)
 {
-	(void)data;
-    exit(0);
+	free_mini(data);
+	rl_clear_history();
+	exit(EXIT_SUCCESS);
 }
 
 void handle_doll(t_mini *data)
