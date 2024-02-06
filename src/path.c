@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/01/31 16:58:36 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:31:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,16 @@ char	**get_paths(t_mini	*data, char **env)
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			full_path = ft_strdup(env[i] + 5);
+			if (!full_path)
+                return (NULL);
 			break ;
 		}
 	}
 	if (!full_path)
 		return (NULL);
 	paths = ft_split(full_path, ':');
+    if (!paths)
+		return (NULL);
 	free(full_path);
 	return (paths);
 }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:17:10 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:36:56 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	set_data_out(t_mini *data, char **env)
 	}
 	data->redir->redirs = NULL;
 	data->redir->count = 0;
+    data->prompt = get_prompt();
+    data->input = readline(data->prompt);
 }
 
 void	reset_redirections(t_redirs *redir)
@@ -85,12 +87,37 @@ void	reset_redirections(t_redirs *redir)
 
 void	set_data_in(t_mini *data)
 {
-	reset_redirections(data->redir);
-	data->in_fd = STDIN_FILENO;
-	data->out_fd = STDOUT_FILENO;
-	data->err = NULL;
-	data->cmds = NULL;
-	data->prompt = get_prompt();
-	data->input = readline(data->prompt);
-	data->paths = get_paths(data, data->env);
+    reset_redirections(data->redir);
+    if (data->redir != NULL)
+    {
+        free(data->redir);
+        data->redir = NULL;
+    }
+    data->in_fd = STDIN_FILENO;
+    data->out_fd = STDOUT_FILENO;
+    if (data->err != NULL)
+    {
+        free(data->err);
+        data->err = NULL;
+    }
+    if (data->cmds != NULL)
+    {
+        free_cmds(&data->cmds);
+        data->cmds = NULL;
+    }
+    if (data->prompt != NULL)
+    {
+        free(data->prompt);
+        data->prompt = get_prompt();
+    }
+    if (data->input != NULL)
+    {
+        free(data->input);
+        data->input = readline(data->prompt);
+    }
+    if (data->paths != NULL)
+    {
+        free_double_array(data->paths);
+        data->paths = get_paths(data, data->env);
+    }
 }

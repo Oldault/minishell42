@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:05:35 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 12:39:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,43 @@ void	free_cmds(char ****cmds)
 
 void	free_mini(t_mini *data)
 {
-	if (data != NULL)
+    if (data != NULL)
+    {
+        free(data->input);
+        data->input = NULL;
+        free(data->prompt);
+        data->prompt = NULL;
+        free_double_array(data->env);
+        data->env = NULL;
+        free_double_array(data->paths);
+        data->paths = NULL;
+        free_cmds(&data->cmds);
+        data->cmds = NULL;
+    }
+    if (data->redir != NULL)
+    {
+        for (int i = 0; i < data->redir->count; i++)
+        {
+            free(data->redir->redirs[i].filename);
+            data->redir->redirs[i].filename = NULL;
+        }
+        free(data->redir->redirs);
+        data->redir->redirs = NULL;
+        free(data->redir);
+        data->redir = NULL;
+    }
+	if (data->bltn != NULL)
 	{
-		free(data->input);
-		free(data->prompt);
-		free_double_array(data->env);
-		free_double_array(data->paths);
-		free_cmds(&data->cmds);
+		free(data->bltn);
+		data->bltn = NULL;
 	}
-	if (data->redir != NULL)
+	if (data->err != NULL)
 	{
-		for (int i = 0; i < data->redir->count; i++)
-		{
-			free(data->redir->redirs[i].filename);
-		}
-		free(data->redir->redirs);
-		free(data->redir);
+		free(data->err);
+		data->err = NULL;
 	}
-	free(data->bltn);
-	free(data->err);
-	free(data);
+    free(data);
+    data = NULL;
 }
 
 void	free_redir_array(t_redirs *redirections)
