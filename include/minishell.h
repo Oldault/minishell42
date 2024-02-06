@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/05 19:10:42 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:46:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct s_mini
 extern int				last_exit_status;
 
 //*------------------------ INIT ------------------------*//
-void					set_data_out(t_mini *data, char **env);
+t_mini					*set_data_out(char **env);
 void					set_data_in(t_mini *data);
 char					*get_prompt(void);
 
@@ -174,9 +174,12 @@ void					print_redir_blue(t_mini *data);
 void					free_double_array(char **array);
 void					free_triple_array(char ***array);
 void					free_cmds(char ****cmds);
-void					free_mini(t_mini *data);
+void					reset_redirections(t_redirs *redir);
+void					reset_data_in(t_mini *data);
+void					reset_data_out(t_mini *data);
+void					free_seg_cmd_redir(char **seg, char ***cmd,
+							t_redirs *redir);
 void					perror_exit(char *str);
-void					free_redir_array(t_redirs *redirections);
 
 int						dbl_arr_len(char **arr);
 

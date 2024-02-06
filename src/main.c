@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:30:38 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:16:28 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ int	main(int ac, char **av, char **env)
 	t_mini	*data;
 
 	(void)ac, (void)av;
-	data = malloc(sizeof(t_mini));
-	if (data == NULL)
-		return (EXIT_FAILURE);
-	*data = (t_mini){0};
-	set_data_out(data, env);
+	data = set_data_out(env);
 	while (42)
 	{
 		set_data_in(data);
@@ -40,11 +36,9 @@ int	main(int ac, char **av, char **env)
 		//print_3d_arr(data->cmds, 1);
 		//print_redir_blue(data);
 		execute_commands(data);
-		free(data->input);
-		free(data->prompt);
-		free_cmds(&data->cmds);
+		reset_data_in(data);
 	}
-	free_mini(data);
+	reset_data_out(data);
 	rl_clear_history();
 	return (0);
 }

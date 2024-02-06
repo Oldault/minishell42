@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:19:30 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:16:28 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_exit(t_mini *data)
 {
-	free_mini(data);
+	reset_data_out(data);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }

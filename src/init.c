@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:17:10 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:26:23 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,45 +52,27 @@ static void	initialize_commands(t_mini *data)
 	data->bltn[9] = (t_cmd_entry){NULL, NULL};
 }
 
-void	set_data_out(t_mini *data, char **env)
+t_mini	*set_data_out(char **env)
 {
+	t_mini	*data;
+	
+	data = (t_mini *)ft_calloc(1, sizeof(t_mini));
+	if (data == NULL)
+		exit(EXIT_FAILURE);
+	*data = (t_mini){0};
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ft_signal);
 	data->env = get_env(env);
 	initialize_commands(data);
-	data->redir = ft_calloc(1, sizeof(t_redirs));
-	if (!data->redir)
-	{
-		free_mini(data);
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
-	}
-	data->redir->redirs = NULL;
-	data->redir->count = 0;
-}
 
-void	reset_redirections(t_redirs *redir)
-{
-	if (redir != NULL)
-	{
-		for (int i = 0; i < redir->count; i++)
-		{
-			free(redir->redirs[i].filename);
-		}
-		free(redir->redirs);
-		redir->redirs = NULL;
-		redir->count = 0;
-	}
+	return (data);
 }
 
 void	set_data_in(t_mini *data)
 {
-	reset_redirections(data->redir);
-	data->in_fd = STDIN_FILENO;
-	data->out_fd = STDOUT_FILENO;
-	data->err = NULL;
-	data->cmds = NULL;
 	data->prompt = get_prompt();
 	data->input = readline(data->prompt);
 	data->paths = get_paths(data, data->env);
+	data->in_fd = STDIN_FILENO;
+	data->out_fd = STDOUT_FILENO;
 }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:05:35 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:46:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_double_array(char **array)
 	int	i;
 
 	i = -1;
-	if (array == NULL)
+	if (array == NULL || *array == NULL)
 		return ;
 	while (array[++i])
 		free(array[i]);
@@ -29,12 +29,11 @@ void	free_triple_array(char ***array)
 	int	i;
 
 	i = -1;
-	if (array != NULL)
-	{
-		while (array[++i])
-			free_double_array(array[i]);
-		free(array);
-	}
+	if (array == NULL || *array == NULL || **array == NULL)
+		return ;
+	while (array[++i])
+		free_double_array(array[i]);
+	free(array);
 }
 
 void	free_cmds(char ****cmds)
@@ -60,41 +59,59 @@ void	free_cmds(char ****cmds)
 	*cmds = NULL;
 }
 
-void	free_mini(t_mini *data)
+
+void	reset_redirections(t_redirs *redir)
 {
-	if (data != NULL)
+	if (redir != NULL)
 	{
-		free(data->input);
-		free(data->prompt);
-		free_double_array(data->env);
-		free_double_array(data->paths);
-		free_cmds(&data->cmds);
-	}
-	if (data->redir != NULL)
-	{
-		for (int i = 0; i < data->redir->count; i++)
+		for (int i = 0; i < redir->count; i++)
 		{
-			free(data->redir->redirs[i].filename);
+			free(redir->redirs[i].filename);
 		}
-		free(data->redir->redirs);
-		free(data->redir);
+		free(redir->redirs);
+		redir->redirs = NULL;
+		redir->count = 0;
 	}
-	free(data->bltn);
-	free(data->err);
-	free(data);
 }
 
-void	free_redir_array(t_redirs *redirections)
-{
-	int	i;
 
-	i = -1;
-	if (redirections == NULL || redirections->redirs == NULL)
-		return ;
-	while (++i < redirections->count)
-	{
-		free(redirections->redirs[i].filename);
-		redirections->redirs[i].filename = NULL;
-	}
-	free(redirections->redirs);
+void	reset_data_in(t_mini *data)
+{
+	free(data->input);
+	free(data->prompt);
+	free_double_array(data->paths);
+	free_cmds(&data->cmds);
+	reset_redirections(data->redir);
+	if (data->err)
+		free(data->err);
+}
+
+void free_builtins(t_cmd_entry **builtins)
+{
+    if (*builtins != NULL)
+    {
+        free(*builtins);
+        *builtins = NULL;
+    }
+}
+
+void	free_seg_cmd_redir(char **seg, char ***cmd, t_redirs *redir)
+{
+	free_double_array(seg);
+	free_cmds(&cmd);
+	reset_redirections(redir);
+}
+
+void	reset_data_out(t_mini *data)
+{
+	if (data->input)
+		free(data->input);
+	if (data->prompt)
+		free(data->prompt);
+	free_double_array(data->env);
+	free_double_array(data->paths);
+	free_cmds(&data->cmds);
+	reset_redirections(data->redir);
+	free_builtins(&data->bltn);
+	free(data);
 }

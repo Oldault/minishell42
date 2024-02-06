@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:13:56 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:51:33 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ int	dbl_arr_len(char **arr)
 int	initialize_arrays(char ****cmd_arr, t_redirs **redir_arr, int seg_num)
 {
 	*cmd_arr = (char ***)malloc((seg_num + 1) * sizeof(char **));
+	if (*cmd_arr == NULL)
+		return (-1);
 	*redir_arr = (t_redirs *)malloc((seg_num + 1) * sizeof(t_redirs));
-	if (*cmd_arr == NULL || *redir_arr == NULL)
+	if (*redir_arr == NULL)
 	{
-		if (*cmd_arr != NULL)
-			free(*cmd_arr);
-		if (*redir_arr != NULL)
-			free(*redir_arr);
+		free(*cmd_arr);
 		return (-1);
 	}
 	return (0);
@@ -49,7 +48,7 @@ void	free_resources(char **segments, char ***cmd_arr, t_redirs *redir_arr,
 	free(cmd_arr);
 	j = -1;
 	while (++j <= i)
-		free_redir_array(&redir_arr[j]);
+		reset_redirections(&redir_arr[j]);
 	free(redir_arr);
 }
 
@@ -79,9 +78,9 @@ int	parse(t_mini *data)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
 	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
-		return (free_double_array(segments), -1);
+		return (free_seg_cmd_redir(segments, cmd_arr, redir_arr), -1);
 	if (process_segments(data, segments, cmd_arr, redir_arr, seg_num) != 0)
-		return (-1);
+		return (free_seg_cmd_redir(segments, cmd_arr, redir_arr), -1);
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;
