@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 12:03:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:30:38 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ int	main(int ac, char **av, char **env)
 		//print_3d_arr(data->cmds, 1);
 		//print_redir_blue(data);
 		execute_commands(data);
+		free(data->input);
+		free(data->prompt);
+		free_cmds(&data->cmds);
 	}
 	free_mini(data);
 	rl_clear_history();
