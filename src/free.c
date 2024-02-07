@@ -59,7 +59,6 @@ void	free_cmds(char ****cmds)
 	*cmds = NULL;
 }
 
-
 void	reset_redirections(t_redirs *redir)
 {
 	if (redir != NULL)
@@ -74,7 +73,6 @@ void	reset_redirections(t_redirs *redir)
 	}
 }
 
-
 void	reset_data_in(t_mini *data)
 {
 	free(data->input);
@@ -86,13 +84,13 @@ void	reset_data_in(t_mini *data)
 		free(data->err);
 }
 
-void free_builtins(t_cmd_entry **builtins)
+void	free_builtins(t_cmd_entry **builtins)
 {
-    if (*builtins != NULL)
-    {
-        free(*builtins);
-        *builtins = NULL;
-    }
+	if (*builtins != NULL)
+	{
+		free(*builtins);
+		*builtins = NULL;
+	}
 }
 
 void	free_seg_cmd_redir(char **seg, char ***cmd, t_redirs *redir)
@@ -110,8 +108,22 @@ void	reset_data_out(t_mini *data)
 		free(data->prompt);
 	free_double_array(data->env);
 	free_double_array(data->paths);
-	free_cmds(&data->cmds);
-	reset_redirections(data->redir);
+	if (data->cmds)
+	{
+		for (int i = 0; i < data->seg_count; ++i)
+		{
+			free_double_array(data->cmds[i]);
+		}
+		free(data->cmds);
+	}
+	if (data->redir)
+	{
+		for (int i = 0; i < data->seg_count; ++i)
+		{
+			reset_redirections(&data->redir[i]);
+		}
+		free(data->redir);
+	}
 	free_builtins(&data->bltn);
 	free(data);
 }

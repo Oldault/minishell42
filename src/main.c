@@ -24,7 +24,12 @@ int	main(int ac, char **av, char **env)
 	{
 		set_data_in(data);
 		if (!data->input)
-			break ;
+		{
+			// CTRL+D was pressed, indicating EOF
+			reset_data_out(data); // Call your cleanup function
+			rl_clear_history();   // If you're using readline's history
+			exit(EXIT_SUCCESS);   // Exit your program cleanly
+		}
 		if (strcmp(data->input, "") == 0)
 		{
 			free(data->input);
@@ -33,8 +38,8 @@ int	main(int ac, char **av, char **env)
 		if (data->input)
 			add_history(data->input);
 		parse(data);
-		//print_3d_arr(data->cmds, 1);
-		//print_redir_blue(data);
+		// print_3d_arr(data->cmds, 1);
+		// print_redir_blue(data);
 		execute_commands(data);
 		reset_data_in(data);
 	}

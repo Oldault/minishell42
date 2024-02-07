@@ -1,0 +1,33 @@
+==342056== Memcheck, a memory error detector
+==342056== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==342056== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==342056== Command: ./minishell
+==342056== Parent PID: 340541
+==342056== 
+==342056== 
+==342056== HEAP SUMMARY:
+==342056==     in use at exit: 208,307 bytes in 224 blocks
+==342056==   total heap usage: 567 allocs, 343 frees, 237,854 bytes allocated
+==342056== 
+==342056== 80 bytes in 2 blocks are definitely lost in loss record 17 of 64
+==342056==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==342056==    by 0x404285: init_pdata (parse_cmd_seg.c:19)
+==342056==    by 0x404908: parse_command_segment (parse_cmd_seg.c:131)
+==342056==    by 0x404B14: parse_segment (parse_seg.c:90)
+==342056==    by 0x4040E8: process_segments (parse.c:63)
+==342056==    by 0x4041D4: parse (parse.c:89)
+==342056==    by 0x405C10: main (main.c:40)
+==342056== 
+==342056== LEAK SUMMARY:
+==342056==    definitely lost: 80 bytes in 2 blocks
+==342056==    indirectly lost: 0 bytes in 0 blocks
+==342056==      possibly lost: 0 bytes in 0 blocks
+==342056==    still reachable: 0 bytes in 0 blocks
+==342056==         suppressed: 208,227 bytes in 222 blocks
+==342056== 
+==342056== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+--342056-- 
+--342056-- used_suppression:     62 Ignore readline leak readline.supp:2 suppressed: 204,211 bytes in 221 blocks
+--342056-- used_suppression:      1 Ignore add_history leak readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==342056== 
+==342056== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

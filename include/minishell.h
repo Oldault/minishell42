@@ -92,6 +92,7 @@ typedef struct s_mini
 	char				*err;
 	t_redirs			*redir;
 	t_cmd_entry			*bltn;
+	int					seg_count;
 }						t_mini;
 
 //*                ~~~  Exit Status  ~~~                 *//
