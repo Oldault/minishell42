@@ -17,8 +17,13 @@ t_parse_seg	*init_pdata(char *segment)
 	t_parse_seg	*pdata;
 
 	pdata = malloc(sizeof(t_parse_seg));
-	pdata->args = malloc(sizeof(char *) * (strlen(segment) / 2 + 2));
+	pdata->args = malloc(sizeof(char *) * (ft_strlen(segment) / 2 + 2));
+	for (int i = 0; i < ((int)ft_strlen(segment) / 2 + 2); ++i)
+	{
+		pdata->args[i] = NULL; // Initialize each element to NULL
+	}
 	pdata->current_arg = malloc(strlen(segment) + 1);
+	pdata->current_arg[0] = '\0';
 	pdata->c = '\0';
 	pdata->in_single_quote = 0;
 	pdata->in_double_quote = 0;
@@ -79,8 +84,7 @@ int	handle_space(t_parse_seg *pdata)
 	return (0);
 }
 
-
-void handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
+void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
 	if (pdata->current_length > 0)
 	{
@@ -91,38 +95,42 @@ void handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 	pdata->args[pdata->arg_count++] = expanded_value;
 }
 
-void handle_nonexistent_variable(t_parse_seg *pdata, char *var_name, size_t var_len)
+void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
+		size_t var_len)
 {
-    pdata->current_arg[pdata->current_length++] = '$';
-    strncpy(pdata->current_arg + pdata->current_length, var_name, var_len);
-    pdata->current_length += var_len;
-    pdata->current_arg[pdata->current_length] = '\0';
+	pdata->current_arg[pdata->current_length++] = '$';
+	strncpy(pdata->current_arg + pdata->current_length, var_name, var_len);
+	pdata->current_length += var_len;
+	pdata->current_arg[pdata->current_length] = '\0';
 }
 
-int handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
+int	handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
 {
-    char var_name[1024];
-    char *expanded_value;
-    size_t var_len = 0;
+	char	var_name[1024];
+	char	*expanded_value;
+	size_t	var_len;
 
-    if (pdata->c == '$' && pdata->should_expand) {
-        (*i)++;
-        while (segment[*i] && (ft_isalnum(segment[*i]) || segment[*i] == '_' || segment[*i] == '?') && var_len < 1023) {
-            var_name[var_len++] = segment[(*i)++];
-        }
-        var_name[var_len] = '\0';
-        expanded_value = expand_variable(var_name, env, pdata->should_expand);
-        if (expanded_value)
-            handle_expanded_value(pdata, expanded_value);
+	var_len = 0;
+	if (pdata->c == '$' && pdata->should_expand)
+	{
+		(*i)++;
+		while (segment[*i] && (ft_isalnum(segment[*i]) || segment[*i] == '_'
+				|| segment[*i] == '?') && var_len < 1023)
+		{
+			var_name[var_len++] = segment[(*i)++];
+		}
+		var_name[var_len] = '\0';
+		expanded_value = expand_variable(var_name, env, pdata->should_expand);
+		if (expanded_value)
+			handle_expanded_value(pdata, expanded_value);
 		else
 			handle_nonexistent_variable(pdata, var_name, var_len);
-        if (segment[*i] != '\0' && segment[*i] != ' ')
+		if (segment[*i] != '\0' && segment[*i] != ' ')
 			(*i)--;
-        return 1;
-    }
-    return 0;
+		return (1);
+	}
+	return (0);
 }
-
 
 char	**parse_command_segment(char *segment, char **env)
 {
@@ -148,6 +156,7 @@ char	**parse_command_segment(char *segment, char **env)
 		pdata->args[pdata->arg_count++] = ft_strdup(pdata->current_arg);
 	}
 	free(pdata->current_arg);
-	pdata->args[pdata->arg_count] = NULL;
-	return (pdata->args);
+	char **temp_args = pdata->args; // Store pdata->args to return it.
+	free(pdata);                    // Free the pdata structure itself,
+	return (temp_args);
 }
