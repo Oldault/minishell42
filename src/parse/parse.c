@@ -78,27 +78,22 @@ int	parse(t_mini *data)
 	if (segments == NULL)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
-	// Stocker le nombre de segments dans data pour une utilisation ultérieure
 	data->seg_count = seg_num;
 	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
 	{
 		free_double_array(segments);
-			// Assurez-vous de libérer les segments ici en cas d'échec
 		return (-1);
 	}
 	if (process_segments(data, segments, cmd_arr, redir_arr, seg_num) != 0)
 	{
 		free_resources(segments, cmd_arr, redir_arr, seg_num - 1);
-			// Utilisez seg_num - 1 car l'index commence à 0
 		return (-1);
 	}
 	cmd_arr[seg_num] = NULL;
-		// S'assure que le dernier élément est NULL pour marquer la fin
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;
 	data->cmds = cmd_arr;
 	data->redir = redir_arr;
 	free_double_array(segments);
-		// Libération des segments après leur utilisation
 	return (0);
 }
