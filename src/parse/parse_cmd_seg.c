@@ -104,29 +104,42 @@ void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
 	pdata->current_arg[pdata->current_length] = '\0';
 }
 
-int	handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
+int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 {
 	char	var_name[1024];
 	char	*expanded_value;
 	size_t	var_len;
+	size_t	segment_len;
 
 	var_len = 0;
+	segment_len = strlen(segment);
 	if (pdata->c == '$' && pdata->should_expand)
 	{
 		(*i)++;
-		while (segment[*i] && (ft_isalnum(segment[*i]) || segment[*i] == '_'
-				|| segment[*i] == '?') && var_len < 1023)
+		while (*i < segment_len && var_len < 1023 && (ft_isalnum(segment[*i])
+				|| segment[*i] == '_' || segment[*i] == '?'))
 		{
 			var_name[var_len++] = segment[(*i)++];
 		}
 		var_name[var_len] = '\0';
+		if (*i >= segment_len)
+		{
+			(*i) = segment_len;
+		}
 		expanded_value = expand_variable(var_name, env, pdata->should_expand);
 		if (expanded_value)
+		{
 			handle_expanded_value(pdata, expanded_value);
+		}
 		else
+		{
 			handle_nonexistent_variable(pdata, var_name, var_len);
-		if (segment[*i] != '\0' && segment[*i] != ' ')
+		}
+		if (*i > 0 && *i < segment_len && segment[*i] != '\0'
+			&& segment[*i] != ' ')
+		{
 			(*i)--;
+		}
 		return (1);
 	}
 	return (0);
@@ -134,29 +147,32 @@ int	handle_expansion(char *segment, int *i, t_parse_seg *pdata, char **env)
 
 char	**parse_command_segment(char *segment, char **env)
 {
-	t_parse_seg	*pdata;
+	t_parse_seg *pdata = init_pdata(segment);
+	if (!pdata)
+		return (NULL);
 
-	pdata = init_pdata(segment);
-	for (int i = 0; segment[i]; ++i)
+	size_t segment_len = strlen(segment);
+	for (size_t i = 0; i < segment_len; ++i)
 	{
 		pdata->c = segment[i];
-		if (handle_single_quote(pdata))
+
+		if (handle_single_quote(pdata) || handle_double_quote(pdata)
+			|| handle_space(pdata) || handle_expansion(segment, &i, pdata, env))
+		{
 			continue ;
-		else if (handle_double_quote(pdata))
-			continue ;
-		else if (handle_space(pdata))
-			continue ;
-		else if (handle_expansion(segment, &i, pdata, env))
-			continue ;
+		}
+
 		pdata->current_arg[pdata->current_length++] = pdata->c;
 	}
+
 	if (pdata->current_length > 0)
 	{
 		pdata->current_arg[pdata->current_length] = '\0';
-		pdata->args[pdata->arg_count++] = ft_strdup(pdata->current_arg);
+		pdata->args[pdata->arg_count++] = strdup(pdata->current_arg);
 	}
+
 	free(pdata->current_arg);
-	char **temp_args = pdata->args; // Store pdata->args to return it.
-	free(pdata);                    // Free the pdata structure itself,
+	char **temp_args = pdata->args;
+	free(pdata);
 	return (temp_args);
 }
