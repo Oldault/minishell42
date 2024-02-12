@@ -25,10 +25,9 @@ int	main(int ac, char **av, char **env)
 		set_data_in(data);
 		if (!data->input)
 		{
-			// CTRL+D was pressed, indicating EOF
-			reset_data_out(data); // Call your cleanup function
-			rl_clear_history();   // If you're using readline's history
-			exit(EXIT_SUCCESS);   // Exit your program cleanly
+			reset_data_out(data);
+			rl_clear_history(); 
+			exit(EXIT_SUCCESS); 
 		}
 		if (strcmp(data->input, "") == 0)
 		{

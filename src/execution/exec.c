@@ -72,6 +72,12 @@ void	execute_commands(t_mini *data)
 	pipe_end = -1;
 	for (int i = 0; i < num_cmds; ++i)
 	{
+		if (find_path(data->paths, data->cmds[i]) == NULL)
+		{
+			printf("%s: command not found\n", data->cmds[i][0]);
+			free(child_pids);
+			return ;
+		}
 		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
 		apply_redirections(data, i);
         if (data->err != NULL)

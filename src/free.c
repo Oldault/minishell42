@@ -79,7 +79,10 @@ void	reset_data_in(t_mini *data)
 	free(data->prompt);
 	free_double_array(data->paths);
 	free_cmds(&data->cmds);
-	reset_redirections(data->redir);
+	int i = -1;
+	while (++i < data->seg_count)
+		reset_redirections(&data->redir[i]);
+	free(data->redir);
 	if (data->err)
 		free(data->err);
 }
@@ -115,14 +118,6 @@ void	reset_data_out(t_mini *data)
 			free_double_array(data->cmds[i]);
 		}
 		free(data->cmds);
-	}
-	if (data->redir)
-	{
-		for (int i = 0; i < data->seg_count; ++i)
-		{
-			reset_redirections(&data->redir[i]);
-		}
-		free(data->redir);
 	}
 	free_builtins(&data->bltn);
 	free(data);

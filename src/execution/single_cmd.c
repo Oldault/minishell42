@@ -44,7 +44,9 @@ static void handle_output_redir(t_mini *data, int *pipe_fds, int i, int num_cmds
 void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, int num_cmds, pid_t *child_pids)
 {
 	pid_t	pid;
+    char    *path;
 
+    path = find_path(data->paths, data->cmds[i]);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -54,8 +56,9 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i, in
         handle_output_redir(data, pipe_fds, i, num_cmds);
         if (handle_builtin(data, data->cmds[i][0], data->bltn))
             exit(EXIT_SUCCESS);
-        execve(find_path(data->paths, data->cmds[i]), data->cmds[i], data->env);
-        printf("%s: command not found\n", data->cmds[i][0]);
+        execve(path, data->cmds[i], data->env);
+        perror("execve");
+        reset_data_in(data);
         exit(127);
     }
     else if (pid > 0)
