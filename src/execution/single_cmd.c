@@ -58,12 +58,12 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 		handle_output_redir(data, pipe_fds, i, num_cmds);
 		if (handle_builtin(data, data->cmds[i][0], data->bltn))
 		{
-			free(path); // Free path before exiting child process
+			free(path);
 			exit(EXIT_SUCCESS);
 		}
 		execve(path, data->cmds[i], data->env);
 		perror("execve");
-		free(path); // Free path if execve fails
+		free(path);
 		exit(127);
 	}
 	else if (pid > 0)
@@ -73,8 +73,7 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 	}
 	else
 	{
-		// Fork failed
+		
 		perror_exit("fork");
 	}
-	free(path); // Free path in parent process
-}
+	free(path);

@@ -98,7 +98,7 @@ void	execute_commands(t_mini *data)
 			execute_single_command(data, pipe_end, pipe_fds, i, num_cmds,
 				child_pids);
 		}
-		free(cmd_path); // Free cmd_path after each command execution
+		free(cmd_path);
 		if (pipe_end != -1)
 		{
 			close(pipe_end);
@@ -126,5 +126,5 @@ void	execute_commands(t_mini *data)
 			last_exit_status = 127;
 		}
 	}
-	free(child_pids); // Ensure child_pids is freed after use
+	free(child_pids);
 }
