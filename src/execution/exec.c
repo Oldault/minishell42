@@ -61,7 +61,7 @@ void	execute_commands(t_mini *data)
 	int		pipe_fds[2];
 	int		pipe_end;
 	char	*cmd_path;
-		int status;
+	int		status;
 
 	if (data->cmds == NULL || data->cmds[0] == NULL || data->cmds[0][0] == NULL)
 	{
@@ -85,6 +85,14 @@ void	execute_commands(t_mini *data)
 		{
 			printf("%s: command not found\n", data->cmds[i][0]);
 			last_exit_status = 127;
+			free(child_pids);
+			return ;
+		}
+		if (access(cmd_path, X_OK) != 0)
+		{
+			printf("%s: permission denied\n", cmd_path);
+			last_exit_status = 126;
+			free(cmd_path);
 			free(child_pids);
 			return ;
 		}
