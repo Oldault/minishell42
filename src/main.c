@@ -37,7 +37,7 @@ int	main(int ac, char **av, char **env)
 		if (data->input)
 			add_history(data->input);
 		parse(data);
-		// print_3d_arr(data->cmds, 1);
+		//print_3d_arr(data->cmds, 1);
 		// print_redir_blue(data);
 		execute_commands(data);
 		reset_data_in(data);
