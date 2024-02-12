@@ -51,7 +51,6 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 	pid = fork();
 	if (pid == 0)
 	{
-		// Child process
 		signal(SIGINT, &ft_signal_fork);
 		signal(SIGQUIT, &ft_signal_fork);
 		handle_input_redir(data, pipe_end);
@@ -68,7 +67,6 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 	}
 	else if (pid > 0)
 	{
-		// Parent process
 		child_pids[i] = pid;
 	}
 	else
