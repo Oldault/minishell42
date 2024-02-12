@@ -60,6 +60,7 @@ void	execute_commands(t_mini *data)
 	pid_t*	child_pids;
 	int		pipe_fds[2];
 	int		pipe_end;
+	char	*cmd_path = NULL;
 
 	if (data->cmds == NULL || data->cmds[0] == NULL || data->cmds[0][0] == NULL)
 		return ;
@@ -72,7 +73,8 @@ void	execute_commands(t_mini *data)
 	pipe_end = -1;
 	for (int i = 0; i < num_cmds; ++i)
 	{
-		if (find_path(data->paths, data->cmds[i]) == NULL)
+		cmd_path = find_path(data->paths, data->cmds[i]);
+		if (cmd_path == NULL)
 		{
 			printf("%s: command not found\n", data->cmds[i][0]);
 			free(child_pids);
@@ -84,6 +86,7 @@ void	execute_commands(t_mini *data)
             printf("%s\n", data->err);
         else
 		    execute_single_command(data, pipe_end, pipe_fds, i, num_cmds, child_pids);
+		free(cmd_path);
 		if (pipe_end != -1)
 			close(pipe_end);
 		if (i < num_cmds - 1)
