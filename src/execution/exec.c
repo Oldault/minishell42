@@ -84,6 +84,7 @@ void	execute_commands(t_mini *data)
 		if (cmd_path == NULL)
 		{
 			printf("%s: command not found\n", data->cmds[i][0]);
+			last_exit_status = 127;
 			free(child_pids);
 			return ;
 		}

@@ -1,24 +1,262 @@
-==1427125== Memcheck, a memory error detector
-==1427125== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==1427125== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==1427125== Command: ./minishell
-==1427125== Parent PID: 1424403
-==1427125== 
-==1427125== 
-==1427125== HEAP SUMMARY:
-==1427125==     in use at exit: 208,225 bytes in 222 blocks
-==1427125==   total heap usage: 563 allocs, 341 frees, 237,753 bytes allocated
-==1427125== 
-==1427125== LEAK SUMMARY:
-==1427125==    definitely lost: 0 bytes in 0 blocks
-==1427125==    indirectly lost: 0 bytes in 0 blocks
-==1427125==      possibly lost: 0 bytes in 0 blocks
-==1427125==    still reachable: 0 bytes in 0 blocks
-==1427125==         suppressed: 208,225 bytes in 222 blocks
-==1427125== 
-==1427125== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
---1427125-- 
---1427125-- used_suppression:     62 Ignore readline leak readline.supp:2 suppressed: 204,209 bytes in 221 blocks
---1427125-- used_suppression:      1 Ignore add_history leak readline.supp:9 suppressed: 4,016 bytes in 1 blocks
-==1427125== 
-==1427125== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1435239== Memcheck, a memory error detector
+==1435239== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1435239== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1435239== Command: ./minishell
+==1435239== Parent PID: 1431897
+==1435239== 
+==1435282== 
+==1435282== HEAP SUMMARY:
+==1435282==     in use at exit: 215,371 bytes in 329 blocks
+==1435282==   total heap usage: 644 allocs, 315 frees, 239,471 bytes allocated
+==1435282== 
+==1435282== 8 bytes in 1 blocks are still reachable in loss record 2 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x40317B: execute_commands (exec.c:75)
+==1435282==    by 0x405BD9: main (main.c:42)
+==1435282== 
+==1435282== 9 bytes in 2 blocks are still reachable in loss record 4 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x407279: ft_strdup (ft_strdup.c:22)
+==1435282==    by 0x403DD5: process_segment_parts (parse_seg.c:68)
+==1435282==    by 0x403C27: parse_segment (parse_seg.c:96)
+==1435282==    by 0x4043F8: process_segments (parse.c:63)
+==1435282==    by 0x4044E4: parse (parse.c:87)
+==1435282==    by 0x405BD0: main (main.c:39)
+==1435282== 
+==1435282== 13 bytes in 1 blocks are still reachable in loss record 7 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x407334: ft_strjoin (ft_strjoin.c:23)
+==1435282==    by 0x405CBB: find_path (path.c:37)
+==1435282==    by 0x4031D0: execute_commands (exec.c:83)
+==1435282==    by 0x405BD9: main (main.c:42)
+==1435282== 
+==1435282== 24 bytes in 1 blocks are still reachable in loss record 15 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x404284: initialize_arrays (parse.c:27)
+==1435282==    by 0x4044AD: parse (parse.c:82)
+==1435282==    by 0x405BD0: main (main.c:39)
+==1435282== 
+==1435282== 32 bytes in 2 blocks are still reachable in loss record 18 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x403C80: init_segment_parsing (parse_seg.c:21)
+==1435282==    by 0x403C00: parse_segment (parse_seg.c:94)
+==1435282==    by 0x4043F8: process_segments (parse.c:63)
+==1435282==    by 0x4044E4: parse (parse.c:87)
+==1435282==    by 0x405BD0: main (main.c:39)
+==1435282== 
+==1435282== 48 bytes in 1 blocks are still reachable in loss record 24 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x4042BA: initialize_arrays (parse.c:30)
+==1435282==    by 0x4044AD: parse (parse.c:82)
+==1435282==    by 0x405BD0: main (main.c:39)
+==1435282== 
+==1435282== 80 bytes in 1 blocks are still reachable in loss record 27 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x4036BA: set_data_out (init.c:59)
+==1435282==    by 0x405B52: main (main.c:22)
+==1435282== 
+==1435282== 112 bytes in 1 blocks are still reachable in loss record 31 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x406DB4: ft_split (ft_split.c:87)
+==1435282==    by 0x405DFB: get_paths (path.c:74)
+==1435282==    by 0x403AF3: set_data_in (init.c:75)
+==1435282==    by 0x405B5F: main (main.c:25)
+==1435282== 
+==1435282== 160 bytes in 1 blocks are still reachable in loss record 33 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x40386D: initialize_commands (init.c:42)
+==1435282==    by 0x40373D: set_data_out (init.c:66)
+==1435282==    by 0x405B52: main (main.c:22)
+==1435282== 
+==1435282== 187 bytes in 13 blocks are still reachable in loss record 35 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x40700C: write_split (ft_split.c:70)
+==1435282==    by 0x406DF1: ft_split (ft_split.c:91)
+==1435282==    by 0x405DFB: get_paths (path.c:74)
+==1435282==    by 0x403AF3: set_data_in (init.c:75)
+==1435282==    by 0x405B5F: main (main.c:25)
+==1435282== 
+==1435282== 320 bytes in 2 blocks are still reachable in loss record 37 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x403CBB: init_segment_parsing (parse_seg.c:24)
+==1435282==    by 0x403C00: parse_segment (parse_seg.c:94)
+==1435282==    by 0x4043F8: process_segments (parse.c:63)
+==1435282==    by 0x4044E4: parse (parse.c:87)
+==1435282==    by 0x405BD0: main (main.c:39)
+==1435282== 
+==1435282== 800 bytes in 1 blocks are still reachable in loss record 41 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435282==    by 0x403776: get_env (init.c:22)
+==1435282==    by 0x403729: set_data_out (init.c:65)
+==1435282==    by 0x405B52: main (main.c:22)
+==1435282== 
+==1435282== 1,024 bytes in 1 blocks are still reachable in loss record 43 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x40544A: get_prompt (prompt.c:51)
+==1435282==    by 0x403AC0: set_data_in (init.c:73)
+==1435282==    by 0x405B5F: main (main.c:25)
+==1435282== 
+==1435282== 4,231 bytes in 72 blocks are still reachable in loss record 67 of 81
+==1435282==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435282==    by 0x407279: ft_strdup (ft_strdup.c:22)
+==1435282==    by 0x4037CB: get_env (init.c:28)
+==1435282==    by 0x403729: set_data_out (init.c:65)
+==1435282==    by 0x405B52: main (main.c:22)
+==1435282== 
+==1435282== LEAK SUMMARY:
+==1435282==    definitely lost: 0 bytes in 0 blocks
+==1435282==    indirectly lost: 0 bytes in 0 blocks
+==1435282==      possibly lost: 0 bytes in 0 blocks
+==1435282==    still reachable: 7,048 bytes in 100 blocks
+==1435282==         suppressed: 208,323 bytes in 229 blocks
+==1435282== 
+==1435282== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--1435282-- 
+--1435282-- used_suppression:     63 Ignore readline leak readline.supp:2 suppressed: 204,220 bytes in 222 blocks
+--1435282-- used_suppression:      4 Ignore add_history leak readline.supp:9 suppressed: 4,103 bytes in 7 blocks
+==1435282== 
+==1435282== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1435304== 
+==1435304== HEAP SUMMARY:
+==1435304==     in use at exit: 215,455 bytes in 335 blocks
+==1435304==   total heap usage: 761 allocs, 426 frees, 243,212 bytes allocated
+==1435304== 
+==1435304== 8 bytes in 1 blocks are still reachable in loss record 4 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x40317B: execute_commands (exec.c:75)
+==1435304==    by 0x405BD9: main (main.c:42)
+==1435304== 
+==1435304== 13 bytes in 1 blocks are still reachable in loss record 8 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x407334: ft_strjoin (ft_strjoin.c:23)
+==1435304==    by 0x405CBB: find_path (path.c:37)
+==1435304==    by 0x4031D0: execute_commands (exec.c:83)
+==1435304==    by 0x405BD9: main (main.c:42)
+==1435304== 
+==1435304== 14 bytes in 3 blocks are still reachable in loss record 10 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x407279: ft_strdup (ft_strdup.c:22)
+==1435304==    by 0x403DD5: process_segment_parts (parse_seg.c:68)
+==1435304==    by 0x403C27: parse_segment (parse_seg.c:96)
+==1435304==    by 0x4043F8: process_segments (parse.c:63)
+==1435304==    by 0x4044E4: parse (parse.c:87)
+==1435304==    by 0x405BD0: main (main.c:39)
+==1435304== 
+==1435304== 24 bytes in 1 blocks are still reachable in loss record 18 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x404284: initialize_arrays (parse.c:27)
+==1435304==    by 0x4044AD: parse (parse.c:82)
+==1435304==    by 0x405BD0: main (main.c:39)
+==1435304== 
+==1435304== 40 bytes in 2 blocks are still reachable in loss record 25 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x403C80: init_segment_parsing (parse_seg.c:21)
+==1435304==    by 0x403C00: parse_segment (parse_seg.c:94)
+==1435304==    by 0x4043F8: process_segments (parse.c:63)
+==1435304==    by 0x4044E4: parse (parse.c:87)
+==1435304==    by 0x405BD0: main (main.c:39)
+==1435304== 
+==1435304== 48 bytes in 1 blocks are still reachable in loss record 29 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x4042BA: initialize_arrays (parse.c:30)
+==1435304==    by 0x4044AD: parse (parse.c:82)
+==1435304==    by 0x405BD0: main (main.c:39)
+==1435304== 
+==1435304== 80 bytes in 1 blocks are still reachable in loss record 32 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x4036BA: set_data_out (init.c:59)
+==1435304==    by 0x405B52: main (main.c:22)
+==1435304== 
+==1435304== 112 bytes in 1 blocks are still reachable in loss record 36 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x406DB4: ft_split (ft_split.c:87)
+==1435304==    by 0x405DFB: get_paths (path.c:74)
+==1435304==    by 0x403AF3: set_data_in (init.c:75)
+==1435304==    by 0x405B5F: main (main.c:25)
+==1435304== 
+==1435304== 160 bytes in 1 blocks are still reachable in loss record 38 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x40386D: initialize_commands (init.c:42)
+==1435304==    by 0x40373D: set_data_out (init.c:66)
+==1435304==    by 0x405B52: main (main.c:22)
+==1435304== 
+==1435304== 187 bytes in 13 blocks are still reachable in loss record 40 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x40700C: write_split (ft_split.c:70)
+==1435304==    by 0x406DF1: ft_split (ft_split.c:91)
+==1435304==    by 0x405DFB: get_paths (path.c:74)
+==1435304==    by 0x403AF3: set_data_in (init.c:75)
+==1435304==    by 0x405B5F: main (main.c:25)
+==1435304== 
+==1435304== 320 bytes in 2 blocks are still reachable in loss record 42 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x403CBB: init_segment_parsing (parse_seg.c:24)
+==1435304==    by 0x403C00: parse_segment (parse_seg.c:94)
+==1435304==    by 0x4043F8: process_segments (parse.c:63)
+==1435304==    by 0x4044E4: parse (parse.c:87)
+==1435304==    by 0x405BD0: main (main.c:39)
+==1435304== 
+==1435304== 800 bytes in 1 blocks are still reachable in loss record 46 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x405EC4: ft_calloc (ft_calloc.c:29)
+==1435304==    by 0x403776: get_env (init.c:22)
+==1435304==    by 0x403729: set_data_out (init.c:65)
+==1435304==    by 0x405B52: main (main.c:22)
+==1435304== 
+==1435304== 1,024 bytes in 1 blocks are still reachable in loss record 48 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x40544A: get_prompt (prompt.c:51)
+==1435304==    by 0x403AC0: set_data_in (init.c:73)
+==1435304==    by 0x405B5F: main (main.c:25)
+==1435304== 
+==1435304== 4,231 bytes in 72 blocks are still reachable in loss record 72 of 86
+==1435304==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1435304==    by 0x407279: ft_strdup (ft_strdup.c:22)
+==1435304==    by 0x4037CB: get_env (init.c:28)
+==1435304==    by 0x403729: set_data_out (init.c:65)
+==1435304==    by 0x405B52: main (main.c:22)
+==1435304== 
+==1435304== LEAK SUMMARY:
+==1435304==    definitely lost: 0 bytes in 0 blocks
+==1435304==    indirectly lost: 0 bytes in 0 blocks
+==1435304==      possibly lost: 0 bytes in 0 blocks
+==1435304==    still reachable: 7,061 bytes in 101 blocks
+==1435304==         suppressed: 208,394 bytes in 234 blocks
+==1435304== 
+==1435304== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--1435304-- 
+--1435304-- used_suppression:     68 Ignore readline leak readline.supp:2 suppressed: 204,286 bytes in 227 blocks
+--1435304-- used_suppression:      4 Ignore add_history leak readline.supp:9 suppressed: 4,108 bytes in 7 blocks
+==1435304== 
+==1435304== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1435239== 
+==1435239== HEAP SUMMARY:
+==1435239==     in use at exit: 208,225 bytes in 222 blocks
+==1435239==   total heap usage: 858 allocs, 636 frees, 247,664 bytes allocated
+==1435239== 
+==1435239== LEAK SUMMARY:
+==1435239==    definitely lost: 0 bytes in 0 blocks
+==1435239==    indirectly lost: 0 bytes in 0 blocks
+==1435239==      possibly lost: 0 bytes in 0 blocks
+==1435239==    still reachable: 0 bytes in 0 blocks
+==1435239==         suppressed: 208,225 bytes in 222 blocks
+==1435239== 
+==1435239== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--1435239-- 
+--1435239-- used_suppression:     62 Ignore readline leak readline.supp:2 suppressed: 204,209 bytes in 221 blocks
+--1435239-- used_suppression:      1 Ignore add_history leak readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==1435239== 
+==1435239== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
