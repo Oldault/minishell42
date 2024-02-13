@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/06 14:46:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:40:24 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_mini
 	char				*err;
 	t_redirs			*redir;
 	t_cmd_entry			*bltn;
+	int					seg_count;
 }						t_mini;
 
 //*                ~~~  Exit Status  ~~~                 *//
@@ -128,7 +129,6 @@ int						find_value(char **org_input, char **value, char **name);
 
 //*                ~~~   echo utils   ~~~                *//
 char					*skip_echo_flags(char *input, int *newline);
-char					*get_env_value(char *var, char **env);
 int						has_even_quotes(const char *input);
 char					*expand_env_variable(char **input_ptr, char **env);
 
@@ -136,7 +136,6 @@ int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
 char					*strdup_spc(const char *src);
 char					*strdup_alpha(const char *src);
-char					*get_env_value(char *var, char **env);
 
 //*--------------------- Execution -----------------------*//
 void					execute_commands(t_mini *data);
@@ -152,6 +151,7 @@ int						parse(t_mini *data);
 char					**parse_segment(t_mini *data, char *segment,
 							t_redirs *redirections);
 char					**parse_command_segment(char *segment, char **env);
+char					*expand_variable(char *var, char **env, int expand);
 
 //*-------------------- Parse Utils --------------------*//
 int						redir_start(char *word);

@@ -18,30 +18,38 @@ char	*find_path(char **paths, char **arg)
 	char	*path;
 	char	*temp;
 
-	i = -1;
 	path = NULL;
-	temp = NULL;
 	if (arg[0][0] == '/' || arg[0][0] == '.')
-		return(arg[0]);
+	{
+		return (ft_strdup(arg[0]));
+	}
 	if (!paths)
-		return(NULL);
-	while (paths[++i])
+	{
+		return (NULL);
+	}
+	for (i = 0; paths[i]; ++i)
 	{
 		temp = ft_strjoin(paths[i], "/");
 		if (!temp)
+		{
 			return (NULL);
+		}
 		path = ft_strjoin(temp, arg[0]);
-		free(temp);
+		free(temp); // Free temp after it's used
 		if (!path)
+		{
 			return (NULL);
+		}
 		if (access(path, F_OK | X_OK) == 0)
+		{
 			return (path);
+		}
 		free(path);
 	}
 	return (NULL);
 }
 
-char	**get_paths(t_mini	*data, char **env)
+char	**get_paths(t_mini *data, char **env)
 {
 	int		i;
 	char	*full_path;
@@ -57,7 +65,7 @@ char	**get_paths(t_mini	*data, char **env)
 		{
 			full_path = ft_strdup(env[i] + 5);
 			if (!full_path)
-                return (NULL);
+				return (NULL);
 			break ;
 		}
 	}

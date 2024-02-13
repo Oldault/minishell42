@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:16:28 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:19:07 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ int	main(int ac, char **av, char **env)
 	{
 		set_data_in(data);
 		if (!data->input)
-			break ;
+		{
+			reset_data_out(data);
+			rl_clear_history(); 
+			exit(EXIT_SUCCESS); 
+		}
 		if (strcmp(data->input, "") == 0)
 		{
 			free(data->input);
@@ -33,8 +37,8 @@ int	main(int ac, char **av, char **env)
 		if (data->input)
 			add_history(data->input);
 		parse(data);
-		//print_3d_arr(data->cmds, 1);
-		//print_redir_blue(data);
+		// print_3d_arr(data->cmds, 1);
+		// print_redir_blue(data);
 		execute_commands(data);
 		reset_data_in(data);
 	}

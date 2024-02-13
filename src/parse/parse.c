@@ -52,7 +52,8 @@ void	free_resources(char **segments, char ***cmd_arr, t_redirs *redir_arr,
 	free(redir_arr);
 }
 
-int	process_segments(t_mini *data, char **segs, char ***cmds, t_redirs *r_arr, int seg_num)
+int	process_segments(t_mini *data, char **segs, char ***cmds, t_redirs *r_arr,
+		int seg_num)
 {
 	int	i;
 
@@ -77,10 +78,17 @@ int	parse(t_mini *data)
 	if (segments == NULL)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
+	data->seg_count = seg_num;
 	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
-		return (free_seg_cmd_redir(segments, cmd_arr, redir_arr), -1);
+	{
+		free_double_array(segments);
+		return (-1);
+	}
 	if (process_segments(data, segments, cmd_arr, redir_arr, seg_num) != 0)
-		return (free_seg_cmd_redir(segments, cmd_arr, redir_arr), -1);
+	{
+		free_resources(segments, cmd_arr, redir_arr, seg_num - 1);
+		return (-1);
+	}
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;

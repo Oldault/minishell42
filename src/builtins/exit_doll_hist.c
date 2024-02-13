@@ -14,6 +14,10 @@
 
 void	handle_exit(t_mini *data)
 {
+	int i = -1;
+	while (++i < data->seg_count)
+		reset_redirections(&data->redir[i]);
+	free(data->redir);
 	reset_data_out(data);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);

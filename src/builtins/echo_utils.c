@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:04:50 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:29:43 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:42:51 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,6 @@ char	*skip_echo_flags(char *input, int *newline)
 			input++;
 	}
 	return (input);
-}
-
-char	*get_env_value(char *var, char **env)
-{
-	char	**splitted;
-	char	*value;
-	int		i;
-
-	i = -1;
-	value = NULL;
-	while (env && env[++i] != NULL)
-	{
-		splitted = ft_split(env[i], '=');
-		if (!splitted)
-			return (NULL);
-		if (strcmp(var, splitted[0]) == 0)
-		{
-			value = ft_strdup(splitted[1]);
-			free_double_array(splitted);
-			return (value);
-		}
-		free_double_array(splitted);
-	}
-	return (NULL);
 }
 
 int	has_even_quotes(const char *input)
@@ -98,25 +74,23 @@ static char	*parse_env_variable_name(char **input_ptr)
 char	*expand_env_variable(char **input_ptr, char **env)
 {
 	char	*name;
-	char	*result;
 	char	*value;
 
 	if (**input_ptr != '$')
 		return (NULL);
 	name = parse_env_variable_name(input_ptr);
-	if (name == NULL)
+	if (!name)
 		return (NULL);
-	result = NULL;
 	if (strcmp(name, "?") == 0)
 	{
-		result = ft_itoa(last_exit_status);
+		free(name);
+		return (ft_itoa(last_exit_status));
 	}
 	else
 	{
-		value = get_env_value(name, env);
+		value = expand_variable(name, env, 1);
 		if (value)
-			result = ft_strdup(value);
+			return (free(name), value);
 	}
-	free(name);
-	return (result);
+	return (NULL);
 }
