@@ -16,19 +16,22 @@ t_parse_seg	*init_pdata(char *segment)
 {
 	t_parse_seg	*pdata;
 
-	pdata = malloc(sizeof(t_parse_seg));
-	pdata->args = malloc(sizeof(char *) * (ft_strlen(segment) / 2 + 2));
-	for (int i = 0; i < ((int)ft_strlen(segment) / 2 + 2); ++i)
+	pdata = calloc(1, sizeof(t_parse_seg));
+	if (!pdata)
+		return (NULL);
+	pdata->args = calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
+	if (!pdata->args)
 	{
-		pdata->args[i] = NULL;
+		free(pdata);
+		return (NULL);
 	}
-	pdata->current_arg = malloc(strlen(segment) + 1);
-	pdata->current_arg[0] = '\0';
-	pdata->c = '\0';
-	pdata->in_single_quote = 0;
-	pdata->in_double_quote = 0;
-	pdata->arg_count = 0;
-	pdata->current_length = 0;
+	pdata->current_arg = calloc(strlen(segment) + 1, sizeof(char));
+	if (!pdata->current_arg)
+	{
+		free(pdata->args);
+		free(pdata);
+		return (NULL);
+	}
 	pdata->should_expand = 1;
 	return (pdata);
 }
@@ -86,7 +89,10 @@ int	handle_space(t_parse_seg *pdata)
 
 void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
-	char *temp = ft_strjoin(pdata->current_arg, expanded_value);
+	char	*temp;
+	char	**splitted;
+
+	temp = ft_strjoin(pdata->current_arg, expanded_value);
 	if (temp)
 	{
 		free(pdata->current_arg);
@@ -94,11 +100,11 @@ void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 	}
 	if (pdata->current_length > 0)
 	{
-		char **splitted = ft_split(pdata->current_arg, ' ');
+		splitted = ft_split(pdata->current_arg, ' ');
 		for (int i = 0; splitted && splitted[i]; ++i)
 		{
 			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
-			free(splitted[i]);                                    
+			free(splitted[i]);
 		}
 		free(splitted);
 		pdata->current_arg[0] = '\0';
