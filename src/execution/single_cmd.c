@@ -71,7 +71,6 @@ void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
 	}
 	else
 	{
-		
 		perror_exit("fork");
 	}
 	free(path);

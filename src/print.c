@@ -68,25 +68,35 @@ void	print_redir(t_rdr **redir_arr)
 	printf("------------%s\n", COLOR_RESET);
 }
 
-void print_redir_blue(t_mini *data)
+void	print_redir_blue(t_mini *data)
 {
+	t_rdr	*redir;
+
 	printf("%s------------\n", BLUE);
-    for (int i = 0; data->redir[i].redirs != NULL; i++)
-    {
-        printf("Command %d redirections:\n", i + 1);
-        for (int j = 0; j < data->redir[i].count; j++)
-        {
-            t_rdr *redir = &data->redir[i].redirs[j];
-            printf("Redirection type: ");
-            switch (redir->type)
-            {
-                case REDIR_INPUT:  printf("Input (<)"); break;
-                case REDIR_OUTPUT: printf("Output (>)"); break;
-                case REDIR_APPEND: printf("Append (>>)"); break;
-                default:           printf("None"); break;
-            }
-            printf(", Filename: %s\n", redir->filename);
-        }
-    }
+	for (int i = 0; data->redir[i].redirs != NULL; i++)
+	{
+		printf("Command %d redirections:\n", i + 1);
+		for (int j = 0; j < data->redir[i].count; j++)
+		{
+			redir = &data->redir[i].redirs[j];
+			printf("Redirection type: ");
+			switch (redir->type)
+			{
+			case REDIR_INPUT:
+				printf("Input (<)");
+				break ;
+			case REDIR_OUTPUT:
+				printf("Output (>)");
+				break ;
+			case REDIR_APPEND:
+				printf("Append (>>)");
+				break ;
+			default:
+				printf("None");
+				break ;
+			}
+			printf(", Filename: %s\n", redir->filename);
+		}
+	}
 	printf("------------%s\n", COLOR_RESET);
 }

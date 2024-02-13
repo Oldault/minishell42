@@ -26,8 +26,8 @@ int	main(int ac, char **av, char **env)
 		if (!data->input)
 		{
 			reset_data_out(data);
-			rl_clear_history(); 
-			exit(EXIT_SUCCESS); 
+			rl_clear_history();
+			exit(EXIT_SUCCESS);
 		}
 		if (strcmp(data->input, "") == 0)
 		{

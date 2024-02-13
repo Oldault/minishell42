@@ -87,25 +87,34 @@ int	handle_space(t_parse_seg *pdata)
 void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
 	char	**splitted;
-	int		i;
-	
-	i = -1;
+
+	char *temp = ft_strjoin(pdata->current_arg, expanded_value);
+		// Join and create a new string.
+	if (temp)
+	{
+		free(pdata->current_arg); 
+			// Free the old current_arg only if strjoin succeeds.
+		pdata->current_arg = temp; // Assign the new string to current_arg.
+	}
+	// If current_arg has content, split and store in args.
 	if (pdata->current_length > 0)
 	{
-		pdata->current_arg = ft_strjoin(pdata->current_arg, expanded_value);
 		splitted = ft_split(pdata->current_arg, ' ');
-		while (splitted[++i])
+		for (int i = 0; splitted && splitted[i]; ++i)
 		{
 			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
-			free(splitted[i]);
+			free(splitted[i]); // Free each split segment after duplicating.
 		}
-		pdata->current_length = 0;
-		free(splitted);
+		free(splitted);               // Free the array of split segments.
+		pdata->current_arg[0] = '\0'; // Reset current_arg for next use.
+		pdata->current_length = 0;    // Reset length.
 	}
 	else
-		pdata->args[pdata->arg_count++] = expanded_value;
+	{
+		// Directly store expanded_value in args if current_arg is empty.
+		pdata->args[pdata->arg_count++] = strdup(expanded_value);
+	}
 }
-
 void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
 		size_t var_len)
 {
@@ -159,11 +168,14 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 
 char	**parse_command_segment(char *segment, char **env)
 {
-	t_parse_seg *pdata = init_pdata(segment);
+	t_parse_seg	*pdata;
+	size_t		segment_len;
+	char		**temp_args;
+
+	pdata = init_pdata(segment);
 	if (!pdata)
 		return (NULL);
-
-	size_t segment_len = strlen(segment);
+	segment_len = strlen(segment);
 	for (size_t i = 0; i < segment_len; ++i)
 	{
 		pdata->c = segment[i];
@@ -174,15 +186,13 @@ char	**parse_command_segment(char *segment, char **env)
 		}
 		pdata->current_arg[pdata->current_length++] = pdata->c;
 	}
-
 	if (pdata->current_length > 0)
 	{
 		pdata->current_arg[pdata->current_length] = '\0';
 		pdata->args[pdata->arg_count++] = strdup(pdata->current_arg);
 	}
-
 	free(pdata->current_arg);
-	char **temp_args = pdata->args;
+	temp_args = pdata->args;
 	free(pdata);
 	return (temp_args);
 }

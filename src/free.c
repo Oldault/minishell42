@@ -75,11 +75,13 @@ void	reset_redirections(t_redirs *redir)
 
 void	reset_data_in(t_mini *data)
 {
+	int	i;
+
 	free(data->input);
 	free(data->prompt);
 	free_double_array(data->paths);
 	free_cmds(&data->cmds);
-	int i = -1;
+	i = -1;
 	while (++i < data->seg_count)
 		reset_redirections(&data->redir[i]);
 	free(data->redir);

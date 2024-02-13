@@ -31,4 +31,3 @@ void	ft_signal(int signal)
 		last_exit_status = 1;
 	}
 }
-

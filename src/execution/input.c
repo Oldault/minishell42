@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		handle_builtin(t_mini *data, char *cmd, t_cmd_entry *builtin)
+int	handle_builtin(t_mini *data, char *cmd, t_cmd_entry *builtin)
 {
 	int	i;
 

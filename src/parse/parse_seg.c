@@ -71,14 +71,16 @@ static void	process_segment_parts(char **words, char ***cmd,
 	(*cmd)[j] = NULL;
 }
 
-int var_name_length(char *input)
+int	var_name_length(char *input)
 {
-    int len = 0;
-    while (input[len] && input[len] != ' ' && input[len] != '$') 
+	int	len;
+
+	len = 0;
+	while (input[len] && input[len] != ' ' && input[len] != '$')
 	{
-        len++;
-    }
-    return len;
+		len++;
+	}
+	return (len);
 }
 
 char	**parse_segment(t_mini *data, char *segment, t_redirs *redirections)
