@@ -86,31 +86,29 @@ int	handle_space(t_parse_seg *pdata)
 
 void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
-	char	**splitted;
-
 	char *temp = ft_strjoin(pdata->current_arg, expanded_value);
 	if (temp)
 	{
-		free(pdata->current_arg); 
+		free(pdata->current_arg);
 		pdata->current_arg = temp;
 	}
 	if (pdata->current_length > 0)
 	{
-		splitted = ft_split(pdata->current_arg, ' ');
+		char **splitted = ft_split(pdata->current_arg, ' ');
 		for (int i = 0; splitted && splitted[i]; ++i)
 		{
 			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
-			free(splitted[i]);
+			free(splitted[i]);                                    
 		}
 		free(splitted);
 		pdata->current_arg[0] = '\0';
 		pdata->current_length = 0;
 	}
 	else
-	{
 		pdata->args[pdata->arg_count++] = strdup(expanded_value);
-	}
+	free(expanded_value);
 }
+
 void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
 		size_t var_len)
 {
@@ -146,7 +144,6 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 		if (expanded_value)
 		{
 			handle_expanded_value(pdata, expanded_value);
-			free(expanded_value);
 		}
 		else
 		{
