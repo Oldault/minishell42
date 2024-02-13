@@ -71,32 +71,31 @@ void	print_redir(t_rdr **redir_arr)
 void	print_redir_blue(t_mini *data)
 {
 	t_rdr	*redir;
+	int		i;
+	int		j;
 
+	j = 0;
+	i = 0;
 	printf("%s------------\n", BLUE);
-	for (int i = 0; data->redir[i].redirs != NULL; i++)
+	while (data->redir[i].redirs != NULL)
 	{
 		printf("Command %d redirections:\n", i + 1);
-		for (int j = 0; j < data->redir[i].count; j++)
+		while (j < data->redir[i].count)
 		{
 			redir = &data->redir[i].redirs[j];
 			printf("Redirection type: ");
-			switch (redir->type)
-			{
-			case REDIR_INPUT:
+			if (redir->type == REDIR_INPUT)
 				printf("Input (<)");
-				break ;
-			case REDIR_OUTPUT:
+			else if (redir->type == REDIR_OUTPUT)
 				printf("Output (>)");
-				break ;
-			case REDIR_APPEND:
+			else if (redir->type == REDIR_APPEND)
 				printf("Append (>>)");
-				break ;
-			default:
+			else
 				printf("None");
-				break ;
-			}
 			printf(", Filename: %s\n", redir->filename);
+			j++;
 		}
+		i++;
 	}
 	printf("------------%s\n", COLOR_RESET);
 }
