@@ -89,29 +89,25 @@ void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 	char	**splitted;
 
 	char *temp = ft_strjoin(pdata->current_arg, expanded_value);
-		// Join and create a new string.
 	if (temp)
 	{
 		free(pdata->current_arg); 
-			// Free the old current_arg only if strjoin succeeds.
-		pdata->current_arg = temp; // Assign the new string to current_arg.
+		pdata->current_arg = temp;
 	}
-	// If current_arg has content, split and store in args.
 	if (pdata->current_length > 0)
 	{
 		splitted = ft_split(pdata->current_arg, ' ');
 		for (int i = 0; splitted && splitted[i]; ++i)
 		{
 			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
-			free(splitted[i]); // Free each split segment after duplicating.
+			free(splitted[i]);
 		}
-		free(splitted);               // Free the array of split segments.
-		pdata->current_arg[0] = '\0'; // Reset current_arg for next use.
-		pdata->current_length = 0;    // Reset length.
+		free(splitted);
+		pdata->current_arg[0] = '\0';
+		pdata->current_length = 0;
 	}
 	else
 	{
-		// Directly store expanded_value in args if current_arg is empty.
 		pdata->args[pdata->arg_count++] = strdup(expanded_value);
 	}
 }
