@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 17:21:48 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:14:33 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_parse_seg	*init_pdata(char *segment)
 	pdata->args = malloc(sizeof(char *) * (ft_strlen(segment) / 2 + 2));
 	for (int i = 0; i < ((int)ft_strlen(segment) / 2 + 2); ++i)
 	{
-		pdata->args[i] = NULL; // Initialize each element to NULL
+		pdata->args[i] = NULL;
 	}
 	pdata->current_arg = malloc(strlen(segment) + 1);
 	pdata->current_arg[0] = '\0';
@@ -86,13 +86,24 @@ int	handle_space(t_parse_seg *pdata)
 
 void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
+	char	**splitted;
+	int		i;
+	
+	i = -1;
 	if (pdata->current_length > 0)
 	{
-		pdata->current_arg[pdata->current_length] = '\0';
-		pdata->args[pdata->arg_count++] = strdup(pdata->current_arg);
+		pdata->current_arg = ft_strjoin(pdata->current_arg, expanded_value);
+		splitted = ft_split(pdata->current_arg, ' ');
+		while (splitted[++i])
+		{
+			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
+			free(splitted[i]);
+		}
 		pdata->current_length = 0;
+		free(splitted);
 	}
-	pdata->args[pdata->arg_count++] = expanded_value;
+	else
+		pdata->args[pdata->arg_count++] = expanded_value;
 }
 
 void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
@@ -130,6 +141,7 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 		if (expanded_value)
 		{
 			handle_expanded_value(pdata, expanded_value);
+			free(expanded_value);
 		}
 		else
 		{
@@ -155,13 +167,11 @@ char	**parse_command_segment(char *segment, char **env)
 	for (size_t i = 0; i < segment_len; ++i)
 	{
 		pdata->c = segment[i];
-
 		if (handle_single_quote(pdata) || handle_double_quote(pdata)
 			|| handle_space(pdata) || handle_expansion(segment, &i, pdata, env))
 		{
 			continue ;
 		}
-
 		pdata->current_arg[pdata->current_length++] = pdata->c;
 	}
 
