@@ -33,23 +33,26 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 	int	status;
 	int	termsig;
 
-	waitpid(exec_data->child_pids[i], &status, 0);
-	if (WIFEXITED(status))
+	status = 0;
+	if (waitpid(exec_data->child_pids[i], &status, 0) > 0)
 	{
-		last_exit_status = WEXITSTATUS(status);
-	}
-	else if (WIFSIGNALED(status))
-	{
-		termsig = WTERMSIG(status);
-		if (termsig == SIGQUIT)
+		if (WIFEXITED(status))
 		{
-			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+			last_exit_status = WEXITSTATUS(status);
 		}
-		last_exit_status = 128 + termsig;
-	}
-	else
-	{
-		last_exit_status = 127;
+		else if (WIFSIGNALED(status))
+		{
+			termsig = WTERMSIG(status);
+			if (termsig == SIGQUIT)
+			{
+				write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+			}
+			last_exit_status = 128 + termsig;
+		}
+		else
+		{
+			last_exit_status = 127;
+		}
 	}
 }
 
