@@ -24,6 +24,7 @@ void	core_loop(t_mini *data)
 			reset_data_out(data);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
+			continue;
 		}
 		if (ft_strcmp(data->input, "") == 0)
 		{
@@ -37,7 +38,8 @@ void	core_loop(t_mini *data)
 		parse(data);
 		execute_commands(data);
 		reset_data_in(data);
-		rl_on_new_line();
+		rl_replace_line("", 0);
+        rl_redisplay();
 	}
 }
 
