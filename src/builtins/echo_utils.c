@@ -71,19 +71,19 @@ static char	*parse_env_variable_name(char **input_ptr)
 	return (name);
 }
 
-char	*handleDollarOnly(char *name)
+char	*handle_dollar_only(char *name)
 {
 	free(name);
 	return (ft_strdup("$"));
 }
 
-char	*handleExitStatus(char *name)
+char	*handle_exit_status(char *name)
 {
 	free(name);
 	return (ft_itoa(last_exit_status));
 }
 
-char	*handleNonExistentVariable(char *name, char *input_ptr, char **env)
+char	*handle_non_existent_variable(char *name, char *input_ptr, char **env)
 {
 	char	*value;
 
@@ -116,15 +116,15 @@ char	*expand_env_variable(char **input_ptr, char **env)
 		return (NULL);
 	if (ft_strcmp(name, "") == 0)
 	{
-		return (handleDollarOnly(name));
+		return (handle_dollar_only(name));
 	}
 	else if (ft_strcmp(name, "?") == 0)
 	{
-		return (handleExitStatus(name));
+		return (handle_exit_status(name));
 	}
 	else
 	{
-		return (handleNonExistentVariable(name, *input_ptr, env));
+		return (handle_non_existent_variable(name, *input_ptr, env));
 	}
 	return (NULL);
 }
