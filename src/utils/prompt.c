@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 19:34:56 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:43:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,6 @@ void	shorten_path(char *path, char *home_dir)
 		path[1] = '/';
 		path[path_length - home_dir_length + 1] = '\0';
 	}
-}
-char	*ft_getenv(char **env, char *name)
-{
-	int		i;
-	char	*temp_value;
-	char	**temp;
-
-	i = -1;
-	while (env[++i])
-	{
-		temp = ft_split(env[i], '=');
-		if (ft_strcmp(temp[0], name) == 0)
-		{
-			temp_value = ft_strdup(temp[1]);
-			free_double_array(temp);
-			return (temp_value);
-		}
-		free_double_array(temp);
-	}
-	return (NULL);
 }
 
 void	prepare_cwd(char *cwd, char *home_dir, char *prompt)

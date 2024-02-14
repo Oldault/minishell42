@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 15:57:14 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:44:17 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void					ft_signal(int signal);
 //*----------------------- 🚧 𝙋𝘼𝙏𝙃𝙎 🚧 -----------------------*//
 char					**get_paths(t_mini *data, char **env);
 char					*find_path(char **paths, char **arg);
+char					*ft_getenv(char **env, char *name);
 
 //*----------------------- 👁️ 𝙋𝘼𝙍𝙎𝙀 👁️ -----------------------*//
 int						parse(t_mini *data);
