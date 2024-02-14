@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 11:21:06 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:51:28 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,19 @@ t_re_type				redir_type(char *symbol);
 int						get_cmd_len(char **words);
 void					redir_split(char *word, t_rdr *redirection);
 
+// todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚟𝚊𝚛    ~~~                *//
+int						handle_single_quote(t_parse_seg *pdata);
+int						handle_double_quote(t_parse_seg *pdata);
+int						handle_space(t_parse_seg *pdata);
+void					handle_nonexistent_variable(t_parse_seg *pdata,
+							char *var_name, size_t var_len);
+
+// todo               ~~~  𝚑𝚊𝚗𝚍𝚕𝚎 𝚎𝚡𝚙𝚊𝚗𝚍  ~~~                *//
+int						handle_expansion(char *segment, size_t *i,
+							t_parse_seg *pdata, char **env);
+
 //*---------------------- 🌍 𝘽𝙐𝙄𝙇𝙏𝙄𝙉𝙎 🌍 ----------------------*//
-// todo               ~~~  𝚑𝚊𝚗𝚍𝚕𝚎 𝚎𝚊𝚌𝚑  ~~~                   *//
+// todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚎𝚊𝚌𝚑   ~~~                 *//
 void					handle_echo(t_mini *data);
 void					handle_cd(t_mini *data);
 void					handle_pwd(t_mini *data);
