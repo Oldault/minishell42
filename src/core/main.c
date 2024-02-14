@@ -38,8 +38,6 @@ void	core_loop(t_mini *data)
 		parse(data);
 		execute_commands(data);
 		reset_data_in(data);
-		rl_replace_line("", 0);
-        rl_redisplay();
 	}
 }
 
