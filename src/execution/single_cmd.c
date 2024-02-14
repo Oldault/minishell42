@@ -52,7 +52,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 	if (pid == 0)
 	{
 		signal(SIGINT, &ft_signal_fork);
-		signal(SIGQUIT, &ft_signal_fork);
+		signal(SIGQUIT, SIG_DFL);
 		handle_input_redir(data, exec_data->pipe_end);
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
 		if (handle_builtin(data))
