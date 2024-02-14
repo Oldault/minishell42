@@ -14,17 +14,20 @@
 
 static void	unset_var(char *to_unset, char **env)
 {
-	char	*temp;
+	char	**temp;
+	char	*temp_name;
 	int		i;
 
 	i = -1;
 	while (env[++i] != NULL)
 	{
-		temp = (ft_split(env[i], '='))[0];
-		if (ft_strcmp(temp, to_unset) == 0)
+		temp = ft_split(env[i], '=');
+		temp_name = ft_strdup(temp[0]);
+		free_double_array(temp);
+		if (ft_strcmp(temp_name, to_unset) == 0)
 		{
 			free(env[i]);
-			free(temp);
+			free(temp_name);
 			while (env[i] != NULL)
 			{
 				env[i] = env[i + 1];
@@ -32,7 +35,7 @@ static void	unset_var(char *to_unset, char **env)
 			}
 			break ;
 		}
-		free(temp);
+		free(temp_name);
 	}
 }
 

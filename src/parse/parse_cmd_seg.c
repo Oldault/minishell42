@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/13 12:14:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:39:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,22 @@ t_parse_seg	*init_pdata(char *segment)
 {
 	t_parse_seg	*pdata;
 
-	pdata = malloc(sizeof(t_parse_seg));
-	pdata->args = malloc(sizeof(char *) * (ft_strlen(segment) / 2 + 2));
-	for (int i = 0; i < ((int)ft_strlen(segment) / 2 + 2); ++i)
+	pdata = ft_calloc(1, sizeof(t_parse_seg));
+	if (!pdata)
+		return (NULL);
+	pdata->args = calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
+	if (!pdata->args)
 	{
-		pdata->args[i] = NULL;
+		free(pdata);
+		return (NULL);
 	}
-	pdata->current_arg = malloc(strlen(segment) + 1);
-	pdata->current_arg[0] = '\0';
-	pdata->c = '\0';
-	pdata->in_single_quote = 0;
-	pdata->in_double_quote = 0;
-	pdata->arg_count = 0;
-	pdata->current_length = 0;
+	pdata->current_arg = calloc(strlen(segment) + 1, sizeof(char));
+	if (!pdata->current_arg)
+	{
+		free(pdata->args);
+		free(pdata);
+		return (NULL);
+	}
 	pdata->should_expand = 1;
 	return (pdata);
 }
@@ -86,24 +89,30 @@ int	handle_space(t_parse_seg *pdata)
 
 void	handle_expanded_value(t_parse_seg *pdata, char *expanded_value)
 {
+	char	*temp;
 	char	**splitted;
-	int		i;
-	
-	i = -1;
+
+	temp = ft_strjoin(pdata->current_arg, expanded_value);
+	if (temp)
+	{
+		free(pdata->current_arg);
+		pdata->current_arg = temp;
+	}
 	if (pdata->current_length > 0)
 	{
-		pdata->current_arg = ft_strjoin(pdata->current_arg, expanded_value);
 		splitted = ft_split(pdata->current_arg, ' ');
-		while (splitted[++i])
+		for (int i = 0; splitted && splitted[i]; ++i)
 		{
 			pdata->args[pdata->arg_count++] = strdup(splitted[i]);
 			free(splitted[i]);
 		}
-		pdata->current_length = 0;
 		free(splitted);
+		pdata->current_arg[0] = '\0';
+		pdata->current_length = 0;
 	}
 	else
-		pdata->args[pdata->arg_count++] = expanded_value;
+		pdata->args[pdata->arg_count++] = strdup(expanded_value);
+	free(expanded_value);
 }
 
 void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
@@ -141,7 +150,6 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 		if (expanded_value)
 		{
 			handle_expanded_value(pdata, expanded_value);
-			free(expanded_value);
 		}
 		else
 		{
@@ -159,11 +167,14 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 
 char	**parse_command_segment(char *segment, char **env)
 {
-	t_parse_seg *pdata = init_pdata(segment);
+	t_parse_seg	*pdata;
+	size_t		segment_len;
+	char		**temp_args;
+
+	pdata = init_pdata(segment);
 	if (!pdata)
 		return (NULL);
-
-	size_t segment_len = strlen(segment);
+	segment_len = strlen(segment);
 	for (size_t i = 0; i < segment_len; ++i)
 	{
 		pdata->c = segment[i];
@@ -174,15 +185,13 @@ char	**parse_command_segment(char *segment, char **env)
 		}
 		pdata->current_arg[pdata->current_length++] = pdata->c;
 	}
-
 	if (pdata->current_length > 0)
 	{
 		pdata->current_arg[pdata->current_length] = '\0';
 		pdata->args[pdata->arg_count++] = strdup(pdata->current_arg);
 	}
-
 	free(pdata->current_arg);
-	char **temp_args = pdata->args;
+	temp_args = pdata->args;
 	free(pdata);
 	return (temp_args);
 }

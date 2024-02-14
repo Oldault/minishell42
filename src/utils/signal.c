@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 11:20:24 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:14:19 by svolodin         ###   ########.fr       */
+/*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
+/*   Updated: 2024/02/05 11:14:52 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		handle_builtin(t_mini *data, char *cmd, t_cmd_entry *builtin)
+void	ft_signal_fork(int num)
 {
-	int	i;
+	if (num == SIGINT)
+		exit(130);
+	if (num == SIGQUIT)
+		exit(131);
+}
 
-	i = -1;
-	while (builtin[++i].command_name != NULL)
+void	ft_signal(int signal)
+{
+	if (signal == SIGINT)
 	{
-		if (ft_strcmp(builtin[i].command_name, cmd) == 0)
-		{
-			builtin[i].func(data);
-			return (1);
-		}
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		last_exit_status = 1;
 	}
-	return (0);
 }

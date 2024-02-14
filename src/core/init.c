@@ -55,7 +55,7 @@ static void	initialize_commands(t_mini *data)
 t_mini	*set_data_out(char **env)
 {
 	t_mini	*data;
-	
+
 	data = (t_mini *)ft_calloc(1, sizeof(t_mini));
 	if (data == NULL)
 		exit(EXIT_FAILURE);
@@ -64,7 +64,6 @@ t_mini	*set_data_out(char **env)
 	signal(SIGINT, &ft_signal);
 	data->env = get_env(env);
 	initialize_commands(data);
-
 	return (data);
 }
 
