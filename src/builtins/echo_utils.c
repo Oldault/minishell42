@@ -115,16 +115,10 @@ char	*expand_env_variable(char **input_ptr, char **env)
 	if (!name)
 		return (NULL);
 	if (ft_strcmp(name, "") == 0)
-	{
 		return (handle_dollar_only(name));
-	}
 	else if (ft_strcmp(name, "?") == 0)
-	{
 		return (handle_exit_status(name));
-	}
 	else
-	{
 		return (handle_non_existent_variable(name, *input_ptr, env));
-	}
 	return (NULL);
 }
