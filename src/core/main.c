@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/13 12:19:07 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:36:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,17 @@ void	core_loop(t_mini *data)
 		}
 		if (ft_strcmp(data->input, "") == 0)
 		{
-			free(data->input);
-			free_double_array(data->paths);
-			free(data->prompt);
+			reset_data_mid(data);
 			continue ;
 		}
 		if (data->input)
 			add_history(data->input);
-		parse(data);
+		if (parse(data) != 0)
+		{
+			reset_data_mid(data);
+			continue ;
+		}
+		// print_3d_arr(data->cmds, 1);
 		execute_commands(data);
 		reset_data_in(data);
 		rl_on_new_line();

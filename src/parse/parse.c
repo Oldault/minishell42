@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 11:28:21 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:34:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,12 @@ int	parse(t_mini *data)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
 	data->seg_count = seg_num;
-	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
-	{
+	if (invalid_pipes(segments, seg_num, data))
 		return (free_double_array(segments), -1);
-	}
+	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
+		return (free_double_array(segments), -1);
 	if (process_segments(data, segments, cmd_arr, redir_arr) != 0)
-	{
 		return (free_resources(segments, cmd_arr, redir_arr, seg_num - 1), -1);
-	}
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;

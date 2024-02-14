@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 11:51:28 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:37:24 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ int						redir_symb(char *word);
 t_re_type				redir_type(char *symbol);
 int						get_cmd_len(char **words);
 void					redir_split(char *word, t_rdr *redirection);
+int						invalid_pipes(char **segments, int seg_num,
+							t_mini *data);
 
 // todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚟𝚊𝚛    ~~~                *//
 int						handle_single_quote(t_parse_seg *pdata);
@@ -197,6 +199,7 @@ void					free_double_array(char **array);
 void					free_triple_array(char ***array);
 void					free_cmds(char ****cmds);
 void					reset_redirections(t_redirs *redir);
+void					reset_data_mid(t_mini *data);
 void					reset_data_in(t_mini *data);
 void					reset_data_out(t_mini *data);
 void					free_seg_cmd_redir(char **seg, char ***cmd,
