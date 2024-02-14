@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:13:55 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:49:05 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	handle_heredoc(t_mini *data, char *lim)
 		free(line);
 	}
 	close(data->in_fd);
-	data->in_fd = open(".here_doc.tmp", O_RDONLY, 0777);
+	data->in_fd = open(".hdoc.tmp", O_RDONLY, 0777);
 	if (data->in_fd < 0)
 		perror_exit("open heredoc file for reading");
 }
@@ -72,9 +72,11 @@ void	apply_redirections(t_mini *data, int cmd_index)
 {
 	t_redirs	redirs;
 	t_rdr		redir;
+	int			i;
 
 	redirs = data->redir[cmd_index];
-	for (int i = 0; i < redirs.count; ++i)
+	i = -1;
+	while (++i < redirs.count)
 	{
 		redir = redirs.redirs[i];
 		if (redir.type == REDIR_INPUT)
@@ -87,8 +89,7 @@ void	apply_redirections(t_mini *data, int cmd_index)
 		{
 			if (data->out_fd != STDOUT_FILENO)
 				close(data->out_fd);
-			data->in_fd = open(".here_doc.tmp", O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
+			data->in_fd = open(".hdoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			handle_heredoc(data, redir.filename);
 			if (data->out_fd < 0)
 				data->err = "open heredoc file : Bad adress";

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/13 11:40:24 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:33:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@
 
 //*---------------------- STRUCTS ----------------------*//
 
-//*                ~~~    Parsing    ~~~                 *//
-
+//?            ~~~    Parsing    ~~~           ?//
 typedef struct s_parse_seg
 {
 	char				**args;
@@ -48,7 +47,18 @@ typedef struct s_parse_seg
 	int					should_expand;
 }						t_parse_seg;
 
-//*                ~~~ Redirections  ~~~                 *//
+//?                ~~~   Execution   ~~~                 *//
+typedef struct s_exec_cmd
+{
+	int					num_cmds;
+	int					status;
+	int					pipe_fds[2];
+	int					pipe_end;
+	pid_t				*child_pids;
+	char				*cmd_path;
+}						t_exec_cmd;
+
+//?                ~~~  Redirections ~~~                 *//
 typedef enum s_re_type
 {
 	REDIR_NONE,
@@ -70,7 +80,7 @@ typedef struct s_redirs
 	int					count;
 }						t_redirs;
 
-//*                ~~~   Builtins   ~~~                 *//
+//?                ~~~   Builtins   ~~~                 *//
 typedef struct s_mini	t_mini;
 
 typedef struct
@@ -79,7 +89,7 @@ typedef struct
 	void				(*func)(t_mini *);
 }						t_cmd_entry;
 
-//*                ~~~     Main      ~~~                 *//
+//?                ~~~     Main      ~~~                 *//
 typedef struct s_mini
 {
 	char				*input;
@@ -103,6 +113,7 @@ extern int				last_exit_status;
 t_mini					*set_data_out(char **env);
 void					set_data_in(t_mini *data);
 char					*get_prompt(void);
+int						dbl_arr_len(char **arr);
 
 //*---------------------- SIGNALS -----------------------*//
 void					ft_signal_fork(int num);
@@ -110,7 +121,7 @@ void					ft_signal(int signal);
 
 //*---------------------- BUILTINS ----------------------*//
 
-//*                ~~~  handle each  ~~~                 *//
+// todo             ~~~  handle each  ~~~                 *//
 void					handle_echo(t_mini *data);
 void					handle_cd(t_mini *data);
 void					handle_pwd(t_mini *data);
@@ -121,13 +132,13 @@ void					handle_exit(t_mini *data);
 void					handle_hist(t_mini *data);
 void					handle_doll(t_mini *data);
 
-//*                ~~~  export utils  ~~~                *//
+// todo             ~~~  export utils  ~~~                *//
 int						quote_error(char *input);
 void					print_exp_env(char **env);
 int						find_name(char **org_input, char **name);
 int						find_value(char **org_input, char **value, char **name);
 
-//*                ~~~   echo utils   ~~~                *//
+// todo             ~~~   echo utils   ~~~                *//
 char					*skip_echo_flags(char *input, int *newline);
 int						has_even_quotes(const char *input);
 char					*expand_env_variable(char **input_ptr, char **env);
@@ -139,12 +150,14 @@ char					*strdup_alpha(const char *src);
 
 //*--------------------- Execution -----------------------*//
 void					execute_commands(t_mini *data);
+t_exec_cmd				*init_exec_data(t_mini *data);
+int						handle_builtin(t_mini *data);
+int						handle_cmd_path(char *cmd, char *cmd_path,
+							t_exec_cmd *exec_data);
+void					setup_pipes(int *pipe_fds, int i, int num_cmds);
 void					apply_redirections(t_mini *data, int cmd_index);
-void					execute_single_command(t_mini *data, int pipe_end,
-							int *pipe_fds, int i, int num_cmds,
-							pid_t *child_pids);
-int						handle_builtin(t_mini *data, char *cmd,
-							t_cmd_entry *builtin);
+void					execute_single_command(t_mini *data,
+							t_exec_cmd *exec_data, int i);
 
 //*----------------------- Parse -----------------------*//
 int						parse(t_mini *data);
@@ -180,7 +193,5 @@ void					reset_data_out(t_mini *data);
 void					free_seg_cmd_redir(char **seg, char ***cmd,
 							t_redirs *redir);
 void					perror_exit(char *str);
-
-int						dbl_arr_len(char **arr);
 
 #endif

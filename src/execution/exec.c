@@ -6,37 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:53:03 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:48:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	perror_exit(char *str)
-{
-	perror(str);
-	exit(127);
-}
-
-static int	count_commands(char ***cmds)
-{
-	int	num_cmds;
-
-	num_cmds = 0;
-	while (cmds[num_cmds])
-		num_cmds++;
-	return (num_cmds);
-}
-
-static void	setup_pipes(int *pipe_end, int *pipe_fds, int i, int num_cmds)
-{
-	(void)pipe_end;
-	if (i < num_cmds - 1)
-	{
-		if (pipe(pipe_fds) < 0)
-			perror_exit("pipe");
-	}
-}
 
 void	reset_file_descriptors(t_mini *data, int i)
 {
@@ -51,89 +25,66 @@ void	reset_file_descriptors(t_mini *data, int i)
 		data->out_fd = STDOUT_FILENO;
 	}
 	if (data->redir != NULL && data->redir->redirs[i].type == REDIR_HEREDOC)
-		unlink(".here_doc.tmp");
+		unlink(".hdoc.tmp");
+}
+
+void	handle_wait(t_exec_cmd *exec_data, int i)
+{
+	waitpid(exec_data->child_pids[i], &exec_data->status, 0);
+	if (WIFEXITED(exec_data->status))
+		last_exit_status = WEXITSTATUS(exec_data->status);
+	else
+		last_exit_status = 127;
+}
+
+int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
+{
+	exec_data->cmd_path = find_path(data->paths, data->cmds[i]);
+	if (!handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data))
+		return (0);
+	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
+	apply_redirections(data, i);
+	if (data->err != NULL)
+		printf("%s\n", data->err);
+	else
+		execute_single_command(data, exec_data, i);
+	free(exec_data->cmd_path);
+	if (exec_data->pipe_end != -1)
+		close(exec_data->pipe_end);
+	if (i < exec_data->num_cmds - 1)
+	{
+		exec_data->pipe_end = exec_data->pipe_fds[0];
+		close(exec_data->pipe_fds[1]);
+	}
+	else
+		exec_data->pipe_end = -1;
+	reset_file_descriptors(data, i);
+	return (1);
 }
 
 void	execute_commands(t_mini *data)
 {
-	int		num_cmds;
-	pid_t	*child_pids;
-	int		pipe_fds[2];
-	int		pipe_end;
-	char	*cmd_path;
-	int		status;
+	t_exec_cmd	*exec_data;
+	int			i;
 
 	if (data->cmds == NULL || data->cmds[0] == NULL || data->cmds[0][0] == NULL)
+		return ;
+	exec_data = init_exec_data(data);
+	if (exec_data->num_cmds == 1 && handle_builtin(data))
 	{
+		free(exec_data->child_pids);
+		free(exec_data);
 		return ;
 	}
-	num_cmds = count_commands(data->cmds);
-	if (num_cmds == 1 && handle_builtin(data, data->cmds[0][0], data->bltn))
+	i = -1;
+	while (++i < exec_data->num_cmds)
 	{
-		return ;
-	}
-	child_pids = ft_calloc(num_cmds, sizeof(pid_t));
-	if (!child_pids)
-	{
-		perror_exit("malloc");
-	}
-	pipe_end = -1;
-	for (int i = 0; i < num_cmds; ++i)
-	{
-		cmd_path = find_path(data->paths, data->cmds[i]);
-		if (cmd_path == NULL)
-		{
-			printf("%s: command not found\n", data->cmds[i][0]);
-			last_exit_status = 127;
-			free(child_pids);
+		if (!exec_cmd_seg(data, exec_data, i))
 			return ;
-		}
-		if (access(cmd_path, X_OK) != 0)
-		{
-			printf("%s: permission denied\n", cmd_path);
-			last_exit_status = 126;
-			free(cmd_path);
-			free(child_pids);
-			return ;
-		}
-		setup_pipes(&pipe_end, pipe_fds, i, num_cmds);
-		apply_redirections(data, i);
-		if (data->err != NULL)
-		{
-			printf("%s\n", data->err);
-		}
-		else
-		{
-			execute_single_command(data, pipe_end, pipe_fds, i, num_cmds,
-				child_pids);
-		}
-		free(cmd_path);
-		if (pipe_end != -1)
-		{
-			close(pipe_end);
-		}
-		if (i < num_cmds - 1)
-		{
-			pipe_end = pipe_fds[0];
-			close(pipe_fds[1]);
-		}
-		else
-		{
-			pipe_end = -1;
-		}
-		reset_file_descriptors(data, i);
 	}
-	for (int i = 0; i < num_cmds; ++i)
-	{
-		waitpid(child_pids[i], &status, 0);
-		if (WIFEXITED(status))
-		{
-			last_exit_status = WEXITSTATUS(status);
-		}
-		else
-		{
-			last_exit_status = 127;
-		}
-	}
-	free(child_pids);
+	i = -1;
+	while (++i < exec_data->num_cmds)
+		handle_wait(exec_data, i);
+	free(exec_data->child_pids);
+	free(exec_data);
 }

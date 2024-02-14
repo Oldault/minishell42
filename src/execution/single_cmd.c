@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:28:14 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:49:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,31 @@ static void	handle_output_redir(t_mini *data, int *pipe_fds, int i,
 	}
 }
 
-void	execute_single_command(t_mini *data, int pipe_end, int *pipe_fds, int i,
-		int num_cmds, pid_t *child_pids)
+void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 {
-	pid_t pid;
-	char *path = find_path(data->paths, data->cmds[i]);
+	pid_t	pid;
+	char	*path;
 
+	path = find_path(data->paths, data->cmds[i]);
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGINT, &ft_signal_fork);
 		signal(SIGQUIT, &ft_signal_fork);
-		handle_input_redir(data, pipe_end);
-		handle_output_redir(data, pipe_fds, i, num_cmds);
-		if (handle_builtin(data, data->cmds[i][0], data->bltn))
+		handle_input_redir(data, exec_data->pipe_end);
+		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
+		if (handle_builtin(data))
 		{
 			free(path);
 			exit(EXIT_SUCCESS);
 		}
 		execve(path, data->cmds[i], data->env);
-		perror("execve");
 		free(path);
 		exit(127);
 	}
 	else if (pid > 0)
-	{
-		child_pids[i] = pid;
-	}
+		exec_data->child_pids[i] = pid;
 	else
-	{
 		perror_exit("fork");
-	}
 	free(path);
 }

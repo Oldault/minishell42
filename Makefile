@@ -13,6 +13,7 @@ SRCS_DIR			= ./src/
 OBJS_PATH			= ./objs/
 
 SRCS				= $(shell find $(SRCS_DIR) -name '*.c')
+VALGRIND_FILE		= $(shell find -name '*.txt')
 OBJS				= $(SRCS:$(SRCS_DIR)%.c=$(OBJS_PATH)%.o)
 
 MAKEFLAGS 			+= --no-print-directory
@@ -49,6 +50,7 @@ clean:
 
 fclean:				clean
 					@$(RM) $(NAME)
+					@$(RM) $(VALGRIND_FILE)
 					@$(RM) -r $(OBJS_PATH)
 					@echo "┗▷$(YELLOW)『executables from $(ITALIC)./Minshell/$(RESET)$(YELLOW) cleaned』$(RESET)"
 

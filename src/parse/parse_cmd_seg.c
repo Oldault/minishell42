@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/13 12:14:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:39:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_parse_seg	*init_pdata(char *segment)
 {
 	t_parse_seg	*pdata;
 
-	pdata = calloc(1, sizeof(t_parse_seg));
+	pdata = ft_calloc(1, sizeof(t_parse_seg));
 	if (!pdata)
 		return (NULL);
 	pdata->args = calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
