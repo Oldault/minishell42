@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 13:06:15 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:43:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,25 @@ char	**get_paths(t_mini *data, char **env)
 		return (NULL);
 	free(full_path);
 	return (paths);
+}
+
+char	*ft_getenv(char **env, char *name)
+{
+	int		i;
+	char	*temp_value;
+	char	**temp;
+
+	i = -1;
+	while (env[++i])
+	{
+		temp = ft_split(env[i], '=');
+		if (ft_strcmp(temp[0], name) == 0)
+		{
+			temp_value = ft_strdup(temp[1]);
+			free_double_array(temp);
+			return (temp_value);
+		}
+		free_double_array(temp);
+	}
+	return (NULL);
 }

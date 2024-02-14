@@ -6,11 +6,18 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 10:47:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:36:07 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	reset_data_mid(t_mini *data)
+{
+	free(data->input);
+	free_double_array(data->paths);
+	free(data->prompt);
+}
 
 void	reset_data_in(t_mini *data)
 {

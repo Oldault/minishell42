@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 18:06:49 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:47:57 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #define PROMPT_SIZE 1024
 #define PATH_SIZE 1024
 
-void	shorten_path(char *path, const char *home_dir)
+void	shorten_path(char *path, char *home_dir)
 {
 	size_t	home_dir_length;
 	size_t	path_length;
@@ -40,29 +40,67 @@ void	shorten_path(char *path, const char *home_dir)
 	}
 }
 
-char	*get_prompt(void)
+void	prepare_cwd(char *cwd, char *home_dir, char *prompt)
 {
-	char		*prompt;
-	char		cwd[PATH_SIZE];
-	const char	*home_dir;
-	const char	*username;
-
-	home_dir = getenv("HOME");
-	prompt = malloc(PROMPT_SIZE);
-	username = getenv("USER");
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	if (getcwd(cwd, PATH_SIZE) == NULL)
 	{
 		perror("Unable to get current working directory");
 		free(prompt);
-		return (NULL);
+		cwd[0] = '\0';
 	}
-	if (username == NULL)
-		username = "user";
-	shorten_path(cwd, home_dir);
+	else
+	{
+		shorten_path(cwd, home_dir);
+	}
+}
+
+void	construct_prompt(char *prompt, char *username, char *cwd)
+{
 	prompt[0] = '\0';
 	ft_strncat(prompt, username, PROMPT_SIZE - strlen(prompt) - 1);
 	ft_strncat(prompt, "@minishell:", PROMPT_SIZE - strlen(prompt) - 1);
 	ft_strncat(prompt, cwd, PROMPT_SIZE - strlen(prompt) - 1);
 	ft_strncat(prompt, "$ ", PROMPT_SIZE - strlen(prompt) - 1);
+}
+
+char	*fetch_env_value(char **env, char *var_name)
+{
+	char	*value;
+
+	value = ft_getenv(env, var_name);
+	if (!value)
+	{
+		if (strcmp(var_name, "USER") == 0)
+		{
+			return (ft_strdup("user"));
+		}
+	}
+	return (value);
+}
+
+char	*get_prompt(char **env)
+{
+	char	*prompt;
+	char	cwd[PATH_SIZE];
+	char	*home_dir;
+	char	*username;
+
+	home_dir = fetch_env_value(env, "HOME");
+	username = fetch_env_value(env, "USER");
+	prompt = malloc(PROMPT_SIZE);
+	if (!prompt)
+	{
+		if (home_dir)
+			free(home_dir);
+		if (username)
+			free(username);
+		return (NULL);
+	}
+	prepare_cwd(cwd, home_dir, prompt);
+	if (home_dir)
+		free(home_dir);
+	construct_prompt(prompt, username, cwd);
+	if (username && !(strcmp(username, "user") == 0))
+		free(username);
 	return (prompt);
 }

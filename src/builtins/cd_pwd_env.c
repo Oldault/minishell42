@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:11:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:19:05 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:45:52 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,21 @@ void	handle_cd(t_mini *data)
 	char	*path;
 
 	path = data->cmds[0][1];
-	if (path == NULL || strcmp(path, "~") == 0)
+	if (!path || strcmp(path, "~") == 0)
 	{
-		path = getenv("HOME");
-		if (path == NULL)
+		path = ft_getenv(data->env, "HOME");
+		if (!path)
+		{
 			ft_putendl_fd("cd: HOME not set", 2);
+			last_exit_status = EXIT_FAILURE;
+			return ;
+		}
+		chdir(path);
+		free(path);
 	}
-	if (chdir(path) != 0)
+	else if (chdir(path) != 0)
 	{
-		printf("cd : no such file or directory\n");
+		ft_putendl_fd("cd: no such file or directory", 2);
 		last_exit_status = EXIT_FAILURE;
 		return ;
 	}

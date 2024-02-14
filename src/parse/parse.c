@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:51:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 21:52:45 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,13 @@ void	free_resources(char **segments, char ***cmd_arr, t_redirs *redir_arr,
 	free(redir_arr);
 }
 
-int	process_segments(t_mini *data, char **segs, char ***cmds, t_redirs *r_arr,
-		int seg_num)
+int	process_segments(t_mini *data, char **segs, char ***cmds, t_redirs *r_arr)
 {
 	int	i;
+	int	seg_num;
 
 	i = -1;
+	seg_num = data->seg_count;
 	while (++i < seg_num)
 	{
 		cmds[i] = parse_segment(data, segs[i], &r_arr[i]);
@@ -74,21 +75,19 @@ int	parse(t_mini *data)
 	char		**segments;
 	int			seg_num;
 
+	if (echo_pipe(data))
+		return (0);
 	segments = ft_split(data->input, '|');
 	if (segments == NULL)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
 	data->seg_count = seg_num;
+	if (invalid_pipes(segments, seg_num, data))
+		return (free_double_array(segments), -1);
 	if (initialize_arrays(&cmd_arr, &redir_arr, seg_num) != 0)
-	{
-		free_double_array(segments);
-		return (-1);
-	}
-	if (process_segments(data, segments, cmd_arr, redir_arr, seg_num) != 0)
-	{
-		free_resources(segments, cmd_arr, redir_arr, seg_num - 1);
-		return (-1);
-	}
+		return (free_double_array(segments), -1);
+	if (process_segments(data, segments, cmd_arr, redir_arr) != 0)
+		return (free_resources(segments, cmd_arr, redir_arr, seg_num - 1), -1);
 	cmd_arr[seg_num] = NULL;
 	redir_arr[seg_num].redirs = NULL;
 	redir_arr[seg_num].count = 0;

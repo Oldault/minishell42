@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:16:28 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:58:41 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	handle_exit(t_mini *data)
 {
-	int i = -1;
+	int	i;
+
+	i = -1;
 	while (++i < data->seg_count)
 		reset_redirections(&data->redir[i]);
 	free(data->redir);
