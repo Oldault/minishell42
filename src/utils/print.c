@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:13:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:52:53 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,37 @@ void	print_redir(t_rdr **redir_arr)
 	printf("------------%s\n", COLOR_RESET);
 }
 
+void	print_redir_type(t_rdr *redir)
+{
+	printf("Redirection type: ");
+	if (redir->type == REDIR_INPUT)
+		printf("Input (<)");
+	else if (redir->type == REDIR_OUTPUT)
+		printf("Output (>)");
+	else if (redir->type == REDIR_APPEND)
+		printf("Append (>>)");
+	else
+		printf("None");
+	printf(", Filename: %s\n", redir->filename);
+}
+
 void	print_redir_blue(t_mini *data)
 {
 	t_rdr	*redir;
 	int		i;
 	int		j;
 
-	j = 0;
-	i = 0;
+	j = -1;
+	i = -1;
 	printf("%s------------\n", BLUE);
-	while (data->redir[i].redirs != NULL)
+	while (data->redir[++i].redirs != NULL)
 	{
 		printf("Command %d redirections:\n", i + 1);
-		while (j < data->redir[i].count)
+		while (++j < data->redir[i].count)
 		{
 			redir = &data->redir[i].redirs[j];
-			printf("Redirection type: ");
-			if (redir->type == REDIR_INPUT)
-				printf("Input (<)");
-			else if (redir->type == REDIR_OUTPUT)
-				printf("Output (>)");
-			else if (redir->type == REDIR_APPEND)
-				printf("Append (>>)");
-			else
-				printf("None");
-			printf(", Filename: %s\n", redir->filename);
-			j++;
+			print_redir_type(redir);
 		}
-		i++;
 	}
 	printf("------------%s\n", COLOR_RESET);
 }

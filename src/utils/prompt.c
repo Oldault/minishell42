@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 20:43:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:47:57 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	construct_prompt(char *prompt, char *username, char *cwd)
 	ft_strncat(prompt, cwd, PROMPT_SIZE - strlen(prompt) - 1);
 	ft_strncat(prompt, "$ ", PROMPT_SIZE - strlen(prompt) - 1);
 }
+
 char	*fetch_env_value(char **env, char *var_name)
 {
 	char	*value;
@@ -89,14 +90,17 @@ char	*get_prompt(char **env)
 	prompt = malloc(PROMPT_SIZE);
 	if (!prompt)
 	{
-		if (home_dir) free(home_dir);
-		if (username) free(username);
+		if (home_dir)
+			free(home_dir);
+		if (username)
+			free(username);
 		return (NULL);
 	}
 	prepare_cwd(cwd, home_dir, prompt);
 	if (home_dir)
 		free(home_dir);
 	construct_prompt(prompt, username, cwd);
-	if (username && !(strcmp(username, "user") == 0)) free(username);
+	if (username && !(strcmp(username, "user") == 0))
+		free(username);
 	return (prompt);
 }
