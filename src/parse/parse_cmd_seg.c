@@ -41,17 +41,17 @@ char	*expand_variable(char *var, char **env, int expand)
 	int	i;
 
 	if (!expand)
-		return (strdup(var));
+		return (ft_strdup(var));
 	i = -1;
 	while (env && env[++i])
 	{
-		if (strncmp(env[i], var, strlen(var)) == 0
+		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
 			&& env[i][strlen(var)] == '=')
 		{
-			return (strdup(env[i] + strlen(var) + 1));
+			return (ft_strdup(env[i] + ft_strlen(var) + 1));
 		}
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 static void	parse_cmd_segment(t_parse_seg *pdata, char *segment, char **env)

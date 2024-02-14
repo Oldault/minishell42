@@ -71,26 +71,54 @@ static char	*parse_env_variable_name(char **input_ptr)
 	return (name);
 }
 
+char	*handle_dollar_only(char *name)
+{
+	free(name);
+	return (ft_strdup("$"));
+}
+
+char	*handle_exit_status(char *name)
+{
+	free(name);
+	return (ft_itoa(last_exit_status));
+}
+
+char	*handle_non_existent_variable(char *name, char *input_ptr, char **env)
+{
+	char	*value;
+
+	value = expand_variable(name, env, 1);
+	if (value)
+	{
+		free(name);
+		return (value);
+	}
+	else if (*input_ptr == '$' && !value)
+	{
+		free(name);
+		return (ft_strdup("$"));
+	}
+	else
+	{
+		free(name);
+		return (ft_strdup(""));
+	}
+}
+
 char	*expand_env_variable(char **input_ptr, char **env)
 {
 	char	*name;
-	char	*value;
 
 	if (**input_ptr != '$')
 		return (NULL);
 	name = parse_env_variable_name(input_ptr);
 	if (!name)
 		return (NULL);
-	if (strcmp(name, "?") == 0)
-	{
-		free(name);
-		return (ft_itoa(last_exit_status));
-	}
+	if (ft_strcmp(name, "") == 0)
+		return (handle_dollar_only(name));
+	else if (ft_strcmp(name, "?") == 0)
+		return (handle_exit_status(name));
 	else
-	{
-		value = expand_variable(name, env, 1);
-		if (value)
-			return (free(name), value);
-	}
+		return (handle_non_existent_variable(name, *input_ptr, env));
 	return (NULL);
 }

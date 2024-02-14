@@ -24,6 +24,7 @@ void	core_loop(t_mini *data)
 			reset_data_out(data);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
+			continue;
 		}
 		if (ft_strcmp(data->input, "") == 0)
 		{

@@ -43,29 +43,64 @@ static void	handle_heredoc(t_mini *data, char *lim)
 
 static void	redir_input(t_mini *data, char *filename)
 {
-	if (data->in_fd != STDIN_FILENO)
+	int	new_fd;
+
+	if (data->in_fd > 0 && data->in_fd != STDIN_FILENO)
+	{
 		close(data->in_fd);
-	data->in_fd = open(filename, O_RDONLY);
-	if (data->in_fd < 0)
-		data->err = "open input file : Bad adress";
+		data->in_fd = -1;
+	}
+	new_fd = open(filename, O_RDONLY);
+	if (new_fd < 0)
+	{
+		perror("Failed to open input file");
+		if (!data->err)
+			data->err = ft_strdup("Failed to open input file: Bad address");
+	}
+	else
+		data->in_fd = new_fd;
 }
 
 static void	redir_output(t_mini *data, char *filename)
 {
-	if (data->out_fd != STDOUT_FILENO)
+	int	new_fd;
+
+	if (data->out_fd > 0 && data->out_fd != STDOUT_FILENO)
+	{
 		close(data->out_fd);
-	data->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (data->out_fd < 0)
-		data->err = "open output file : Bad adress";
+		data->out_fd = -1;
+	}
+	new_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (new_fd < 0)
+	{
+		perror("Failed to open output file");
+		if (!data->err)
+			data->err = ft_strdup("Failed to open output file: Bad address");
+	}
+	else
+	{
+		data->out_fd = new_fd;
+	}
 }
 
 static void	redir_append(t_mini *data, char *filename)
 {
-	if (data->out_fd != STDOUT_FILENO)
+	int	new_fd;
+
+	if (data->out_fd > 0 && data->out_fd != STDOUT_FILENO)
+	{
 		close(data->out_fd);
-	data->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (data->out_fd < 0)
-		data->err = "open append file : Bad adress";
+		data->out_fd = -1;
+	}
+	new_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (new_fd < 0)
+	{
+		perror("Failed to open append file");
+		if (!data->err)
+			data->err = ft_strdup("Failed to open append file: Bad address");
+	}
+	else
+		data->out_fd = new_fd;
 }
 
 void	apply_redirections(t_mini *data, int cmd_index)

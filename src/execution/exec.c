@@ -33,23 +33,26 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 	int	status;
 	int	termsig;
 
-	waitpid(exec_data->child_pids[i], &status, 0);
-	if (WIFEXITED(status))
+	status = 0;
+	if (waitpid(exec_data->child_pids[i], &status, 0) > 0)
 	{
-		last_exit_status = WEXITSTATUS(status);
-	}
-	else if (WIFSIGNALED(status))
-	{
-		termsig = WTERMSIG(status);
-		if (termsig == SIGQUIT)
+		if (WIFEXITED(status))
 		{
-			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+			last_exit_status = WEXITSTATUS(status);
 		}
-		last_exit_status = 128 + termsig;
-	}
-	else
-	{
-		last_exit_status = 127;
+		else if (WIFSIGNALED(status))
+		{
+			termsig = WTERMSIG(status);
+			if (termsig == SIGQUIT)
+			{
+				write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+			}
+			last_exit_status = 128 + termsig;
+		}
+		else
+		{
+			last_exit_status = 127;
+		}
 	}
 }
 
@@ -60,9 +63,7 @@ int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 		return (0);
 	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
 	apply_redirections(data, i);
-	if (data->err != NULL)
-		printf("%s\n", data->err);
-	else
+	if (!data->err)
 		execute_single_command(data, exec_data, i);
 	free(exec_data->cmd_path);
 	if (exec_data->pipe_end != -1)
