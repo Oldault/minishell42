@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/06 14:26:23 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:54:25 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ t_mini	*set_data_out(char **env)
 	if (data == NULL)
 		exit(EXIT_FAILURE);
 	*data = (t_mini){0};
-	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ft_signal);
+	signal(SIGQUIT, SIG_IGN);
 	data->env = get_env(env);
 	initialize_commands(data);
 	return (data);
@@ -69,7 +69,7 @@ t_mini	*set_data_out(char **env)
 
 void	set_data_in(t_mini *data)
 {
-	data->prompt = get_prompt();
+	data->prompt = get_prompt(data->env);
 	data->input = readline(data->prompt);
 	data->paths = get_paths(data, data->env);
 	data->in_fd = STDIN_FILENO;

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 10:49:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:59:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, &ft_signal_fork);
+		signal(SIGINT, &ft_signal);
 		signal(SIGQUIT, SIG_DFL);
 		handle_input_redir(data, exec_data->pipe_end);
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);

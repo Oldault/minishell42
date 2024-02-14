@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 15:37:24 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:57:14 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ extern int				last_exit_status;
 //*------------------------ 🚀 𝙄𝙉𝙄𝙏 🚀 -----------------------*//
 t_mini					*set_data_out(char **env);
 void					set_data_in(t_mini *data);
-char					*get_prompt(void);
+char					*get_prompt(char **env);
 int						dbl_arr_len(char **arr);
 
 //*---------------------- 📡 𝙎𝙄𝙂𝙉𝘼𝙇𝙎 📡 ----------------------*//
