@@ -51,7 +51,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, &ft_signal);
 		signal(SIGQUIT, SIG_DFL);
 		handle_input_redir(data, exec_data->pipe_end);
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);

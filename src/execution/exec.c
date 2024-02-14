@@ -63,9 +63,7 @@ int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 		return (0);
 	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
 	apply_redirections(data, i);
-	if (data->err != NULL)
-		printf("%s\n", data->err);
-	else
+	if (!data->err)
 		execute_single_command(data, exec_data, i);
 	free(exec_data->cmd_path);
 	if (exec_data->pipe_end != -1)

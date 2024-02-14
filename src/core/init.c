@@ -60,8 +60,8 @@ t_mini	*set_data_out(char **env)
 	if (data == NULL)
 		exit(EXIT_FAILURE);
 	*data = (t_mini){0};
-	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ft_signal);
+	signal(SIGQUIT, SIG_IGN);
 	data->env = get_env(env);
 	initialize_commands(data);
 	return (data);
