@@ -37,19 +37,20 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 	if (WIFEXITED(status))
 	{
 		last_exit_status = WEXITSTATUS(status);
-			// Set the last exit status based on the child's exit status
 	}
 	else if (WIFSIGNALED(status))
 	{
 		termsig = WTERMSIG(status);
 		if (termsig == SIGQUIT)
 		{
-			printf("Quit (core dumped)\n");
+			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 		}
 		last_exit_status = 128 + termsig;
 	}
 	else
+	{
 		last_exit_status = 127;
+	}
 }
 
 int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
