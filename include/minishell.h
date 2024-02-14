@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 20:44:17 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 21:52:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int						get_cmd_len(char **words);
 void					redir_split(char *word, t_rdr *redirection);
 int						invalid_pipes(char **segments, int seg_num,
 							t_mini *data);
+int						echo_pipe(t_mini *data);
 
 // todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚟𝚊𝚛    ~~~                *//
 int						handle_single_quote(t_parse_seg *pdata);

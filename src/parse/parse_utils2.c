@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:34:25 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 15:46:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 21:53:02 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	invalid_pipes(char **segments, int seg_num, t_mini *data)
 	pipe_count = count_char_occurrences(data->input, '|');
 	if (pipe_count > seg_num - 1)
 	{
-		ft_putstr_fd("minishell: syntax error with pipes\n", 2);
+		ft_putendl_fd("minishell: syntax error with pipes", 2);
 		return (1);
 	}
 	i = -1;
@@ -59,9 +59,24 @@ int	invalid_pipes(char **segments, int seg_num, t_mini *data)
 	{
 		if (is_only_spaces(segments[i]))
 		{
-			ft_putstr_fd("minishell: syntax error with pipes\n", 2);
+			ft_putendl_fd("minishell: syntax error with pipes", 2);
 			return (1);
 		}
+	}
+	return (0);
+}
+
+int	echo_pipe(t_mini *data)
+{
+	if (ft_strncmp(data->input, "echo ", 5) == 0)
+	{
+		data->cmds = malloc(sizeof(char **) * 2);
+		data->cmds[0] = malloc(sizeof(char *) * 3);
+		data->cmds[0][0] = ft_strdup("echo");
+		data->cmds[0][1] = ft_strdup(data->input + 5);
+		data->cmds[0][2] = NULL;
+		data->cmds[1] = NULL;
+		return (1);
 	}
 	return (0);
 }

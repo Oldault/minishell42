@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 15:34:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/14 21:52:45 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	parse(t_mini *data)
 	char		**segments;
 	int			seg_num;
 
+	if (echo_pipe(data))
+		return (0);
 	segments = ft_split(data->input, '|');
 	if (segments == NULL)
 		return (-1);
