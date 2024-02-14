@@ -39,16 +39,16 @@ t_parse_seg	*init_pdata(char *segment)
 char	*expand_variable(char *var, char **env, int expand)
 {
 	if (!expand)
-		return (strdup(var));
+		return (ft_strdup(var));
 	for (int i = 0; env && env[i]; i++)
 	{
-		if (strncmp(env[i], var, strlen(var)) == 0
+		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
 			&& env[i][strlen(var)] == '=')
 		{
-			return (strdup(env[i] + strlen(var) + 1));
+			return (ft_strdup(env[i] + ft_strlen(var) + 1));
 		}
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 int	handle_single_quote(t_parse_seg *pdata)
