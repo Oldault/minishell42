@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:01:15 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:13:16 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:42:01 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	find_name(char **org_input, char **name)
 	{
 		if (input[i] == '=')
 		{
-			*name = strndup(input, i);
+			*name = ft_strndup(input, i);
 			if (*name == NULL)
 				return (0);
 			*org_input += ft_strlen(*name) + 1;
@@ -81,14 +81,14 @@ int	find_value(char **org_input, char **value, char **name)
 			i++;
 		if (quote_error(in))
 			return (printf("Error: Problem getting value\n"), free(*name), 0);
-		*value = strndup(in, i);
+		*value = ft_strndup(in, i);
 		*org_input += i + 2;
 	}
 	else
 	{
 		while (in[i] && in[i] != ' ' && in[i] != '\0' && in[i] != '|')
 			i++;
-		*value = strndup(in, i);
+		*value = ft_strndup(in, i);
 		*org_input += i;
 	}
 	if (!*value)

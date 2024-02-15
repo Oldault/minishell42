@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:36:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 12:13:40 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:42:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	redir_split(char *word, t_rdr *redirection)
 	i = 0;
 	while (word[i] == '<' || word[i] == '>')
 		i++;
-	symbol = strndup(word, i);
+	symbol = ft_strndup(word, i);
 	redirection->type = redir_type(symbol);
 	redirection->filename = ft_strdup(&word[i]);
 	free(symbol);
