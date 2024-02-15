@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:04:50 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:14:30 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,6 @@ static char	*parse_env_variable_name(char **input_ptr)
 	}
 	*input_ptr += ft_strlen(name) + 1;
 	return (name);
-}
-
-char	*handle_dollar_only(char *name)
-{
-	free(name);
-	return (ft_strdup("$"));
-}
-
-char	*handle_exit_status(char *name)
-{
-	free(name);
-	return (ft_itoa(g_exit_stat));
 }
 
 char	*handle_non_existent_variable(char *name, char *input_ptr, char **env)

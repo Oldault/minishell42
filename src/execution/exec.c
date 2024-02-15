@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:13:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,23 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 	int	termsig;
 
 	status = 0;
+	signal(SIGINT, SIG_IGN);
 	if (waitpid(exec_data->child_pids[i], &status, 0) > 0)
 	{
 		if (WIFEXITED(status))
-		{
 			g_exit_stat = WEXITSTATUS(status);
-		}
 		else if (WIFSIGNALED(status))
 		{
 			termsig = WTERMSIG(status);
 			if (termsig == SIGQUIT)
-			{
 				write(STDERR_FILENO, "Quit (core dumped)\n", 19);
-			}
 			g_exit_stat = 128 + termsig;
 		}
 		else
-		{
 			g_exit_stat = 127;
-		}
 	}
+	signal(SIGINT, &ft_signal);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)

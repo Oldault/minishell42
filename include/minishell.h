@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:16:28 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_redirs
 //?                   ~~~   𝙱𝚞𝚒𝚕𝚝𝚒𝚗𝚜   ~~~                    *//
 typedef struct s_mini	t_mini;
 
-typedef struct
+typedef struct s_cmd_entry
 {
 	char				*command_name;
 	void				(*func)(t_mini *);
@@ -178,6 +178,8 @@ int						path_exists(const char *path);
 char					*expand_tilde(const char *input);
 char					*strdup_spc(const char *src);
 char					*strdup_alpha(const char *src);
+char					*handle_dollar_only(char *name);
+char					*handle_exit_status(char *name);
 
 //*--------------------- 🖥️ 𝙀𝙓𝙀𝘾𝙐𝙏𝙄𝙊𝙉 🖥️ ---------------------*//
 void					execute_commands(t_mini *data);

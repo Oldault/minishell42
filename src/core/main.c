@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:13:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	core_loop(t_mini *data)
 			reset_data_out(data);
 			rl_clear_history();
 			exit(EXIT_SUCCESS);
-			continue;
+			continue ;
 		}
 		if (ft_strcmp(data->input, "") == 0)
 		{
