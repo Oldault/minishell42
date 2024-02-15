@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 11:30:50 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:52:45 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	export_to_env(char *name, char *value, char **env, int max_env_size)
 	if (new_var == NULL)
 		return (ft_putstr_fd("Error creating new env var\n", 2), -1);
 	ft_strcpy(new_var, name);
-	strcat(new_var, "=");
-	strcat(new_var, value);
+	ft_strcat(new_var, "=");
+	ft_strcat(new_var, value);
 	i = -1;
 	while (++i < max_env_size)
 	{

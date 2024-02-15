@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 12:25:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 11:30:52 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:52:48 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*expand_tilde(const char *input)
 	if (!expanded_path)
 		return (NULL);
 	ft_strcpy(expanded_path, home_dir);
-	strcat(expanded_path, input + 1);
+	ft_strcat(expanded_path, input + 1);
 	return (expanded_path);
 }
 
