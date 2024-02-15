@@ -75,7 +75,6 @@ void	reset_redirections(t_redirs *redir)
 		while (++i < redir->count)
 		{
 			free(redir->redirs[i].filename);
-			redir->redirs[i].filename = NULL;
 		}
 		free(redir->redirs);
 		redir->redirs = NULL;
