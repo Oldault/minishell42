@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:56:10 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:11:55 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,5 @@ void	set_data_in(t_mini *data)
 	data->in_fd = STDIN_FILENO;
 	data->out_fd = STDOUT_FILENO;
 	data->err = NULL;
+	data->redir = NULL;
 }

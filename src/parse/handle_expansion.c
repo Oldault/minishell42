@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:44:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 11:57:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:34:17 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	handle_expansion(char *segment, size_t *i, t_parse_seg *pdata, char **env)
 	size_t	segment_len;
 
 	var_len = 0;
-	segment_len = strlen(segment);
+	segment_len = ft_strlen(segment);
 	if (pdata->c == '$' && pdata->should_expand)
 	{
 		(*i)++;

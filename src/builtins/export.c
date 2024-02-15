@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 19:20:18 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:30:50 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	export_to_env(char *name, char *value, char **env, int max_env_size)
 	new_var = malloc(name_len + ft_strlen(value) + 2);
 	if (new_var == NULL)
 		return (ft_putstr_fd("Error creating new env var\n", 2), -1);
-	strcpy(new_var, name);
+	ft_strcpy(new_var, name);
 	strcat(new_var, "=");
 	strcat(new_var, value);
 	i = -1;
@@ -30,7 +30,7 @@ int	export_to_env(char *name, char *value, char **env, int max_env_size)
 	{
 		if (env[i] == NULL)
 			return (env[i] = new_var, -1);
-		else if (strncmp(env[i], name, name_len) == 0
+		else if (ft_strncmp(env[i], name, name_len) == 0
 			&& env[i][name_len] == '=')
 		{
 			return (free(env[i]), env[i] = new_var, 1);

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:16:23 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 20:47:57 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:33:33 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	prepare_cwd(char *cwd, char *home_dir, char *prompt)
 void	construct_prompt(char *prompt, char *username, char *cwd)
 {
 	prompt[0] = '\0';
-	ft_strncat(prompt, username, PROMPT_SIZE - strlen(prompt) - 1);
-	ft_strncat(prompt, "@minishell:", PROMPT_SIZE - strlen(prompt) - 1);
-	ft_strncat(prompt, cwd, PROMPT_SIZE - strlen(prompt) - 1);
-	ft_strncat(prompt, "$ ", PROMPT_SIZE - strlen(prompt) - 1);
+	ft_strncat(prompt, username, PROMPT_SIZE - ft_strlen(prompt) - 1);
+	ft_strncat(prompt, "@minishell:", PROMPT_SIZE - ft_strlen(prompt) - 1);
+	ft_strncat(prompt, cwd, PROMPT_SIZE - ft_strlen(prompt) - 1);
+	ft_strncat(prompt, "$ ", PROMPT_SIZE - ft_strlen(prompt) - 1);
 }
 
 char	*fetch_env_value(char **env, char *var_name)
@@ -70,7 +70,7 @@ char	*fetch_env_value(char **env, char *var_name)
 	value = ft_getenv(env, var_name);
 	if (!value)
 	{
-		if (strcmp(var_name, "USER") == 0)
+		if (ft_strcmp(var_name, "USER") == 0)
 		{
 			return (ft_strdup("user"));
 		}
@@ -100,7 +100,6 @@ char	*get_prompt(char **env)
 	if (home_dir)
 		free(home_dir);
 	construct_prompt(prompt, username, cwd);
-	if (username && !(strcmp(username, "user") == 0))
-		free(username);
+	free(username);
 	return (prompt);
 }

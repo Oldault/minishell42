@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:42:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 11:47:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:39:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_nonexistent_variable(t_parse_seg *pdata, char *var_name,
 		size_t var_len)
 {
 	pdata->current_arg[pdata->current_length++] = '$';
-	strncpy(pdata->current_arg + pdata->current_length, var_name, var_len);
+	ft_strncpy(pdata->current_arg + pdata->current_length, var_name, var_len);
 	pdata->current_length += var_len;
 	pdata->current_arg[pdata->current_length] = '\0';
 }

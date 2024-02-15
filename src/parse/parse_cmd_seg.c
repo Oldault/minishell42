@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 11:53:33 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:03:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static t_parse_seg	*init_pdata(char *segment)
 	pdata = ft_calloc(1, sizeof(t_parse_seg));
 	if (!pdata)
 		return (NULL);
-	pdata->args = calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
+	pdata->args = ft_calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
 	if (!pdata->args)
 	{
 		free(pdata);
 		return (NULL);
 	}
-	pdata->current_arg = calloc(strlen(segment) + 1, sizeof(char));
+	pdata->current_arg = ft_calloc(ft_strlen(segment) + 1, sizeof(char));
 	if (!pdata->current_arg)
 	{
 		free(pdata->args);
@@ -42,16 +42,20 @@ char	*expand_variable(char *var, char **env, int expand)
 
 	if (!expand)
 		return (ft_strdup(var));
+	if (ft_strcmp(var, "?") == 0)
+	{
+		return (ft_itoa(g_exit_stat));
+	}
 	i = -1;
 	while (env && env[++i])
 	{
 		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
-			&& env[i][strlen(var)] == '=')
+			&& env[i][ft_strlen(var)] == '=')
 		{
 			return (ft_strdup(env[i] + ft_strlen(var) + 1));
 		}
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 static void	parse_cmd_segment(t_parse_seg *pdata, char *segment, char **env)
