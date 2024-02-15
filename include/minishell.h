@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/14 21:52:42 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ typedef struct s_mini
 }						t_mini;
 
 //?                   ~~~  𝙴𝚡𝚒𝚝 𝚂𝚝𝚊𝚝𝚞𝚜  ~~~                  *//
-extern int				last_exit_status;
+extern int				g_exit_stat;
 
 //*------------------------ 🚀 𝙄𝙉𝙄𝙏 🚀 -----------------------*//
 t_mini					*set_data_out(char **env);

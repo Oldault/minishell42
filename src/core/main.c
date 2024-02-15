@@ -6,13 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 21:51:57 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		last_exit_status = 0;
+int		g_exit_stat = 0;
 
 void	core_loop(t_mini *data)
 {

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 18:59:19 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 	{
 		if (WIFEXITED(status))
 		{
-			last_exit_status = WEXITSTATUS(status);
+			g_exit_stat = WEXITSTATUS(status);
 		}
 		else if (WIFSIGNALED(status))
 		{
@@ -47,11 +47,11 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 			{
 				write(STDERR_FILENO, "Quit (core dumped)\n", 19);
 			}
-			last_exit_status = 128 + termsig;
+			g_exit_stat = 128 + termsig;
 		}
 		else
 		{
-			last_exit_status = 127;
+			g_exit_stat = 127;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:11:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 20:45:52 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_cd(t_mini *data)
 		if (!path)
 		{
 			ft_putendl_fd("cd: HOME not set", 2);
-			last_exit_status = EXIT_FAILURE;
+			g_exit_stat = EXIT_FAILURE;
 			return ;
 		}
 		chdir(path);
@@ -32,10 +32,10 @@ void	handle_cd(t_mini *data)
 	else if (chdir(path) != 0)
 	{
 		ft_putendl_fd("cd: no such file or directory", 2);
-		last_exit_status = EXIT_FAILURE;
+		g_exit_stat = EXIT_FAILURE;
 		return ;
 	}
-	last_exit_status = EXIT_SUCCESS;
+	g_exit_stat = EXIT_SUCCESS;
 }
 
 void	handle_pwd(t_mini *data)
@@ -46,7 +46,7 @@ void	handle_pwd(t_mini *data)
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		printf("%s\n", cwd);
-		last_exit_status = EXIT_SUCCESS;
+		g_exit_stat = EXIT_SUCCESS;
 	}
 	else
 	{
@@ -64,5 +64,5 @@ void	handle_env(t_mini *data)
 	i = -1;
 	while (env[++i])
 		printf("%s\n", env[i]);
-	last_exit_status = EXIT_SUCCESS;
+	g_exit_stat = EXIT_SUCCESS;
 }

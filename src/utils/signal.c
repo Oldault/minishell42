@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 18:50:24 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_signal(int signal)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		last_exit_status = 130;
+		g_exit_stat = 130;
 	}
 }
 
@@ -41,7 +41,7 @@ void	ft_signal(int signal)
 // 		write(1, "\n", 1);
 // 		rl_on_new_line();
 // 		rl_replace_line("", 0);
-// 		last_exit_status = 130;
+// 		g_exit_stat = 130;
 // 		// exit(130);
 // 	}
 // }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 10:49:05 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:49:05 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void	redir_input(t_mini *data, char *filename)
 	new_fd = open(filename, O_RDONLY);
 	if (new_fd < 0)
 	{
+		g_exit_stat = 1;
 		perror("Failed to open input file");
 		if (!data->err)
 			data->err = ft_strdup("Failed to open input file: Bad address");
@@ -73,6 +74,7 @@ static void	redir_output(t_mini *data, char *filename)
 	new_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (new_fd < 0)
 	{
+		g_exit_stat = 1;
 		perror("Failed to open output file");
 		if (!data->err)
 			data->err = ft_strdup("Failed to open output file: Bad address");
@@ -95,6 +97,7 @@ static void	redir_append(t_mini *data, char *filename)
 	new_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (new_fd < 0)
 	{
+		g_exit_stat = 1;
 		perror("Failed to open append file");
 		if (!data->err)
 			data->err = ft_strdup("Failed to open append file: Bad address");

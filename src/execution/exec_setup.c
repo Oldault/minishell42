@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:21:32 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 10:32:18 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	handle_cmd_path(char *cmd, char *cmd_path, t_exec_cmd *exec_data)
 	if (cmd_path == NULL)
 	{
 		printf("%s: command not found\n", cmd);
-		last_exit_status = 127;
+		g_exit_stat = 127;
 		free(exec_data->child_pids);
 		free(exec_data);
 		return (0);
@@ -63,7 +63,7 @@ int	handle_cmd_path(char *cmd, char *cmd_path, t_exec_cmd *exec_data)
 	if (access(cmd_path, X_OK) != 0)
 	{
 		printf("%s: permission denied\n", cmd_path);
-		last_exit_status = 126;
+		g_exit_stat = 126;
 		free(exec_data->cmd_path);
 		free(exec_data->child_pids);
 		free(exec_data);
