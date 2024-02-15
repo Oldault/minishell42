@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:49:05 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:55:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	apply_redirections(t_mini *data, int cmd_index)
 			data->in_fd = open(".hdoc.tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			handle_heredoc(data, redir.filename);
 			if (data->out_fd < 0)
-				data->err = "open heredoc file : Bad adress";
+				data->err = ft_strdup("open heredoc file : Bad adress");
 		}
 	}
 }

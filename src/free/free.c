@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 20:27:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 15:36:07 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:57:26 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ void	reset_data_in(t_mini *data)
 	free_double_array(data->paths);
 	free_cmds(&data->cmds);
 	i = -1;
-	while (++i < data->seg_count)
-		reset_redirections(&data->redir[i]);
-	free(data->redir);
+	if (data->redir && !data->err)
+	{
+		while (++i < data->seg_count)
+			reset_redirections(&data->redir[i]);
+		free(data->redir);
+	}
 	if (data->err)
 		free(data->err);
 }

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 18:54:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/15 09:56:10 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void	set_data_in(t_mini *data)
 	data->paths = get_paths(data, data->env);
 	data->in_fd = STDIN_FILENO;
 	data->out_fd = STDOUT_FILENO;
+	data->err = NULL;
 }
