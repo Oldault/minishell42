@@ -14,7 +14,7 @@
 
 int	redir_start(char *word)
 {
-	return (strchr(word, '<') || strchr(word, '>'));
+	return (ft_strchr(word, '<') || ft_strchr(word, '>'));
 }
 
 int	redir_symb(char *word)

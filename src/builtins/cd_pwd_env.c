@@ -17,7 +17,7 @@ void	handle_cd(t_mini *data)
 	char	*path;
 
 	path = data->cmds[0][1];
-	if (!path || strcmp(path, "~") == 0)
+	if (!path || ft_strcmp(path, "~") == 0)
 	{
 		path = ft_getenv(data->env, "HOME");
 		if (!path)
