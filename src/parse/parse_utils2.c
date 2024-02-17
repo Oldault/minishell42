@@ -48,6 +48,8 @@ int	invalid_pipes(char **segments, int seg_num, t_mini *data)
 	int	i;
 	int	pipe_count;
 
+	if (is_only_spaces(data->input))
+		return (0);
 	pipe_count = count_char_occurrences(data->input, '|');
 	if (pipe_count > seg_num - 1)
 	{
