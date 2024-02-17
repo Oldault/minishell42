@@ -44,6 +44,23 @@ int	quote_error(char *input)
 	return (1);
 }
 
+char	*get_env_value(char *var_name, char **env)
+{
+	int		i;
+	size_t	name_len;
+
+	i = 0;
+	name_len = ft_strlen(var_name);
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], var_name, name_len) == 0
+			&& env[i][name_len] == '=')
+			return (env[i] + name_len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
 int	find_name(char **org_input, char **name)
 {
 	int		i;

@@ -12,22 +12,6 @@
 
 #include "minishell.h"
 
-int	ft_isspecial(char symbol)
-{
-	char	*special_symbols;
-	int		i;
-
-	i = 0;
-	special_symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
-	while (special_symbols[i])
-	{
-		if (symbol == special_symbols[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 int	export_to_env(char *name, char *value, char **env, int max_env_size)
 {
 	size_t	name_len;
@@ -55,15 +39,6 @@ int	export_to_env(char *name, char *value, char **env, int max_env_size)
 	return (ft_putstr_fd("Error : env is full\n", 2), free(new_var), 0);
 }
 
-int	validate_variable_name(char *name)
-{
-	if (ft_isdigit(name[0]))
-		return (-1);
-	else if (ft_isspecial(name[0]))
-		return (-2);
-	return (0);
-}
-
 int	process_variable(char **input, char **env)
 {
 	char	*name;
@@ -72,7 +47,6 @@ int	process_variable(char **input, char **env)
 
 	name = NULL;
 	value = NULL;
-	result = 0;
 	if (!find_name(input, &name))
 		return (-1);
 	if (validate_variable_name(name) == -1)
@@ -85,8 +59,7 @@ int	process_variable(char **input, char **env)
 		free(name);
 		return (-1);
 	}
-	if (name && value)
-		result = export_to_env(name, value, env, MAX_ENV_VARS);
+	result = handle_value_assignment(name, &value, env);
 	free(value);
 	free(name);
 	return (result);
@@ -105,6 +78,15 @@ void	process_input_and_export(char *input, char **env)
 		while (*input == ' ')
 			input++;
 	}
+}
+
+int	validate_variable_name(char *name)
+{
+	if (ft_isdigit(name[0]))
+		return (-1);
+	else if (ft_isspecial(name[0]))
+		return (-2);
+	return (0);
 }
 
 void	handle_export(t_mini *data)

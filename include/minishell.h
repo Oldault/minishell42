@@ -166,9 +166,15 @@ void					handle_doll(t_mini *data);
 
 // todo               ~~~  𝚎𝚡𝚙𝚘𝚛𝚝 𝚞𝚝𝚒𝚕𝚜  ~~~                  *//
 int						quote_error(char *input);
+int						validate_variable_name(char *name);
 void					print_exp_env(char **env);
 int						find_name(char **org_input, char **name);
 int						find_value(char **org_input, char **value, char **name);
+char					*get_env_value(char *var_name, char **env);
+int						handle_value_assignment(char *name, char **value,
+							char **env);
+int						export_to_env(char *name, char *value, char **env,
+							int max_env_size);
 
 // todo               ~~~   𝚎𝚌𝚑𝚘 𝚞𝚝𝚒𝚕𝚜   ~~~                  *//
 char					*skip_echo_flags(char *input, int *newline);

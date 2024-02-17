@@ -14,8 +14,8 @@
 
 int	ft_isspecial(char symbol)
 {
-	char *special_symbols;
-	int i;
+	char	*special_symbols;
+	int		i;
 
 	i = 0;
 	special_symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";

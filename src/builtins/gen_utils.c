@@ -44,6 +44,30 @@ char	*strdup_spc(const char *src)
 	return (dest);
 }
 
+int	handle_value_assignment(char *name, char **value, char **env)
+{
+	char	*env_value;
+	int		result;
+
+	result = 0;
+	if (*value && (*value)[0] == '$')
+	{
+		env_value = get_env_value(*value + 1, env);
+		if (env_value)
+			result = export_to_env(name, env_value, env, MAX_ENV_VARS);
+		else
+		{
+			ft_putstr_fd("Error: Variable ", 2);
+			ft_putstr_fd(*value, 2);
+			ft_putstr_fd(" not found\n", 2);
+			result = -1;
+		}
+	}
+	else
+		result = export_to_env(name, *value, env, MAX_ENV_VARS);
+	return (result);
+}
+
 char	*strdup_alpha(const char *src)
 {
 	const char	*end = src;
