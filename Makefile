@@ -4,7 +4,7 @@ LIBFT				= $(LIBFT_DIR)libft.a
 
 RM					= rm -f
 CC					= cc
-CFLAGS				= -Wall -Wextra -Werror -g3
+CFLAGS				= -Wall -Wextra -Werror
 CFLAGS				+= -I$(LIBFT_DIR) -I./include
 LDFLAGS				= -lreadline
 
