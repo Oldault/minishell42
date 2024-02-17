@@ -37,6 +37,22 @@ static char	**get_env(char **env)
 	return (new_env);
 }
 
+void	handle_exit_wrapper(t_mini *data)
+{
+	int		i;
+	char	**args;
+
+	i = 0;
+	args = ft_split(data->input, ' ');
+	handle_exit(data, args);
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
 static void	initialize_commands(t_mini *data)
 {
 	data->bltn = ft_calloc(10, sizeof(t_cmd_entry));
@@ -46,7 +62,7 @@ static void	initialize_commands(t_mini *data)
 	data->bltn[3] = (t_cmd_entry){"export", handle_export};
 	data->bltn[4] = (t_cmd_entry){"unset", handle_unset};
 	data->bltn[5] = (t_cmd_entry){"env", handle_env};
-	data->bltn[6] = (t_cmd_entry){"exit", handle_exit};
+	data->bltn[6] = (t_cmd_entry){"exit", handle_exit_wrapper};
 	data->bltn[7] = (t_cmd_entry){"history", handle_hist};
 	data->bltn[8] = (t_cmd_entry){"$?", handle_doll};
 	data->bltn[9] = (t_cmd_entry){NULL, NULL};

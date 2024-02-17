@@ -1,0 +1,60 @@
+==263759== Memcheck, a memory error detector
+==263759== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==263759== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==263759== Command: ./minishell
+==263759== Parent PID: 259353
+==263759== 
+==263759== 
+==263759== HEAP SUMMARY:
+==263759==     in use at exit: 208,162 bytes in 225 blocks
+==263759==   total heap usage: 572 allocs, 347 frees, 236,546 bytes allocated
+==263759== 
+==263759== 4 bytes in 1 blocks are still reachable in loss record 1 of 65
+==263759==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263759==    by 0x406B34: ft_calloc (ft_calloc.c:29)
+==263759==    by 0x403677: init_exec_data (exec_setup.c:34)
+==263759==    by 0x40353F: execute_commands (exec.c:86)
+==263759==    by 0x403197: core_loop (main.c:41)
+==263759==    by 0x4031DF: main (main.c:53)
+==263759== 
+==263759== 11 bytes in 2 blocks are still reachable in loss record 4 of 65
+==263759==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263759==    by 0x407C7C: write_split (ft_split.c:70)
+==263759==    by 0x407A61: ft_split (ft_split.c:91)
+==263759==    by 0x402BF3: handle_exit_wrapper (init.c:46)
+==263759==    by 0x4038CE: handle_builtin (exec_setup.c:88)
+==263759==    by 0x403559: execute_commands (exec.c:87)
+==263759==    by 0x403197: core_loop (main.c:41)
+==263759==    by 0x4031DF: main (main.c:53)
+==263759== 
+==263759== 24 bytes in 1 blocks are still reachable in loss record 12 of 65
+==263759==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263759==    by 0x406B34: ft_calloc (ft_calloc.c:29)
+==263759==    by 0x407A24: ft_split (ft_split.c:87)
+==263759==    by 0x402BF3: handle_exit_wrapper (init.c:46)
+==263759==    by 0x4038CE: handle_builtin (exec_setup.c:88)
+==263759==    by 0x403559: execute_commands (exec.c:87)
+==263759==    by 0x403197: core_loop (main.c:41)
+==263759==    by 0x4031DF: main (main.c:53)
+==263759== 
+==263759== 40 bytes in 1 blocks are still reachable in loss record 16 of 65
+==263759==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263759==    by 0x406B34: ft_calloc (ft_calloc.c:29)
+==263759==    by 0x40362A: init_exec_data (exec_setup.c:29)
+==263759==    by 0x40353F: execute_commands (exec.c:86)
+==263759==    by 0x403197: core_loop (main.c:41)
+==263759==    by 0x4031DF: main (main.c:53)
+==263759== 
+==263759== LEAK SUMMARY:
+==263759==    definitely lost: 0 bytes in 0 blocks
+==263759==    indirectly lost: 0 bytes in 0 blocks
+==263759==      possibly lost: 0 bytes in 0 blocks
+==263759==    still reachable: 79 bytes in 5 blocks
+==263759==         suppressed: 208,083 bytes in 220 blocks
+==263759== 
+==263759== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--263759-- 
+--263759-- used_suppression:     60 Ignore readline leak readline.supp:2 suppressed: 204,067 bytes in 219 blocks
+--263759-- used_suppression:      1 Ignore add_history leak readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==263759== 
+==263759== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

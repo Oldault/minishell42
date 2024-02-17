@@ -159,7 +159,7 @@ void					handle_pwd(t_mini *data);
 void					handle_export(t_mini *data);
 void					handle_unset(t_mini *data);
 void					handle_env(t_mini *data);
-void					handle_exit(t_mini *data);
+void					handle_exit(t_mini *data, char **args);
 void					handle_hist(t_mini *data);
 void					handle_doll(t_mini *data);
 
