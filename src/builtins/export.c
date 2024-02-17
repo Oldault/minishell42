@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int	ft_isspecial(char symbol)
+{
+	char	*special_symbols;
+	int		i;
+
+	i = 0;
+	special_symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
+	while (special_symbols[i])
+	{
+		if (symbol == special_symbols[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	export_to_env(char *name, char *value, char **env, int max_env_size)
 {
 	size_t	name_len;
@@ -39,28 +55,53 @@ int	export_to_env(char *name, char *value, char **env, int max_env_size)
 	return (ft_putstr_fd("Error : env is full\n", 2), free(new_var), 0);
 }
 
-void	process_input_and_export(char *input, char **env)
+int	validate_variable_name(char *name)
+{
+	if (ft_isdigit(name[0]))
+		return (-1);
+	else if (ft_isspecial(name[0]))
+		return (-2);
+	return (0);
+}
+
+int	process_variable(char **input, char **env)
 {
 	char	*name;
 	char	*value;
+	int		result;
 
 	name = NULL;
 	value = NULL;
+	result = 0;
+	if (!find_name(input, &name))
+		return (-1);
+	if (validate_variable_name(name) == -1)
+	{
+		free(name);
+		return (-1);
+	}
+	if (*name && !find_value(input, &value, &name))
+	{
+		free(name);
+		return (-1);
+	}
+	if (name && value)
+		result = export_to_env(name, value, env, MAX_ENV_VARS);
+	free(value);
+	free(name);
+	return (result);
+}
+
+void	process_input_and_export(char *input, char **env)
+{
 	while (*input)
 	{
 		while (*input == ' ')
 			input++;
 		if (*input == '\0' || *input == '|')
 			break ;
-		if (!find_name(&input, &name))
+		if (process_variable(&input, env) == -1)
 			return ;
-		if (*input && !find_value(&input, &value, &name))
-			return ;
-		if (name && value)
-			export_to_env(name, value, env, MAX_ENV_VARS);
-		if (value)
-			free(value);
-		free(name);
 		while (*input == ' ')
 			input++;
 	}
@@ -73,5 +114,14 @@ void	handle_export(t_mini *data)
 		print_exp_env(data->env);
 		return ;
 	}
-	process_input_and_export(data->input + 6, data->env);
+	if (validate_variable_name(data->cmds[0][1]) == -1)
+	{
+		ft_putstr_fd("bash: export: `", 2);
+		ft_putstr_fd(data->cmds[0][1], 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
+	else if (validate_variable_name(data->cmds[0][1]) == -2)
+		print_exp_env(data->env);
+	else
+		process_input_and_export(data->input + 6, data->env);
 }
