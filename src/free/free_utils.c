@@ -22,12 +22,17 @@ void	free_double_array(char **array)
 {
 	int	i;
 
-	i = -1;
-	if (array == NULL || *array == NULL)
+	i = 0;
+	if (!array)
 		return ;
-	while (array[++i])
+	while (array[i])
+	{
 		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
 	free(array);
+	array = NULL;
 }
 
 void	free_triple_array(char ***array)

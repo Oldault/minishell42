@@ -75,10 +75,10 @@ int	parse(t_mini *data)
 	char		**segments;
 	int			seg_num;
 
-	if (echo_pipe(data))
+	if (is_only_spaces(data->input))
 		return (0);
 	segments = ft_split(data->input, '|');
-	if (segments == NULL)
+	if (!segments)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
 	data->seg_count = seg_num;

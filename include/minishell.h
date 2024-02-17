@@ -139,6 +139,7 @@ void					redir_split(char *word, t_rdr *redirection);
 int						invalid_pipes(char **segments, int seg_num,
 							t_mini *data);
 int						echo_pipe(t_mini *data);
+int						is_only_spaces(const char *str);
 
 // todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚟𝚊𝚛    ~~~                *//
 int						handle_single_quote(t_parse_seg *pdata);

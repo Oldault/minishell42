@@ -12,16 +12,15 @@
 
 #include "minishell.h"
 
-static int	is_only_spaces(const char *str)
+int	is_only_spaces(const char *str)
 {
 	if (*str == '\0')
 		return (0);
 	while (*str)
 	{
-		if (!isspace((unsigned char)*str))
-		{
+		if (*str != ' ' && *str != '\f' && *str != '\n' && *str != '\r'
+			&& *str != '\t' && *str != '\v')
 			return (0);
-		}
 		str++;
 	}
 	return (1);
