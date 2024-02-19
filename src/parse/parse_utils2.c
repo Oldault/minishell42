@@ -53,6 +53,7 @@ int	invalid_pipes(char **segments, int seg_num, t_mini *data)
 	if (pipe_count > seg_num - 1)
 	{
 		ft_putendl_fd("minishell: syntax error with pipes", 2);
+		g_exit_stat = 2;
 		return (1);
 	}
 	i = -1;
@@ -61,6 +62,7 @@ int	invalid_pipes(char **segments, int seg_num, t_mini *data)
 		if (is_only_spaces(segments[i]))
 		{
 			ft_putendl_fd("minishell: syntax error with pipes", 2);
+			g_exit_stat = 2;
 			return (1);
 		}
 	}
