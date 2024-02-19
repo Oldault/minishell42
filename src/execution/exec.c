@@ -94,7 +94,11 @@ void	execute_commands(t_mini *data)
 	while (++i < exec_data->num_cmds)
 	{
 		if (!exec_cmd_seg(data, exec_data, i))
-			return ;
+		{
+			// Free ce qu'il y'a a free
+			// Regarder dans quel cas exec_cmd_sed() ne return pas 1;
+			continue ;
+		}
 	}
 	i = -1;
 	while (++i < exec_data->num_cmds)
