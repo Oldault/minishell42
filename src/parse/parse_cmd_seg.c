@@ -19,7 +19,7 @@ static t_parse_seg	*init_pdata(char *segment)
 	pdata = ft_calloc(1, sizeof(t_parse_seg));
 	if (!pdata)
 		return (NULL);
-	pdata->args = ft_calloc((ft_strlen(segment) / 2 + 2), sizeof(char *));
+	pdata->args = ft_calloc((ft_strlen(segment) + 1), sizeof(char *));
 	if (!pdata->args)
 	{
 		free(pdata);
@@ -51,9 +51,7 @@ char	*expand_variable(char *var, char **env, int expand)
 	{
 		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
 			&& env[i][ft_strlen(var)] == '=')
-		{
 			return (ft_strdup(env[i] + ft_strlen(var) + 1));
-		}
 	}
 	return (NULL);
 }
@@ -70,10 +68,9 @@ static void	parse_cmd_segment(t_parse_seg *pdata, char *segment, char **env)
 		pdata->c = segment[i];
 		if (handle_single_quote(pdata) || handle_double_quote(pdata)
 			|| handle_space(pdata) || handle_expansion(segment, &i, pdata, env))
-		{
 			continue ;
-		}
-		pdata->current_arg[pdata->current_length++] = pdata->c;
+		if (pdata->current_length < (int)segment_len)
+			pdata->current_arg[pdata->current_length++] = pdata->c;
 	}
 }
 
@@ -91,6 +88,7 @@ char	**parse_command_segment(char *segment, char **env)
 		pdata->current_arg[pdata->current_length] = '\0';
 		pdata->args[pdata->arg_count++] = ft_strdup(pdata->current_arg);
 	}
+	pdata->args[pdata->arg_count] = NULL;
 	free(pdata->current_arg);
 	temp_args = pdata->args;
 	free(pdata);
