@@ -1,0 +1,174 @@
+==3262066== Memcheck, a memory error detector
+==3262066== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3262066== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3262066== Command: ./minishell
+==3262066== Parent PID: 3247366
+==3262066== 
+==3262131== Syscall param execve(filename) points to unaddressable byte(s)
+==3262131==    at 0x49B308B: execve (syscall-template.S:120)
+==3262131==    by 0x4041B5: execute_single_command (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4036F4: exec_cmd_seg (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40380E: execute_commands (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403497: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==3262131== 
+==3262131== 
+==3262131== HEAP SUMMARY:
+==3262131==     in use at exit: 215,394 bytes in 326 blocks
+==3262131==   total heap usage: 1,095 allocs, 769 frees, 248,404 bytes allocated
+==3262131== 
+==3262131== 8 bytes in 1 blocks are still reachable in loss record 2 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4038C7: init_exec_data (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4037DE: execute_commands (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403497: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 13 bytes in 2 blocks are still reachable in loss record 5 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x4089B9: ft_strdup (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x405925: process_segment_parts (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x405777: parse_segment (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40507E: process_segments (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4051BF: parse (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403477: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 24 bytes in 1 blocks are still reachable in loss record 13 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x404F04: initialize_arrays (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40518C: parse (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403477: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 32 bytes in 2 blocks are still reachable in loss record 16 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4057D0: init_segment_parsing (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x405750: parse_segment (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40507E: process_segments (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4051BF: parse (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403477: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 40 bytes in 1 blocks are still reachable in loss record 20 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40387A: init_exec_data (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4037DE: execute_commands (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403497: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 48 bytes in 1 blocks are still reachable in loss record 24 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x404F3A: initialize_arrays (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40518C: parse (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403477: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 80 bytes in 1 blocks are still reachable in loss record 27 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x402F6A: set_data_out (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034D2: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 112 bytes in 1 blocks are still reachable in loss record 31 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x407EB4: ft_split (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4062BB: get_paths (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4033AB: set_data_in (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403404: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 160 bytes in 1 blocks are still reachable in loss record 33 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40311D: initialize_commands (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x402FED: set_data_out (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034D2: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 187 bytes in 13 blocks are still reachable in loss record 35 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x40810C: write_split (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x407EF1: ft_split (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4062BB: get_paths (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4033AB: set_data_in (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403404: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 320 bytes in 2 blocks are still reachable in loss record 37 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40580B: init_segment_parsing (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x405750: parse_segment (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40507E: process_segments (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4051BF: parse (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403477: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 800 bytes in 1 blocks are still reachable in loss record 41 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406F54: ft_calloc (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403026: get_env (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x402FD9: set_data_out (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034D2: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 1,024 bytes in 1 blocks are still reachable in loss record 43 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x406BEC: get_prompt (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403378: set_data_in (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403404: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== 4,194 bytes in 69 blocks are still reachable in loss record 67 of 81
+==3262131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3262131==    by 0x4089B9: ft_strdup (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40307B: get_env (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x402FD9: set_data_out (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034D2: main (in /home/albeninc/minishell42/minishell)
+==3262131== 
+==3262131== LEAK SUMMARY:
+==3262131==    definitely lost: 0 bytes in 0 blocks
+==3262131==    indirectly lost: 0 bytes in 0 blocks
+==3262131==      possibly lost: 0 bytes in 0 blocks
+==3262131==    still reachable: 7,042 bytes in 97 blocks
+==3262131==         suppressed: 208,352 bytes in 229 blocks
+==3262131== 
+==3262131== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==3262131== 
+==3262131== 1 errors in context 1 of 1:
+==3262131== Syscall param execve(filename) points to unaddressable byte(s)
+==3262131==    at 0x49B308B: execve (syscall-template.S:120)
+==3262131==    by 0x4041B5: execute_single_command (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4036F4: exec_cmd_seg (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x40380E: execute_commands (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x403497: core_loop (in /home/albeninc/minishell42/minishell)
+==3262131==    by 0x4034DF: main (in /home/albeninc/minishell42/minishell)
+==3262131==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==3262131== 
+--3262131-- 
+--3262131-- used_suppression:     63 Ignore readline leak readline.supp:2 suppressed: 204,226 bytes in 222 blocks
+--3262131-- used_suppression:      4 Ignore add_history leak readline.supp:9 suppressed: 4,126 bytes in 7 blocks
+==3262131== 
+==3262131== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==3262066== 
+==3262066== HEAP SUMMARY:
+==3262066==     in use at exit: 208,227 bytes in 222 blocks
+==3262066==   total heap usage: 1,156 allocs, 934 frees, 250,742 bytes allocated
+==3262066== 
+==3262066== LEAK SUMMARY:
+==3262066==    definitely lost: 0 bytes in 0 blocks
+==3262066==    indirectly lost: 0 bytes in 0 blocks
+==3262066==      possibly lost: 0 bytes in 0 blocks
+==3262066==    still reachable: 0 bytes in 0 blocks
+==3262066==         suppressed: 208,227 bytes in 222 blocks
+==3262066== 
+==3262066== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--3262066-- 
+--3262066-- used_suppression:     62 Ignore readline leak readline.supp:2 suppressed: 204,211 bytes in 221 blocks
+--3262066-- used_suppression:      1 Ignore add_history leak readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==3262066== 
+==3262066== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

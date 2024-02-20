@@ -189,7 +189,8 @@ char					*handle_dollar_only(char *name);
 char					*handle_exit_status(char *name);
 
 //*--------------------- 🖥️ 𝙀𝙓𝙀𝘾𝙐𝙏𝙄𝙊𝙉 🖥️ ---------------------*//
-int						execute_commands(t_mini *data);
+void					execute_commands(t_mini *data);
+int						is_builtin(char *cmd, t_mini *data);
 t_exec_cmd				*init_exec_data(t_mini *data);
 int						handle_builtin(t_mini *data);
 int						handle_cmd_path(char *cmd, char *cmd_path,

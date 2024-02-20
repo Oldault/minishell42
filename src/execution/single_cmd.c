@@ -41,32 +41,49 @@ static void	handle_output_redir(t_mini *data, int *pipe_fds, int i,
 		close(pipe_fds[1]);
 	}
 }
+int	is_builtin(char *cmd, t_mini *data)
+{
+	for (int i = 0; data->bltn[i].command_name != NULL; i++)
+	{
+		if (ft_strcmp(cmd, data->bltn[i].command_name) == 0)
+		{
+			return (1);
+		}
+	}
+	return (0);
+}
 
 void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 {
 	pid_t	pid;
 	char	*path;
 
-	path = find_path(data->paths, data->cmds[i]);
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGINT, &ft_signal);
-		signal(SIGQUIT, SIG_DFL);
-		handle_input_redir(data, exec_data->pipe_end);
-		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
-		if (handle_builtin(data))
-		{
-			free(path);
-			exit(EXIT_SUCCESS);
-		}
-		execve(path, data->cmds[i], data->env);
-		free(path);
-		exit(127);
-	}
-	else if (pid > 0)
-		exec_data->child_pids[i] = pid;
+	if (is_builtin(data->cmds[i][0], data))
+		handle_builtin(data);
 	else
-		perror_exit("fork");
-	free(path);
+	{
+		path = find_path(data->paths, data->cmds[i]);
+		pid = fork();
+		if (pid == 0)
+		{
+			signal(SIGINT, &ft_signal);
+			signal(SIGQUIT, SIG_DFL);
+			handle_input_redir(data, exec_data->pipe_end);
+			handle_output_redir(data, exec_data->pipe_fds, i,
+				exec_data->num_cmds);
+			if (execve(path, data->cmds[i], data->env) == -1)
+			{
+				ft_putstr_fd(data->cmds[i][0], 2);
+				ft_putstr_fd(" : command not found\n", 2);
+				free(path);
+				exit(EXIT_FAILURE);
+					
+			}
+		}
+		else if (pid < 0)
+			perror("fork");
+		else
+			exec_data->child_pids[i] = pid;
+		free(path);
+	}
 }
