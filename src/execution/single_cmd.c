@@ -47,6 +47,8 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 	pid_t	pid;
 	char	*path;
 
+	if (exec_data->num_cmds == 1 && handle_builtin(data))
+		return ;
 	path = find_path(data->paths, data->cmds[i]);
 	pid = fork();
 	if (pid == 0)
@@ -62,7 +64,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 		}
 		execve(path, data->cmds[i], data->env);
 		free(path);
-		exit(127);
+		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 		exec_data->child_pids[i] = pid;

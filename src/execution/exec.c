@@ -56,12 +56,10 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 {
 	exec_data->cmd_path = find_path(data->paths, data->cmds[i]);
-	if (!handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data))
-		return (0);
+	handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data);
 	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
 	apply_redirections(data, i);
-	if (!data->err)
-		execute_single_command(data, exec_data, i);
+	execute_single_command(data, exec_data, i);
 	free(exec_data->cmd_path);
 	if (exec_data->pipe_end != -1)
 		close(exec_data->pipe_end);
@@ -92,10 +90,7 @@ int	execute_commands(t_mini *data)
 		return (free(exec_data->child_pids), free(exec_data), -1);
 	i = -1;
 	while (++i < exec_data->num_cmds)
-	{
-		if (!exec_cmd_seg(data, exec_data, i))
-			return (-1);
-	}
+		exec_cmd_seg(data, exec_data, i);
 	i = -1;
 	while (++i < exec_data->num_cmds)
 		handle_wait(exec_data, i);
