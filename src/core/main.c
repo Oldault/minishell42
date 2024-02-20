@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 14:06:41 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 12:12:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:00:10 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	core_loop(t_mini *data)
 			reset_data_mid(data);
 			continue ;
 		}
-		// print_3d_arr(data->cmds, 1);
-		// print_redir_blue(data);
+		print_3d_arr(data->cmds, 1);
+		print_redir_blue(data);
 		execute_commands(data);
 		reset_data_in(data);
 	}

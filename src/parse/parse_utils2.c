@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:34:25 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 21:53:02 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:52:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ int	is_only_spaces(const char *str)
 int	count_char_occurrences(const char *str, char c)
 {
 	int	count;
+	int	in_quote;
 
+	in_quote = 0;
 	count = 0;
 	while (*str)
 	{
-		if (*str == c)
+		if (*str == '\"')
+		{
+			in_quote = !in_quote;
+		}
+		else if (*str == c && !in_quote)
 		{
 			count++;
 		}

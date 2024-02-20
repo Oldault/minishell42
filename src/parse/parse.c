@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 09:38:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 21:52:45 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:48:59 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	parse(t_mini *data)
 
 	if (is_only_spaces(data->input))
 		return (0);
-	segments = ft_split(data->input, '|');
+	segments = ft_split_quotes(data->input, '|');
 	if (!segments)
 		return (-1);
 	seg_num = dbl_arr_len(segments);
