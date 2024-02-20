@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:23:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 20:52:53 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:50:26 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	print_redir_type(t_rdr *redir)
 		printf("Output (>)");
 	else if (redir->type == REDIR_APPEND)
 		printf("Append (>>)");
+	else if (redir->type == REDIR_HEREDOC)
+		printf("Heredoc (<<)");
 	else
 		printf("None");
 	printf(", Filename: %s\n", redir->filename);

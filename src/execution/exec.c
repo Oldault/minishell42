@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 10:13:12 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:01:54 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,29 +76,30 @@ int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 	return (1);
 }
 
-void	execute_commands(t_mini *data)
+int		execute_commands(t_mini *data)
 {
 	t_exec_cmd	*exec_data;
 	int			i;
 
 	if (data->cmds == NULL || data->cmds[0] == NULL || data->cmds[0][0] == NULL)
-		return ;
+	{
+		if (data->redir->redirs->type == REDIR_HEREDOC)
+			apply_redirections(data, 0);
+		return (0);
+	}
 	exec_data = init_exec_data(data);
 	if (exec_data->num_cmds == 1 && handle_builtin(data))
-	{
-		free(exec_data->child_pids);
-		free(exec_data);
-		return ;
-	}
+		return (free(exec_data->child_pids), free(exec_data), -1);
 	i = -1;
 	while (++i < exec_data->num_cmds)
 	{
 		if (!exec_cmd_seg(data, exec_data, i))
-			return ;
+			return (-1);
 	}
 	i = -1;
 	while (++i < exec_data->num_cmds)
 		handle_wait(exec_data, i);
 	free(exec_data->child_pids);
 	free(exec_data);
+	return (1);
 }

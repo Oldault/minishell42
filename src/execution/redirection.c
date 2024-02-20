@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:55:40 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:29:36 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	handle_heredoc(t_mini *data, char *lim)
 	size_t	len;
 
 	line = NULL;
+	// signal(SIGINT, &ft_signal_heredoc);
 	while (42)
 	{
 		line = readline("> ");
@@ -37,6 +38,7 @@ static void	handle_heredoc(t_mini *data, char *lim)
 	}
 	close(data->in_fd);
 	data->in_fd = open(".hdoc.tmp", O_RDONLY, 0777);
+	// signal(SIGINT, &ft_signal);
 	if (data->in_fd < 0)
 		perror_exit("open heredoc file for reading");
 }

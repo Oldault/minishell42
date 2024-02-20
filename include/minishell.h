@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/15 10:16:28 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:09:07 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,9 @@ char					*get_prompt(char **env);
 int						dbl_arr_len(char **arr);
 
 //*---------------------- 📡 𝙎𝙄𝙂𝙉𝘼𝙇𝙎 📡 ----------------------*//
-void					ft_signal_fork(int num);
 void					ft_signal(int signal);
+void					ft_signal_fork(int num);
+void					ft_signal_heredoc(int signal);
 
 //*----------------------- 🚧 𝙋𝘼𝙏𝙃𝙎 🚧 -----------------------*//
 char					**get_paths(t_mini *data, char **env);
@@ -182,14 +183,13 @@ int						has_even_quotes(const char *input);
 char					*expand_env_variable(char **input_ptr, char **env);
 
 int						path_exists(const char *path);
-char					*expand_tilde(const char *input);
 char					*strdup_spc(const char *src);
 char					*strdup_alpha(const char *src);
 char					*handle_dollar_only(char *name);
 char					*handle_exit_status(char *name);
 
 //*--------------------- 🖥️ 𝙀𝙓𝙀𝘾𝙐𝙏𝙄𝙊𝙉 🖥️ ---------------------*//
-void					execute_commands(t_mini *data);
+int						execute_commands(t_mini *data);
 t_exec_cmd				*init_exec_data(t_mini *data);
 int						handle_builtin(t_mini *data);
 int						handle_cmd_path(char *cmd, char *cmd_path,

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:29:24 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,11 @@ void	ft_signal(int signal)
 	}
 }
 
-// void	ft_signal_exec(int signal)
+// void	ft_signal_heredoc(int signal)
 // {
 // 	if (signal == SIGINT)
 // 	{
-// 		write(1, "\n", 1);
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		g_exit_stat = 130;
-// 		// exit(130);
+// 		close(STDIN_FILENO);
+// 		write(STDERR_FILENO, "\n", 1);
 // 	}
 // }
