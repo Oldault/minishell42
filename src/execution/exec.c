@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 12:01:54 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:57:04 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 	return (1);
 }
 
-int		execute_commands(t_mini *data)
+int	execute_commands(t_mini *data)
 {
 	t_exec_cmd	*exec_data;
 	int			i;
