@@ -55,16 +55,23 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 
 int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 {
+	int	cmd_exec_status;
+
+	cmd_exec_status = 1;
 	if (!is_builtin(data->cmds[i][0], data))
 	{
 		exec_data->cmd_path = find_path(data->paths, data->cmds[i]);
-		handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data);
+		cmd_exec_status = handle_cmd_path(data->cmds[i][0],
+				exec_data->cmd_path);
 	}
 	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
 	apply_redirections(data, i);
-	execute_single_command(data, exec_data, i);
+	execute_single_command(data, exec_data, i, cmd_exec_status);
 	if (!is_builtin(data->cmds[i][0], data))
+	{
 		free(exec_data->cmd_path);
+		exec_data->cmd_path = NULL;
+	}
 	if (exec_data->pipe_end != -1)
 		close(exec_data->pipe_end);
 	if (i < exec_data->num_cmds - 1)
@@ -75,7 +82,7 @@ int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 	else
 		exec_data->pipe_end = -1;
 	reset_file_descriptors(data, i);
-	return (1);
+	return (cmd_exec_status);
 }
 
 int	execute_commands(t_mini *data)
