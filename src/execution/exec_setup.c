@@ -50,19 +50,27 @@ void	setup_pipes(int *pipe_fds, int i, int num_cmds)
 	}
 }
 
-int	handle_cmd_path(char *cmd, char *cmd_path)
+int	handle_cmd_path(char *cmd, char *cmd_path, t_exec_cmd *exec_data)
 {
 	if (cmd_path == NULL)
 	{
 		printf("%s: command not found\n", cmd);
 		g_exit_stat = 127;
+		free(exec_data->child_pids);
+		free(exec_data);
 		return (0);
 	}
-	if (access(cmd_path, F_OK) == 0 && access(cmd_path, X_OK) != 0)
+	if (access(cmd_path, F_OK) == 0)
 	{
-		printf("%s: permission denied\n", cmd_path);
-		g_exit_stat = 126;
-		return (0);
+		if (access(cmd_path, X_OK) != 0)
+		{
+			printf("%s: permission denied\n", cmd_path);
+			g_exit_stat = 126;
+			free(exec_data->cmd_path);
+			free(exec_data->child_pids);
+			free(exec_data);
+			return (0);
+		}
 	}
 	return (1);
 }
