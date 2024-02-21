@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/20 15:51:43 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:55:32 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ void					handle_unset(t_mini *data);
 void					handle_env(t_mini *data);
 void					handle_exit(t_mini *data, char **args);
 void					handle_hist(t_mini *data);
-void					handle_doll(t_mini *data);
 
 // todo               ~~~  𝚎𝚡𝚙𝚘𝚛𝚝 𝚞𝚝𝚒𝚕𝚜  ~~~                  *//
 int						quote_error(char *input);
@@ -191,13 +190,14 @@ char					*handle_exit_status(char *name);
 //*--------------------- 🖥️ 𝙀𝙓𝙀𝘾𝙐𝙏𝙄𝙊𝙉 🖥️ ---------------------*//
 int						execute_commands(t_mini *data);
 t_exec_cmd				*init_exec_data(t_mini *data);
-int						handle_builtin(t_mini *data);
+int						handle_builtin(t_mini *data, int cmd_index);
 int						handle_cmd_path(char *cmd, char *cmd_path,
 							t_exec_cmd *exec_data);
 int						apply_redirections(t_mini *data, int cmd_index);
 void					setup_pipes(int *pipe_fds, int i, int num_cmds);
 void					execute_single_command(t_mini *data,
 							t_exec_cmd *exec_data, int i);
+int						is_builtin(char *cmd, t_mini *data);
 
 // todo               ~~~  𝚛𝚎𝚍𝚒𝚛 𝚝𝚢𝚙𝚎𝚜   ~~~                  *//
 void					redir_input(t_mini *data, char *filename);

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:55:57 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,6 @@ void	handle_exit(t_mini *data, char **args)
 	rl_clear_history();
 	g_exit_stat = exit_status;
 	exit(g_exit_stat);
-}
-
-void	handle_doll(t_mini *data)
-{
-	(void)data;
-	printf("%d : command not found\n", g_exit_stat);
-	g_exit_stat = 127;
 }
 
 void	handle_hist(t_mini *data)

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:50:21 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 12:05:08 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:56:56 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	handle_exit_wrapper(t_mini *data)
 
 static void	initialize_commands(t_mini *data)
 {
-	data->bltn = ft_calloc(10, sizeof(t_cmd_entry));
+	data->bltn = ft_calloc(9, sizeof(t_cmd_entry));
 	data->bltn[0] = (t_cmd_entry){"echo", handle_echo};
 	data->bltn[1] = (t_cmd_entry){"cd", handle_cd};
 	data->bltn[2] = (t_cmd_entry){"pwd", handle_pwd};
@@ -64,8 +64,7 @@ static void	initialize_commands(t_mini *data)
 	data->bltn[5] = (t_cmd_entry){"env", handle_env};
 	data->bltn[6] = (t_cmd_entry){"exit", handle_exit_wrapper};
 	data->bltn[7] = (t_cmd_entry){"history", handle_hist};
-	data->bltn[8] = (t_cmd_entry){"$?", handle_doll};
-	data->bltn[9] = (t_cmd_entry){NULL, NULL};
+	data->bltn[8] = (t_cmd_entry){NULL, NULL};
 }
 
 t_mini	*set_data_out(char **env)
