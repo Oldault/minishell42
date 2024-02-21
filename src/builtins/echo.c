@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:39:43 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 12:16:36 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:06:12 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	handle_echo(t_mini *data, int cmd_index)
 	input = skip_echo_flags(ft_strstr(data->input, "echo") + 5, &newline);
 	if (!has_even_quotes(input))
 	{
-		printf("Error: Mismatched quotes in input\n");
+		ft_putendl_fd("Error: Mismatched quotes in input", 2);
 		return ;
 	}
 	while (*input != '\0' && *input != '|')

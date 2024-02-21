@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 12:30:47 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:06:52 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	handle_export(t_mini *data, int cmd_index)
 	if (validate_variable_name(data->cmds[cmd_index][1]) == -1)
 	{
 		ft_putstr_fd("bash: export: `", 2);
-		ft_putstr_fd(data->cmds[0][1], 2);
+		ft_putstr_fd(data->cmds[cmd_index][1], 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
 	else if (validate_variable_name(data->cmds[cmd_index][1]) == -2)

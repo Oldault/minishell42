@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:11:47 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 12:17:25 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:03:44 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	handle_pwd(t_mini *data, int cmd_index)
 	}
 	else
 	{
-		printf("pathname of current directory not found\n");
+		ft_putendl_fd("pathname of current directory not found", 2);
 		exit(127);
 	}
 }
@@ -61,7 +61,13 @@ void	handle_env(t_mini *data, int cmd_index)
 	char	**env;
 	int		i;
 
-	(void)cmd_index;
+	if (data->cmds[cmd_index][1])
+	{
+		ft_putstr_fd(data->cmds[cmd_index][1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		g_exit_stat = 127;
+		return ;
+	}
 	env = data->env;
 	i = -1;
 	while (env[++i])
