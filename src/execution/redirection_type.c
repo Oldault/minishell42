@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:49:27 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 15:52:38 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:48:43 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,35 +75,6 @@ void	redir_append(t_mini *data, char *filename)
 	}
 	else
 		data->out_fd = new_fd;
-}
-
-static void	handle_heredoc(t_mini *data, char *lim)
-{
-	char	*line;
-	size_t	len;
-
-	line = NULL;
-	while (42)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		len = ft_strlen(line);
-		if (len > 0 && line[len - 1] == '\n')
-			line[len - 1] = '\0';
-		if (ft_strcmp(line, lim) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(data->in_fd, line, ft_strlen(line));
-		write(data->in_fd, "\n", 1);
-		free(line);
-	}
-	close(data->in_fd);
-	data->in_fd = open(".hdoc.tmp", O_RDONLY, 0777);
-	if (data->in_fd < 0)
-		perror_exit("open heredoc file for reading");
 }
 
 int	redir_heredoc(t_mini *data, char *filename)

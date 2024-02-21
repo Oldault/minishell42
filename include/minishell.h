@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/21 12:25:15 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:49:26 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void					redir_input(t_mini *data, char *filename);
 void					redir_output(t_mini *data, char *filename);
 void					redir_append(t_mini *data, char *filename);
 int						redir_heredoc(t_mini *data, char *filename);
+void					handle_heredoc(t_mini *data, char *lim);
 
 //*----------------------- 🖨️ 𝙋𝙍𝙄𝙉𝙏 🖨️ -----------------------*//
 void					print_2d_arr(char **arr, char separator);

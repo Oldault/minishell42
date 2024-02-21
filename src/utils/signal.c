@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 11:49:03 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 15:36:37 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:13:40 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ void	ft_signal_heredoc(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		close(STDIN_FILENO);
-		g_exit_stat = 1;
+		g_exit_stat = 130;
 	}
 }
