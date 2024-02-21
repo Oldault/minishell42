@@ -22,7 +22,7 @@ static void	exit_heredoc(t_mini *data, int going, char *lim)
 		ft_putstr_fd(lim, 2);
 		ft_putendl_fd("`)", 2);
 		g_exit_stat = 0;
-	}	
+	}
 	if (data->in_fd < 0)
 		perror_exit("open heredoc file for reading");
 }
@@ -30,7 +30,7 @@ static void	exit_heredoc(t_mini *data, int going, char *lim)
 void	handle_heredoc(t_mini *data, char *lim)
 {
 	char	*line;
-	int 	going;
+	int		going;
 	size_t	len;
 
 	line = NULL;

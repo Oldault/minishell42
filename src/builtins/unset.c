@@ -39,12 +39,25 @@ static void	unset_var(char *to_unset, char **env)
 	}
 }
 
-void	handle_unset(t_mini *data, int cmd_index)
+char	*unset_single_var(char *input, char **env)
 {
 	char	*to_unset;
+
+	if (*input == ' ')
+		input++;
+	to_unset = strdup_spc(input);
+	input += ft_strlen(to_unset);
+	unset_var(to_unset, env);
+	free(to_unset);
+	while (*input == ' ')
+		input++;
+	return (input);
+}
+
+void	handle_unset(t_mini *data, int cmd_index)
+{
 	char	*input;
 	char	**env;
-	char	*temp_input;
 
 	(void)cmd_index;
 	env = data->env;
@@ -52,20 +65,5 @@ void	handle_unset(t_mini *data, int cmd_index)
 	if (!input)
 		return ;
 	while (*input != '\0' && *input != '|')
-	{
-		if (*input == ' ')
-		{
-			input++;
-			continue ;
-		}
-		to_unset = strdup_spc(input);
-		temp_input = input;
-		while (*temp_input != '\0' && temp_input < input + ft_strlen(to_unset))
-			temp_input++;
-		input = temp_input;
-		unset_var(to_unset, env);
-		free(to_unset);
-		while (*input == ' ')
-			input++;
-	}
+		input = unset_single_var(input, env);
 }

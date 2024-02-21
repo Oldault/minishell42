@@ -38,8 +38,6 @@ void	core_loop(t_mini *data)
 			reset_data_mid(data);
 			continue ;
 		}
-		// print_3d_arr(data->cmds, 1);
-		// print_redir_blue(data);
 		execute_commands(data);
 		reset_data_in(data);
 	}

@@ -32,6 +32,13 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct
+{
+	int				start;
+	int				word_length;
+	int				i;
+}					Word_Parse_State;
+
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);

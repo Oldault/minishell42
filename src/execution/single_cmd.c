@@ -46,7 +46,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 {
 	pid_t	pid;
 	char	*path;
-	
+
 	path = NULL;
 	if (!is_builtin(data->cmds[i][0], data))
 		path = find_path(data->paths, data->cmds[i]);

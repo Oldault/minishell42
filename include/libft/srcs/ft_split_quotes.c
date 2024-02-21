@@ -24,10 +24,12 @@ static int	count_words(const char *str, char charset)
 {
 	int	words;
 	int	in_quote;
+	int	i;
 
 	words = 0;
 	in_quote = 0;
-	for (int i = 0; str[i];)
+	i = 0;
+	while (str[i])
 	{
 		while (str[i] == charset && !in_quote)
 			i++;
@@ -59,7 +61,7 @@ static void	write_word(char *dest, const char *from, char charset)
 	{
 		if (from[i] == '\"')
 		{
-			in_quote = !in_quote; // Toggle quote flag
+			in_quote = !in_quote;
 			i++;
 			continue ;
 		}
@@ -68,35 +70,44 @@ static void	write_word(char *dest, const char *from, char charset)
 	dest[j] = '\0';
 }
 
+static int	find_word(const char *str, WordParseState *state, char charset)
+{
+	int	in_quote;
+
+	in_quote = 0;
+	while (str[state->i] == charset && !in_quote)
+		state->i++;
+	if (str[state->i] == '\0')
+		return (0);
+	state->start = state->i;
+	while (str[state->i] && (in_quote || str[state->i] != charset))
+	{
+		if (str[state->i] == '\"')
+			in_quote = !in_quote;
+		state->i++;
+	}
+	state->word_length = state->i - state->start;
+	return (1);
+}
+
 static int	write_split(char **split, const char *str, char charset)
 {
-	int	i;
-	int	in_quote;
-	int	start;
-	int	word_length;
-	int	word_index;
+	Word_Parse_State	state;
+	int					word_index;
 
-	i = 0;
 	word_index = 0;
-	in_quote = 0;
-	while (str[i])
+	state.start = 0;
+	state.word_length = 0;
+	state.i = 0;
+	while (str[state.i])
 	{
-		while (str[i] == charset && !in_quote)
-			i++;
-		if (str[i] == '\0')
+		if (!find_word(str, &state, charset))
 			break ;
-		start = i;
-		while (str[i] && (in_quote || str[i] != charset))
-		{
-			if (str[i] == '\"')
-				in_quote = !in_quote;
-			i++;
-		}
-		word_length = i - start;
-		split[word_index] = (char *)malloc(sizeof(char) * (word_length + 1));
+		split[word_index] = (char *)malloc(sizeof(char) * (state.word_length
+					+ 1));
 		if (!split[word_index])
 			return (unleah(split, word_index - 1));
-		write_word(split[word_index], str + start, charset);
+		write_word(split[word_index], str + state.start, charset);
 		word_index++;
 	}
 	split[word_index] = NULL;

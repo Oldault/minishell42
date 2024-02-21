@@ -105,12 +105,16 @@ int	execute_commands(t_mini *data)
 
 int	is_builtin(char *cmd, t_mini *data)
 {
-	for (int i = 0; data->bltn[i].command_name != NULL; i++)
+	int	i;
+
+	i = 0;
+	while (data->bltn[i].command_name != NULL)
 	{
 		if (ft_strcmp(cmd, data->bltn[i].command_name) == 0)
 		{
 			return (1);
 		}
+		i++;
 	}
 	return (0);
 }
