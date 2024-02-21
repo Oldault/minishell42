@@ -42,31 +42,30 @@ static void	handle_output_redir(t_mini *data, int *pipe_fds, int i,
 	}
 }
 
-void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
+void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i,
+		int cmd_exec_status)
 {
 	pid_t	pid;
-	char	*path;
-	
-	path = NULL;
-	if (!is_builtin(data->cmds[i][0], data))
-		path = find_path(data->paths, data->cmds[i]);
+
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, &ft_signal);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		handle_input_redir(data, exec_data->pipe_end);
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
-		if (handle_builtin(data, i))
-			exit(EXIT_SUCCESS);
-		execve(path, data->cmds[i], data->env);
-		free(path);
-		exit(EXIT_FAILURE);
+		if (cmd_exec_status)
+		{
+			if (!is_builtin(data->cmds[i][0], data))
+			{
+				execve(exec_data->cmd_path, data->cmds[i], data->env);
+				perror("execve");
+			}
+		}
+		exit(cmd_exec_status ? EXIT_SUCCESS : EXIT_FAILURE);
 	}
 	else if (pid > 0)
 		exec_data->child_pids[i] = pid;
 	else
-		perror_exit("fork");
-	if (path)
-		free(path);
+		perror("fork");
 }

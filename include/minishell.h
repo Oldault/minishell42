@@ -190,12 +190,11 @@ char					*handle_exit_status(char *name);
 int						execute_commands(t_mini *data);
 t_exec_cmd				*init_exec_data(t_mini *data);
 int						handle_builtin(t_mini *data, int cmd_index);
-int						handle_cmd_path(char *cmd, char *cmd_path,
-							t_exec_cmd *exec_data);
+int						handle_cmd_path(char *cmd, char *cmd_path);
 int						apply_redirections(t_mini *data, int cmd_index);
 void					setup_pipes(int *pipe_fds, int i, int num_cmds);
 void					execute_single_command(t_mini *data,
-							t_exec_cmd *exec_data, int i);
+							t_exec_cmd *exec_data, int i, int cmd_exec_status);
 int						is_builtin(char *cmd, t_mini *data);
 
 // todo               ~~~  𝚛𝚎𝚍𝚒𝚛 𝚝𝚢𝚙𝚎𝚜   ~~~                  *//
