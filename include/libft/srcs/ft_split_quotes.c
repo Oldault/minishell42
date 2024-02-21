@@ -6,19 +6,11 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:44:53 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 16:55:00 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:29:46 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	unleah(char **str, int size)
-{
-	while (size >= 0)
-		free(str[size--]);
-	free(str);
-	return (-1);
-}
 
 static int	count_words(const char *str, char charset)
 {

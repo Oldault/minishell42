@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 11:37:13 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:14:24 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 	pid_t	pid;
 	char	*path;
 
-	path = NULL;
-	if (!is_builtin(data->cmds[i][0], data))
-		path = find_path(data->paths, data->cmds[i]);
+	path = find_path(data, data->paths, data->cmds[i]);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -59,7 +57,8 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
 		if (handle_builtin(data, i))
 			exit(EXIT_SUCCESS);
-		execve(path, data->cmds[i], data->env);
+		if (path)
+			execve(path, data->cmds[i], data->env);
 		free(path);
 		exit(EXIT_FAILURE);
 	}

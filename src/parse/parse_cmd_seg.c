@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 17:19:48 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 11:03:19 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:28:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static void	parse_cmd_segment(t_parse_seg *pdata, char *segment, char **env)
 
 char	**parse_command_segment(char *segment, char **env)
 {
-	t_parse_seg	*pdata;
 	char		**temp_args;
+	t_parse_seg	*pdata;
 
 	pdata = init_pdata(segment);
 	if (!pdata)

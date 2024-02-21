@@ -6,13 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:08:13 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 20:43:41 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:16:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_path(char **paths, char **arg)
+char	*find_path(t_mini *data, char **paths, char **arg)
 {
 	int		i;
 	char	*path;
@@ -22,7 +22,7 @@ char	*find_path(char **paths, char **arg)
 	i = 0;
 	if (arg[0][0] == '/' || arg[0][0] == '.')
 		return (ft_strdup(arg[0]));
-	if (!paths)
+	if (!paths || is_builtin(arg[0], data))
 		return (NULL);
 	while (paths[i])
 	{

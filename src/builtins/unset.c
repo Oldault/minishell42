@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:43:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 12:20:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:57:37 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	handle_unset(t_mini *data, int cmd_index)
 
 	(void)cmd_index;
 	env = data->env;
-	input = ft_strstr(data->input + 5, "unset");
+	input = ft_strstr(data->input, "unset") + 5;
 	if (!input)
 		return ;
 	while (*input != '\0' && *input != '|')

@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:44:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 13:54:16 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:12:16 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	exit_heredoc(t_mini *data, int going, char *lim)
 	data->in_fd = open(".hdoc.tmp", O_RDONLY, 0777);
 	if (!going && g_exit_stat != 130)
 	{
-		ft_putstr_fd("warning: here-document delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd("warning: here-document delimited by ", 2);
+		ft_putstr_fd("end-of-file (wanted `", 2);
 		ft_putstr_fd(lim, 2);
 		ft_putendl_fd("`)", 2);
 		g_exit_stat = 0;

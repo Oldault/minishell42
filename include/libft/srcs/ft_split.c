@@ -6,13 +6,13 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 08:53:04 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:17:50 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:30:49 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	unleah(char **str, int size)
+static int	unleash(char **str, int size)
 {
 	while (size >= 0)
 		free(str[size--]);
@@ -69,7 +69,7 @@ static int	write_split(char **split, const char *str, char charset)
 				j++;
 			split[word] = (char *)malloc(sizeof(char) * (j + 1));
 			if (!(split[word]))
-				return (unleah(split, word));
+				return (unleash(split, word));
 			write_word(split[word], str + i, charset);
 			i += j;
 			word++;
