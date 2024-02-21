@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:55:38 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/14 18:59:44 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:37:13 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 {
 	pid_t	pid;
 	char	*path;
-
-	path = find_path(data->paths, data->cmds[i]);
+	
+	path = NULL;
+	if (!is_builtin(data->cmds[i][0], data))
+		path = find_path(data->paths, data->cmds[i]);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -55,18 +57,16 @@ void	execute_single_command(t_mini *data, t_exec_cmd *exec_data, int i)
 		signal(SIGQUIT, SIG_DFL);
 		handle_input_redir(data, exec_data->pipe_end);
 		handle_output_redir(data, exec_data->pipe_fds, i, exec_data->num_cmds);
-		if (handle_builtin(data))
-		{
-			free(path);
+		if (handle_builtin(data, i))
 			exit(EXIT_SUCCESS);
-		}
 		execve(path, data->cmds[i], data->env);
 		free(path);
-		exit(127);
+		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 		exec_data->child_pids[i] = pid;
 	else
 		perror_exit("fork");
-	free(path);
+	if (path)
+		free(path);
 }

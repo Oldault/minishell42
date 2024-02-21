@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 14:26:17 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 15:57:04 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:40:42 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,16 @@ void	handle_wait(t_exec_cmd *exec_data, int i)
 
 int	exec_cmd_seg(t_mini *data, t_exec_cmd *exec_data, int i)
 {
-	exec_data->cmd_path = find_path(data->paths, data->cmds[i]);
-	if (!handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data))
-		return (0);
+	if (!is_builtin(data->cmds[i][0], data))
+	{
+		exec_data->cmd_path = find_path(data->paths, data->cmds[i]);
+		handle_cmd_path(data->cmds[i][0], exec_data->cmd_path, exec_data);
+	}
 	setup_pipes(exec_data->pipe_fds, i, exec_data->num_cmds);
 	apply_redirections(data, i);
-	if (!data->err)
-		execute_single_command(data, exec_data, i);
-	free(exec_data->cmd_path);
+	execute_single_command(data, exec_data, i);
+	if (!is_builtin(data->cmds[i][0], data))
+		free(exec_data->cmd_path);
 	if (exec_data->pipe_end != -1)
 		close(exec_data->pipe_end);
 	if (i < exec_data->num_cmds - 1)
@@ -88,18 +90,27 @@ int	execute_commands(t_mini *data)
 		return (0);
 	}
 	exec_data = init_exec_data(data);
-	if (exec_data->num_cmds == 1 && handle_builtin(data))
+	if (exec_data->num_cmds == 1 && handle_builtin(data, 0))
 		return (free(exec_data->child_pids), free(exec_data), -1);
 	i = -1;
 	while (++i < exec_data->num_cmds)
-	{
-		if (!exec_cmd_seg(data, exec_data, i))
-			return (-1);
-	}
+		exec_cmd_seg(data, exec_data, i);
 	i = -1;
 	while (++i < exec_data->num_cmds)
 		handle_wait(exec_data, i);
 	free(exec_data->child_pids);
 	free(exec_data);
 	return (1);
+}
+
+int	is_builtin(char *cmd, t_mini *data)
+{
+	for (int i = 0; data->bltn[i].command_name != NULL; i++)
+	{
+		if (ft_strcmp(cmd, data->bltn[i].command_name) == 0)
+		{
+			return (1);
+		}
+	}
+	return (0);
 }

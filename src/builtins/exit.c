@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_doll_hist.c                                   :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:44:51 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:24:54 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int	validate_exit_args(char **args)
 	return (EXIT_SUCCESS);
 }
 
-void	handle_exit(t_mini *data, char **args)
+void	handle_exit(t_mini *data, int cmd_index)
 {
 	int	i;
 	int	exit_status;
 
-	exit_status = validate_exit_args(args);
+	exit_status = validate_exit_args(data->cmds[cmd_index]);
 	if (exit_status == -1)
 	{
 		g_exit_stat = 1;
@@ -67,27 +67,4 @@ void	handle_exit(t_mini *data, char **args)
 	rl_clear_history();
 	g_exit_stat = exit_status;
 	exit(g_exit_stat);
-}
-
-void	handle_doll(t_mini *data)
-{
-	(void)data;
-	printf("%d : command not found\n", g_exit_stat);
-	g_exit_stat = 127;
-}
-
-void	handle_hist(t_mini *data)
-{
-	int			i;
-	HIST_ENTRY	**list_hist;
-
-	(void)data;
-	i = -1;
-	list_hist = history_list();
-	if (list_hist)
-	{
-		while (list_hist[++i])
-			printf("%d: %s\n", i + 1, list_hist[i]->line);
-	}
-	g_exit_stat = EXIT_SUCCESS;
 }

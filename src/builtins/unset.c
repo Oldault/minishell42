@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bltn_unset.c                                       :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:43:09 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/05 13:45:56 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:20:22 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,16 @@ static void	unset_var(char *to_unset, char **env)
 	}
 }
 
-void	handle_unset(t_mini *data)
+void	handle_unset(t_mini *data, int cmd_index)
 {
 	char	*to_unset;
 	char	*input;
 	char	**env;
 	char	*temp_input;
 
+	(void)cmd_index;
 	env = data->env;
-	input = data->input + 5;
+	input = ft_strstr(data->input + 5, "unset");
 	while (*input != '\0' && *input != '|')
 	{
 		if (*input == ' ')

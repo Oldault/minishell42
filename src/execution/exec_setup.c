@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:21:32 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/15 09:48:22 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:15:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	handle_cmd_path(char *cmd, char *cmd_path, t_exec_cmd *exec_data)
 	return (1);
 }
 
-int	handle_builtin(t_mini *data)
+int	handle_builtin(t_mini *data, int cmd_index)
 {
 	int			i;
 	char		*cmd;
@@ -83,12 +83,12 @@ int	handle_builtin(t_mini *data)
 
 	i = -1;
 	builtin = data->bltn;
-	cmd = data->cmds[0][0];
+	cmd = data->cmds[cmd_index][0];
 	while (builtin[++i].command_name != NULL)
 	{
 		if (ft_strcmp(builtin[i].command_name, cmd) == 0)
 		{
-			builtin[i].func(data);
+			builtin[i].func(data, cmd_index);
 			return (1);
 		}
 	}
