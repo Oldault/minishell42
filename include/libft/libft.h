@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:56:27 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 12:45:38 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:54:43 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-typedef struct
+typedef struct s_word_parse_state
 {
 	int				start;
 	int				word_length;
 	int				i;
-}					Word_Parse_State;
+}					t_word_parse_state;
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);

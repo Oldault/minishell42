@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:44:53 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/20 13:06:39 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:55:00 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	write_word(char *dest, const char *from, char charset)
 	dest[j] = '\0';
 }
 
-static int	find_word(const char *str, WordParseState *state, char charset)
+static int	find_word(const char *str, t_word_parse_state *state, char charset)
 {
 	int	in_quote;
 
@@ -92,7 +92,7 @@ static int	find_word(const char *str, WordParseState *state, char charset)
 
 static int	write_split(char **split, const char *str, char charset)
 {
-	Word_Parse_State	state;
+	t_word_parse_state	state;
 	int					word_index;
 
 	word_index = 0;
