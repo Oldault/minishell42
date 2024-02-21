@@ -49,6 +49,8 @@ void	handle_unset(t_mini *data, int cmd_index)
 	(void)cmd_index;
 	env = data->env;
 	input = ft_strstr(data->input + 5, "unset");
+	if (!input)
+		return ;
 	while (*input != '\0' && *input != '|')
 	{
 		if (*input == ' ')
