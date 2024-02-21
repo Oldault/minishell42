@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:21:32 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 11:27:05 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:15:19 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	handle_builtin(t_mini *data, int cmd_index)
 	{
 		if (ft_strcmp(builtin[i].command_name, cmd) == 0)
 		{
-			builtin[i].func(data);
+			builtin[i].func(data, cmd_index);
 			return (1);
 		}
 	}

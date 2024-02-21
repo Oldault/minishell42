@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 16:42:22 by svolodin          #+#    #+#             */
-/*   Updated: 2024/02/21 11:55:46 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:30:47 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,24 @@ int	validate_variable_name(char *name)
 	return (0);
 }
 
-void	handle_export(t_mini *data)
+void	handle_export(t_mini *data, int cmd_index)
 {
-	if (data->cmds[0][1] == NULL)
+	if (data->cmds[cmd_index][1] == NULL)
 	{
 		print_exp_env(data->env);
 		return ;
 	}
-	if (validate_variable_name(data->cmds[0][1]) == -1)
+	if (validate_variable_name(data->cmds[cmd_index][1]) == -1)
 	{
 		ft_putstr_fd("bash: export: `", 2);
 		ft_putstr_fd(data->cmds[0][1], 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
-	else if (validate_variable_name(data->cmds[0][1]) == -2)
+	else if (validate_variable_name(data->cmds[cmd_index][1]) == -2)
 		print_exp_env(data->env);
 	else
-		process_input_and_export(data->input + 6, data->env);
+	{
+		process_input_and_export(ft_strstr(data->input, "export") + 6,
+			data->env);
+	}
 }

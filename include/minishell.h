@@ -6,7 +6,7 @@
 /*   By: svolodin <svolodin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:52:15 by albeninc          #+#    #+#             */
-/*   Updated: 2024/02/21 11:55:32 by svolodin         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:25:15 by svolodin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_mini	t_mini;
 typedef struct s_cmd_entry
 {
 	char				*command_name;
-	void				(*func)(t_mini *);
+	void				(*func)(t_mini *, int);
 }						t_cmd_entry;
 
 //?                   ~~~     𝙼𝚊𝚒𝚗      ~~~                   *//
@@ -155,14 +155,13 @@ int						handle_expansion(char *segment, size_t *i,
 
 //*---------------------- 🌍 𝘽𝙐𝙄𝙇𝙏𝙄𝙉𝙎 🌍 ----------------------*//
 // todo               ~~~   𝚑𝚊𝚗𝚍𝚕𝚎 𝚎𝚊𝚌𝚑   ~~~                 *//
-void					handle_echo(t_mini *data);
-void					handle_cd(t_mini *data);
-void					handle_pwd(t_mini *data);
-void					handle_export(t_mini *data);
-void					handle_unset(t_mini *data);
-void					handle_env(t_mini *data);
-void					handle_exit(t_mini *data, char **args);
-void					handle_hist(t_mini *data);
+void					handle_echo(t_mini *data, int cmd_index);
+void					handle_cd(t_mini *data, int cmd_index);
+void					handle_pwd(t_mini *data, int cmd_index);
+void					handle_export(t_mini *data, int cmd_index);
+void					handle_unset(t_mini *data, int cmd_index);
+void					handle_env(t_mini *data, int cmd_index);
+void					handle_exit(t_mini *data, int cmd_index);
 
 // todo               ~~~  𝚎𝚡𝚙𝚘𝚛𝚝 𝚞𝚝𝚒𝚕𝚜  ~~~                  *//
 int						quote_error(char *input);
